@@ -1,36 +1,189 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Publisher Media CMS ~GtSBK~
 
-## Getting Started
+Project Magang Fullstack Developer  
+Stack: Next.js, TypeScript, PostgreSQL, Prisma
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Deskripsi Project
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Publisher Media CMS adalah sistem manajemen konten (Content Management System) yang dirancang untuk mendukung workflow media digital dengan Role-Based Access Control (RBAC), sistem publikasi bertahap, serta manajemen artikel terstruktur.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+- Next.js (App Router)
+- TypeScript
+- PostgreSQL
+- Prisma ORM
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Progress Mingguan
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Week 1 – Project Proposal
+- Penyusunan proposal
+- Perencanaan arsitektur sistem
+- Penyusunan roadmap 16 minggu
+- Penentuan teknologi
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Status: Selesai
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Week 2 – Core Database Setup
+- Setup Prisma dan PostgreSQL
+- Desain schema database
+- Implementasi Role (ADMIN, EDITOR, WRITER)
+- Implementasi workflow Article (DRAFT, REVIEW, PUBLISHED, REJECTED)
+- Relasi User dan Article
+- Struktur ActivityLog
+- Migration database berhasil
+
+Status: Selesai
+
+---
+
+## Week 3 – Authentication & Basic RBAC
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 4 – Article Management API
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 5 – Workflow Validation
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 6 – Category & Tag Management
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 7 – Activity Logging Implementation
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 8 – Dashboard Statistics
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 9 – Scheduled Publishing (Cron Setup)
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 10 – SEO Meta Field Implementation
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 11 – Content Health Score Logic
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 12 – UI Refinement & UX Improvement
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 13 – Performance Optimization
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 14 – Security Hardening
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 15 – Testing & Bug Fixing
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Week 16 – Final Stabilization & Documentation
+- 
+- 
+- 
+
+Status: 
+
+---
+
+## Database Structure
+
+- User
+- Article
+- Category
+- Tag
+- ActivityLog
+
+---
+
+## Developer
+
+Narendra Putra Arianto  
+Fullstack Developer Intern
