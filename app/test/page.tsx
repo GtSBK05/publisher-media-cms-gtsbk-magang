@@ -367,6 +367,227 @@ export default function TestPage() {
     }
   }  
 
+  async function createSeoArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData =
+        await loginRes.json();
+
+      const token =
+        loginData.token;
+
+      const res = await fetch(
+        "http://localhost:3000/api/articles/create",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            authorization:
+              `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            title:
+              `SEO Article ${Date.now()}`,
+
+            content:
+              "SEO optimized content",
+
+            seoTitle:
+              "Best CMS Platform",
+
+            seoDescription:
+              "Modern publisher CMS system",
+
+            seoKeywords:
+              "cms,publisher,nextjs",
+
+            scheduledAt: null,
+          }),
+        }
+      );
+
+      const data =
+        await res.json();
+
+      setResult(
+        JSON.stringify(data, null, 2)
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      setResult("ERROR");
+    }
+  }  
+
+  async function updateSeoArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData =
+        await loginRes.json();
+
+      const token =
+        loginData.token;
+
+      const articlesRes = await fetch(
+        "http://localhost:3000/api/articles",
+        {
+          headers: {
+            authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+      const articles =
+        await articlesRes.json();
+
+      const firstArticle =
+        articles[0];
+
+      const res = await fetch(
+        `http://localhost:3000/api/articles/${firstArticle.id}`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            authorization:
+              `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            title:
+              "UPDATED SEO ARTICLE",
+
+            content:
+              "UPDATED SEO CONTENT",
+
+            seoTitle:
+              "Updated SEO Title",
+
+            seoDescription:
+              "Updated SEO Description",
+
+            seoKeywords:
+              "seo,nextjs,typescript",
+          }),
+        }
+      );
+
+      const data =
+        await res.json();
+
+      setResult(
+        JSON.stringify(data, null, 2)
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      setResult("ERROR");
+    }
+  }  
+
+  async function createAutoSeoArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData =
+        await loginRes.json();
+
+      const token =
+        loginData.token;
+
+      const res = await fetch(
+        "http://localhost:3000/api/articles/create",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            authorization:
+              `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            title:
+              `AUTO SEO ${Date.now()}`,
+
+            content:
+              "This article uses automatic SEO fallback system generated from article content without manual SEO input.",
+          }),
+        }
+      );
+
+      const data =
+        await res.json();
+
+      setResult(
+        JSON.stringify(data, null, 2)
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      setResult("ERROR");
+    }
+  }  
+
   return (
     <main style={{ padding: 20 }}>
       <button onClick={register}>
@@ -420,6 +641,27 @@ export default function TestPage() {
         style={{ marginLeft: 10 }}
       >
         Create Scheduled
+      </button>
+
+      <button
+        onClick={createSeoArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Create SEO Article
+      </button>
+
+      <button
+        onClick={updateSeoArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Update SEO Article
+      </button>
+
+      <button
+        onClick={createAutoSeoArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Auto SEO Article
       </button>
 
       <pre>{result}</pre>

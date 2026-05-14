@@ -155,11 +155,18 @@ Status: Selesai
 ---
 
 ## Week 10 – SEO Meta Field Implementation
-- 
-- 
-- 
+- Implementasi field SEO metadata pada Article schema
+- Implementasi `seoTitle`, `seoDescription`, dan `seoKeywords`
+- Integrasi SEO metadata pada Create Article API
+- Integrasi SEO metadata pada Update Article API
+- Implementasi automatic SEO fallback system
+- Implementasi otomatisasi `seoTitle` menggunakan title article
+- Implementasi otomatisasi `seoDescription` dari potongan content
+- Pengujian SEO metadata menggunakan protected API
+- Validasi penyimpanan SEO metadata pada PostgreSQL
+- Pengujian automatic SEO fallback system
 
-Status: 
+Status: Selesai
 
 ---
 

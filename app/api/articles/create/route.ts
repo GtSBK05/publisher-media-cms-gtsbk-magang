@@ -31,6 +31,17 @@ export async function POST(req: Request) {
           title: body.title,
           content: body.content,
 
+          seoTitle:
+            body.seoTitle ||
+            body.title,
+
+          seoDescription:
+            body.seoDescription ||
+            body.content.slice(0, 160),          
+
+          seoKeywords:
+            body.seoKeywords,          
+
           slug: slugify(body.title, {
             lower: true,
             strict: true,

@@ -59,9 +59,16 @@ export async function PATCH(
         where: {
           id,
         },
+
         data: {
           title: body.title,
           content: body.content,
+
+          seoTitle: body.seoTitle,
+          seoDescription:
+            body.seoDescription,
+          seoKeywords:
+            body.seoKeywords,
         },
       });
 
