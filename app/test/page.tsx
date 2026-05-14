@@ -252,7 +252,6 @@ export default function TestPage() {
 
   async function publishArticle() {
     try {
-      // LOGIN
       const loginRes = await fetch(
         "http://localhost:3000/api/auth/login",
         {
@@ -271,7 +270,6 @@ export default function TestPage() {
 
       const token = loginData.token;
 
-      // GET ARTICLES
       const articlesRes = await fetch(
         "http://localhost:3000/api/articles",
         {
@@ -286,7 +284,6 @@ export default function TestPage() {
 
       const firstArticle = articles[0];
 
-      // PUBLISH
       const publishRes = await fetch(
         `http://localhost:3000/api/articles/${firstArticle.id}/publish`,
         {
@@ -308,6 +305,67 @@ export default function TestPage() {
       setResult("ERROR");
     }
   }
+
+  async function createScheduledArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData = await loginRes.json();
+
+      const token = loginData.token;
+
+      const future =
+        new Date(
+          Date.now() + 60 * 1000
+        );
+
+      const res = await fetch(
+        "http://localhost:3000/api/articles/create",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            title:
+              `Scheduled ${Date.now()}`,
+
+            content:
+              "Scheduled content",
+
+            scheduledAt:
+              future.toISOString(),
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      setResult(
+        JSON.stringify(data, null, 2)
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      setResult("ERROR");
+    }
+  }  
 
   return (
     <main style={{ padding: 20 }}>
@@ -355,6 +413,13 @@ export default function TestPage() {
         style={{ marginLeft: 10 }}
       >
         Publish Article
+      </button>
+
+      <button
+        onClick={createScheduledArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Create Scheduled
       </button>
 
       <pre>{result}</pre>

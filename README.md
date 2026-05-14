@@ -142,11 +142,15 @@ Status: Selesai
 ---
 
 ## Week 9 – Scheduled Publishing (Cron Setup)
-- 
-- 
-- 
+- Implementasi scheduled publishing article
+- Penambahan field `scheduledAt` pada article
+- Implementasi endpoint cron publish otomatis
+- Implementasi auto publish berdasarkan waktu terjadwal
+- Implementasi otomatisasi perubahan status article menjadi PUBLISHED
+- Pengujian scheduled publishing menggunakan protected API
+- Pengujian cron automation dan validasi database PostgreSQL
 
-Status: 
+Status: Selesai
 
 ---
 

@@ -36,6 +36,10 @@ export async function POST(req: Request) {
             strict: true,
           }),
 
+          scheduledAt: body.scheduledAt
+            ? new Date(body.scheduledAt)
+            : null,
+
           authorId: decoded.id,
         },
       });
