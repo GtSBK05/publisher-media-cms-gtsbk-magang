@@ -97,21 +97,47 @@ Status: Selesai
 
 ---
 
-## Week 7 – Activity Logging Implementation
-- 
-- 
-- 
+## Week 7 – RBAC & Editorial Workflow
+- Implementasi Role-Based Access Control (RBAC)
+- Implementasi helper authorization (`verifyToken`)
+- Implementasi helper role validation (`requireRole`)
+- Implementasi editorial workflow system
+- Implementasi publish article endpoint
+- Implementasi review article endpoint
+- Implementasi reject article endpoint
+- Implementasi nested dynamic route `[id]/publish`
+- Implementasi role restriction pada endpoint editorial
+- Pengujian role WRITER terhadap akses publish
+- Pengujian role ADMIN terhadap akses publish
+- Implementasi status transition DRAFT → PUBLISHED
+- Implementasi otomatisasi `publishedAt`
+- Pengujian editorial workflow menggunakan protected API
 
-Status: 
+Status: Selesai
 
 ---
 
-## Week 8 – Dashboard Statistics
-- 
-- 
-- 
+## Week 8 – Dashboard Statistics & Activity Logging
+- Implementasi dashboard analytics endpoint
+- Implementasi total article counter
+- Implementasi published article counter
+- Implementasi draft article counter
+- Implementasi total user counter
+- Implementasi recent activity endpoint
+- Implementasi ActivityLog helper (`logActivity`)
+- Integrasi logging pada Create Article API
+- Integrasi logging pada Update Article API
+- Integrasi logging pada Delete Article API
+- Integrasi logging pada Publish Article API
+- Implementasi audit trail system
+- Implementasi monitoring foundation untuk CMS
+- Implementasi activity tracking berbasis database
+- Implementasi dashboard statistics menggunakan Prisma aggregate query
+- Pengujian realtime dashboard statistics
+- Pengujian activity tracking pada workflow article
+- Validasi audit trail menggunakan protected API
 
-Status: 
+Status: Selesai
 
 ---
 

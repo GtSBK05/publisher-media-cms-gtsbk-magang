@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import slugify from "slugify";
+import { logActivity } from "@/lib/logger";
 
 export async function POST(req: Request) {
   try {
@@ -38,6 +39,12 @@ export async function POST(req: Request) {
           authorId: decoded.id,
         },
       });
+
+    await logActivity(
+      decoded.id,
+      "CREATE_ARTICLE",
+      article.id
+    );      
 
     return Response.json(article);
 

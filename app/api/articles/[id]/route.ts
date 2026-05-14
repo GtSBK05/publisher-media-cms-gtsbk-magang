@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
+import { logActivity } from "@/lib/logger";
 
 export async function PATCH(
   req: Request,
@@ -64,6 +65,12 @@ export async function PATCH(
         },
       });
 
+    await logActivity(
+      decoded.id,
+      "UPDATE_ARTICLE",
+      updated.id
+    );
+
     return Response.json(updated);
 
   } catch (error) {
@@ -125,6 +132,12 @@ export async function DELETE(
         { status: 403 }
       );
     }
+
+    await logActivity(
+      decoded.id,
+      "DELETE_ARTICLE",
+      article.id
+    );
 
     await prisma.article.delete({
       where: {

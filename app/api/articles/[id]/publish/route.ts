@@ -3,6 +3,7 @@ import {
   verifyToken,
   requireRole,
 } from "@/lib/auth";
+import { logActivity } from "@/lib/logger";
 
 export async function PATCH(
   req: Request,
@@ -36,6 +37,12 @@ export async function PATCH(
           publishedAt: new Date(),
         },
       });
+
+    await logActivity(
+      decoded.id,
+      "PUBLISH_ARTICLE",
+      article.id
+    );
 
     return Response.json(article);
 
