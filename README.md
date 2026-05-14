@@ -97,12 +97,23 @@ Status: Selesai
 
 ---
 
-## Week 7 – Activity Logging Implementation
-- 
-- 
-- 
+## Week 7 – RBAC & Editorial Workflow
+- Implementasi Role-Based Access Control (RBAC)
+- Implementasi helper authorization (`verifyToken`)
+- Implementasi helper role validation (`requireRole`)
+- Implementasi editorial workflow system
+- Implementasi publish article endpoint
+- Implementasi review article endpoint
+- Implementasi reject article endpoint
+- Implementasi nested dynamic route `[id]/publish`
+- Implementasi role restriction pada endpoint editorial
+- Pengujian role WRITER terhadap akses publish
+- Pengujian role ADMIN terhadap akses publish
+- Implementasi status transition DRAFT → PUBLISHED
+- Implementasi otomatisasi `publishedAt`
+- Pengujian editorial workflow menggunakan protected API
 
-Status: 
+Status: Selesai 
 
 ---
 
