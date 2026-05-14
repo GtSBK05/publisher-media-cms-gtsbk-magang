@@ -47,48 +47,208 @@ export default function TestPage() {
   }
 
   async function protectedTest() {
-  try {
-    const loginRes = await fetch(
-      "http://localhost:3000/api/auth/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: "admin@gmail.com",
-          password: "123456",
-        }),
-      }
-    );
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
 
-    const loginData = await loginRes.json(); 
+      const loginData = await loginRes.json();
 
-    console.log(loginData);
+      const token = loginData.token;
 
-    const token = loginData.token;
+      const res = await fetch(
+        "http://localhost:3000/api/articles",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const res = await fetch(
-      "http://localhost:3000/api/articles",
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
+      const data = await res.json();
 
-    const data = await res.json();
+      setResult(JSON.stringify(data, null, 2));
 
-    console.log(data);
+    } catch (error) {
+      console.error(error);
 
-    setResult(JSON.stringify(data, null, 2));
-
-  } catch (error) {
-    console.error(error);
-
-    setResult("ERROR");
+      setResult("ERROR");
+    }
   }
-}
+
+  async function createArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData = await loginRes.json();
+
+      const token = loginData.token;
+
+      const res = await fetch(
+        "http://localhost:3000/api/articles/create",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            title: `Article ${Date.now()}`,
+            content: "Hello CMS",
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      setResult(JSON.stringify(data, null, 2));
+
+    } catch (error) {
+      console.error(error);
+
+      setResult("ERROR");
+    }
+  }
+
+  async function updateArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData = await loginRes.json();
+
+      const token = loginData.token;
+
+      const articlesRes = await fetch(
+        "http://localhost:3000/api/articles",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const articles = await articlesRes.json();
+
+      const firstArticle = articles[0];
+
+      const updateRes = await fetch(
+        `http://localhost:3000/api/articles/${firstArticle.id}`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            title: "UPDATED ARTICLE",
+            content: "UPDATED CONTENT",
+          }),
+        }
+      );
+
+      const data = await updateRes.json();
+
+      setResult(JSON.stringify(data, null, 2));
+
+    } catch (error) {
+      console.log(error);
+
+      setResult("ERROR");
+    }
+  }
+
+  async function deleteArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData = await loginRes.json();
+
+      const token = loginData.token;
+
+      const articlesRes = await fetch(
+        "http://localhost:3000/api/articles",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const articles = await articlesRes.json();
+
+      const firstArticle = articles[0];
+
+      const deleteRes = await fetch(
+        `http://localhost:3000/api/articles/${firstArticle.id}`,
+        {
+          method: "DELETE",
+
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await deleteRes.json();
+
+      setResult(JSON.stringify(data, null, 2));
+
+    } catch (error) {
+      console.log(error);
+
+      setResult("ERROR");
+    }
+  }
 
   return (
     <main style={{ padding: 20 }}>
@@ -108,6 +268,27 @@ export default function TestPage() {
         style={{ marginLeft: 10 }}
       >
         Protected Test
+      </button>
+
+      <button
+        onClick={createArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Create Article
+      </button>
+
+      <button
+        onClick={updateArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Update Article
+      </button>
+
+      <button
+        onClick={deleteArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Delete Article
       </button>
 
       <pre>{result}</pre>

@@ -80,12 +80,21 @@ Status: Selesai
 
 ---
 
-## Week 6 – Category & Tag Management
-- 
-- 
-- 
+## Week 6 – Article CRUD System
+- Implementasi Create Article API
+- Implementasi Get Article API
+- Implementasi Update Article API
+- Implementasi Delete Article API
+- Integrasi Prisma ORM dengan Article model
+- Implementasi JWT authorization pada Article API
+- Implementasi ownership validation pada Update dan Delete
+- Implementasi dynamic route `[id]`
+- Implementasi slug generation menggunakan slugify
+- Pengujian CRUD article menggunakan protected API
+- Integrasi article workflow dengan status DRAFT
+- Pengujian koneksi database PostgreSQL secara real-time
 
-Status: 
+Status: Selesai
 
 ---
 
