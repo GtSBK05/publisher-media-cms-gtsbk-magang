@@ -57,7 +57,6 @@ Status: Selesai
 
 ---
 
-## Week 4 – Article Management API
 ## Week 4 – UI/UX Design
 - Pembuatan wireframe desktop dashboard
 - Penyusunan visual hierarchy CMS
