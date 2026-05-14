@@ -250,6 +250,65 @@ export default function TestPage() {
     }
   }
 
+  async function publishArticle() {
+    try {
+      // LOGIN
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData = await loginRes.json();
+
+      const token = loginData.token;
+
+      // GET ARTICLES
+      const articlesRes = await fetch(
+        "http://localhost:3000/api/articles",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const articles =
+        await articlesRes.json();
+
+      const firstArticle = articles[0];
+
+      // PUBLISH
+      const publishRes = await fetch(
+        `http://localhost:3000/api/articles/${firstArticle.id}/publish`,
+        {
+          method: "PATCH",
+
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await publishRes.json();
+
+      setResult(JSON.stringify(data, null, 2));
+
+    } catch (error) {
+      console.error(error);
+
+      setResult("ERROR");
+    }
+  }
+
   return (
     <main style={{ padding: 20 }}>
       <button onClick={register}>
@@ -289,6 +348,13 @@ export default function TestPage() {
         style={{ marginLeft: 10 }}
       >
         Delete Article
+      </button>
+
+      <button
+        onClick={publishArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Publish Article
       </button>
 
       <pre>{result}</pre>
