@@ -47,30 +47,36 @@ Status: Selesai
 
 ---
 
-## Week 3 – Authentication & Basic RBAC
-- 
-- 
-- 
+## Week 3 – System Architecture Finalization
+- Finalisasi ERD
+- Penyusunan RBAC Matrix
+- Penyusunan Use Case Diagram
+- Penguncian struktur database dan workflow
 
-Status: 
+Status: Selesai
 
 ---
 
 ## Week 4 – Article Management API
-- 
-- 
-- 
+## Week 4 – UI/UX Design
+- Pembuatan wireframe desktop dashboard
+- Penyusunan visual hierarchy CMS
+- Implementasi desain editorial dark theme
+- Finalisasi desain halaman utama CMS
 
-Status: 
+Status: Selesai
 
 ---
 
-## Week 5 – Workflow Validation
-- 
-- 
-- 
+## Week 5 – Authentication & Middleware Protection
+- Implementasi register API
+- Implementasi login API
+- Password hashing menggunakan bcrypt
+- JWT token generation
+- Middleware route protection
+- Protected route testing
 
-Status: 
+Status: Selesai
 
 ---
 
