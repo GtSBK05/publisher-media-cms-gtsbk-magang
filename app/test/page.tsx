@@ -588,6 +588,77 @@ export default function TestPage() {
     }
   }  
 
+  async function createHealthArticle() {
+    try {
+      const loginRes = await fetch(
+        "http://localhost:3000/api/auth/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            email: "admin@gmail.com",
+            password: "123456",
+          }),
+        }
+      );
+
+      const loginData =
+        await loginRes.json();
+
+      const token =
+        loginData.token;
+
+      const res = await fetch(
+        "http://localhost:3000/api/articles/create",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            authorization:
+              `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            title:
+              `Advanced SEO ${Date.now()}`,
+
+            content:
+              "Lorem ipsum ".repeat(100),
+
+            seoTitle:
+              "Best Publisher CMS",
+
+            seoDescription:
+              "Modern CMS system for publishers",
+
+            seoKeywords:
+              "cms,publisher,nextjs,seo",
+          }),
+        }
+      );
+
+      const data =
+        await res.json();
+
+      setResult(
+        JSON.stringify(data, null, 2)
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      setResult("ERROR");
+    }
+  }  
+
   return (
     <main style={{ padding: 20 }}>
       <button onClick={register}>
@@ -662,6 +733,13 @@ export default function TestPage() {
         style={{ marginLeft: 10 }}
       >
         Auto SEO Article
+      </button>
+
+      <button
+        onClick={createHealthArticle}
+        style={{ marginLeft: 10 }}
+      >
+        Health Score Article
       </button>
 
       <pre>{result}</pre>

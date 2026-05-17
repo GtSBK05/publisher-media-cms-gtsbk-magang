@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import { logActivity } from "@/lib/logger";
+import { calculateHealthScore } from "@/lib/healthScore";
 
 export async function PATCH(
   req: Request,
@@ -54,6 +55,21 @@ export async function PATCH(
 
     const body = await req.json();
 
+    const healthScore =
+      calculateHealthScore({
+        title: body.title,
+        content: body.content,
+
+        seoTitle:
+          body.seoTitle,
+
+        seoDescription:
+          body.seoDescription,
+
+        seoKeywords:
+          body.seoKeywords,
+      });
+
     const updated =
       await prisma.article.update({
         where: {
@@ -64,11 +80,16 @@ export async function PATCH(
           title: body.title,
           content: body.content,
 
-          seoTitle: body.seoTitle,
+          seoTitle:
+            body.seoTitle,
+
           seoDescription:
             body.seoDescription,
+
           seoKeywords:
             body.seoKeywords,
+
+          healthScore,
         },
       });
 

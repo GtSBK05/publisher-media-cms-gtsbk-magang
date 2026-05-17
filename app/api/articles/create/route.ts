@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import slugify from "slugify";
 import { logActivity } from "@/lib/logger";
+import { calculateHealthScore } from "@/lib/healthScore";
 
 export async function POST(req: Request) {
   try {
@@ -25,6 +26,21 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
+    const healthScore =
+      calculateHealthScore({
+        title: body.title,
+        content: body.content,
+
+        seoTitle:
+          body.seoTitle,
+
+        seoDescription:
+          body.seoDescription,
+
+        seoKeywords:
+          body.seoKeywords,
+      });
+
     const article =
       await prisma.article.create({
         data: {
@@ -37,10 +53,12 @@ export async function POST(req: Request) {
 
           seoDescription:
             body.seoDescription ||
-            body.content.slice(0, 160),          
+            body.content.slice(0, 160),
 
           seoKeywords:
-            body.seoKeywords,          
+            body.seoKeywords,
+
+          healthScore,
 
           slug: slugify(body.title, {
             lower: true,
@@ -59,7 +77,7 @@ export async function POST(req: Request) {
       decoded.id,
       "CREATE_ARTICLE",
       article.id
-    );      
+    );
 
     return Response.json(article);
 

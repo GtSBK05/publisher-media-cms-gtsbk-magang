@@ -31,6 +31,8 @@ model Article {
   seoDescription String?
   seoKeywords    String?
 
+  healthScore    Int @default(0)
+
   slug        String   @unique
   status      Status   @default(DRAFT)
 
