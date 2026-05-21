@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function DashboardPage() {
+  const router =
+    useRouter();
+
   const [stats, setStats] =
     useState<any>(null);
 
@@ -93,47 +96,6 @@ export default function DashboardPage() {
     },
   ];
 
-  const articles = [
-    {
-      title:
-        "The Future of Digital Publishing",
-
-      author: "Sarah Johnson",
-
-      date: "Mar 8, 2026",
-
-      views: "12.5k views",
-
-      status: "Published",
-    },
-
-    {
-      title:
-        "Understanding Modern CMS Architecture",
-
-      author: "Michael Chen",
-
-      date: "Mar 7, 2026",
-
-      views: "8.2k views",
-
-      status: "In Review",
-    },
-
-    {
-      title:
-        "Content Strategy for 2026",
-
-      author: "Emma Williams",
-
-      date: "Mar 6, 2026",
-
-      views: "-- views",
-
-      status: "Draft",
-    },
-  ];
-
   return (
     <DashboardLayout>
       <div
@@ -168,6 +130,11 @@ export default function DashboardPage() {
 
         <div className="flex gap-3">
           <button
+            onClick={() =>
+              router.push(
+                "/articles"
+              )
+            }
             className="
               px-5
               h-11
@@ -178,10 +145,15 @@ export default function DashboardPage() {
               transition
             "
           >
-            View All
+            View Articles
           </button>
 
           <button
+            onClick={() =>
+              router.push(
+                "/articles/editor"
+              )
+            }
             className="
               px-5
               h-11
@@ -286,7 +258,8 @@ export default function DashboardPage() {
             </h2>
 
             <div className="space-y-8">
-              {articles.map((article) => (
+            {stats?.recentArticles?.map(
+              (article: any) => (
                 <div
                   key={article.title}
                   className="
@@ -311,11 +284,14 @@ export default function DashboardPage() {
                         mt-2
                       "
                     >
-                      {article.author}
-                      {" • "}
-                      {article.date}
-                      {" • "}
-                      {article.views}
+                    {article.author?.name}
+                    {" • "}
+                    {new Date(
+                      article.createdAt
+                    ).toLocaleDateString()}
+                    {" • "}
+                    {article.category?.name ||
+                      "Uncategorized"}
                     </p>
                   </div>
 
@@ -328,14 +304,14 @@ export default function DashboardPage() {
                       border
                       ${
                         article.status ===
-                        "Published"
+                        "PUBLISHED"
                           ? `
                             bg-orange-500/10
                             border-orange-500/20
                             text-orange-300
                           `
                           : article.status ===
-                            "In Review"
+                            "REVIEW"
                           ? `
                             bg-violet-500/10
                             border-violet-500/20
@@ -368,112 +344,6 @@ export default function DashboardPage() {
             "
           >
             <h2 className="mb-8">
-              Top Performing
-            </h2>
-
-            <div className="space-y-6">
-              <div>
-                <p
-                  className="
-                    text-orange-300
-                    text-sm
-                    mb-2
-                  "
-                >
-                  #1 The Future of Digital
-                  Publishing
-                </p>
-
-                <div
-                  className="
-                    flex
-                    justify-between
-                    text-xs
-                    text-white/40
-                  "
-                >
-                  <span>
-                    12.5k views
-                  </span>
-
-                  <span className="text-violet-300">
-                    +24%
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <p
-                  className="
-                    text-orange-300
-                    text-sm
-                    mb-2
-                  "
-                >
-                  #2 Content Strategy for
-                  2026
-                </p>
-
-                <div
-                  className="
-                    flex
-                    justify-between
-                    text-xs
-                    text-white/40
-                  "
-                >
-                  <span>
-                    15.8k views
-                  </span>
-
-                  <span className="text-violet-300">
-                    +18%
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <p
-                  className="
-                    text-orange-300
-                    text-sm
-                    mb-2
-                  "
-                >
-                  #3 Understanding Modern
-                  CMS
-                </p>
-
-                <div
-                  className="
-                    flex
-                    justify-between
-                    text-xs
-                    text-white/40
-                  "
-                >
-                  <span>
-                    8.2k views
-                  </span>
-
-                  <span className="text-violet-300">
-                    +12%
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className="
-              bg-[#12121a]
-              border
-              border-white/5
-              rounded-sm
-              p-6
-            "
-          >
-            <h2 className="mb-8">
               Engagement
             </h2>
 
@@ -487,28 +357,6 @@ export default function DashboardPage() {
               >
                 <span>Views</span>
                 <span>145.2k</span>
-              </div>
-
-              <div
-                className="
-                  flex
-                  justify-between
-                  text-white/60
-                "
-              >
-                <span>Comments</span>
-                <span>2.4k</span>
-              </div>
-
-              <div
-                className="
-                  flex
-                  justify-between
-                  text-white/60
-                "
-              >
-                <span>Likes</span>
-                <span>8.7k</span>
               </div>
             </div>
 

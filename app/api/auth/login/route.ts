@@ -31,6 +31,18 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!user.isActive) {
+      return Response.json(
+        {
+          error:
+            "Account deactivated",
+        },
+        {
+          status: 403,
+        }
+      );
+    }    
+
     const token = jwt.sign(
       {
         id: user.id,

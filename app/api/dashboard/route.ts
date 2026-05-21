@@ -22,17 +22,32 @@ export async function GET() {
     const totalUsers =
       await prisma.user.count();
 
-    const recentActivities =
-      await prisma.activityLog.findMany({
+    const articles =
+      await prisma.article.findMany();
+
+    const averageHealth =
+      articles.length > 0
+        ? Math.round(
+            articles.reduce(
+              (acc, article) =>
+                acc +
+                article.healthScore,
+              0
+            ) / articles.length
+          )
+        : 0;      
+
+    const recentArticles =
+      await prisma.article.findMany({
         orderBy: {
           createdAt: "desc",
         },
 
-        take: 10,
+        take: 5,
 
         include: {
-          user: true,
-          article: true,
+          author: true,
+          category: true,
         },
       });
 
@@ -41,7 +56,8 @@ export async function GET() {
       publishedArticles,
       draftArticles,
       totalUsers,
-      recentActivities,
+      averageHealth,
+      recentArticles,
     });
 
   } catch (error) {

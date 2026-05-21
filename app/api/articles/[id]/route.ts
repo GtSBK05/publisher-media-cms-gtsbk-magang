@@ -90,6 +90,9 @@ export async function PATCH(
           seoKeywords:
             body.seoKeywords,
 
+          categoryId:
+            body.categoryId || null,            
+
           healthScore,
         },
       });

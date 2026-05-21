@@ -13,6 +13,9 @@ export default function ArticlesPage() {
   const [loading, setLoading] =
     useState(true);
 
+  const [role, setRole] =
+    useState("");    
+
   useEffect(() => {
     async function fetchArticles() {
       try {
@@ -39,6 +42,17 @@ export default function ArticlesPage() {
         );
 
         const data = await res.json();
+
+        const tokenPayload =
+          JSON.parse(
+            atob(
+              token.split(".")[1]
+            )
+          );
+
+        setRole(
+          tokenPayload.role
+        );        
 
         setArticles(
           Array.isArray(data)
@@ -208,23 +222,46 @@ export default function ArticlesPage() {
           </p>
         </div>
 
-        <button
-          onClick={() =>
-            router.push(
-              "/articles/editor"
-            )
-          }
-          className="
-            px-5
-            h-11
-            bg-gradient-to-r
-            from-violet-500
-            to-orange-400
-            text-sm
-          "
-        >
-          + Create Article
-        </button>        
+        <div className="flex gap-3">
+          {role === "ADMIN" && (
+            <button
+              onClick={() =>
+                router.push(
+                  "/categories"
+                )
+              }
+              className="
+                px-5
+                h-11
+                border
+                border-white/10
+                text-sm
+                hover:border-violet-500
+                transition
+              "
+            >
+              Manage Categories
+            </button>
+          )}
+
+          <button
+            onClick={() =>
+              router.push(
+                "/articles/editor"
+              )
+            }
+            className="
+              px-5
+              h-11
+              bg-gradient-to-r
+              from-violet-500
+              to-orange-400
+              text-sm
+            "
+          >
+            + Create Article
+          </button>
+        </div>        
       </div>
 
       <div className="grid grid-cols-12 gap-6">

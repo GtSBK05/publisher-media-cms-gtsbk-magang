@@ -46,7 +46,19 @@ export default function ArticleEditorPage() {
   const [fetching, setFetching] =
     useState(false);
 
+  const [
+    categories,
+    setCategories,
+  ] = useState<any[]>([]);
+
+  const [
+    categoryId,
+    setCategoryId,
+  ] = useState("");  
+
   useEffect(() => {
+    fetchCategories();
+    
     if (articleId) {
       fetchArticle();
     }
@@ -112,6 +124,10 @@ export default function ArticleEditorPage() {
           ""
       );
 
+      setCategoryId(
+        article.categoryId || ""
+      );      
+
     } catch (error) {
       console.error(error);
 
@@ -119,6 +135,37 @@ export default function ArticleEditorPage() {
       setFetching(false);
     }
   }
+
+  async function fetchCategories() {
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
+        );
+
+      const res = await fetch(
+        "/api/categories",
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data =
+        await res.json();
+
+      setCategories(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    } catch (error) {
+      console.error(error);
+    }
+  }  
 
   async function handleSubmit(
     e: React.FormEvent
@@ -158,9 +205,12 @@ export default function ArticleEditorPage() {
           body: JSON.stringify({
             title,
             content,
+
             seoTitle,
             seoDescription,
             seoKeywords,
+
+            categoryId,
           }),
         }
       );
@@ -374,6 +424,53 @@ export default function ArticleEditorPage() {
             >
               SEO Settings
             </h2>
+
+            <div>
+              <label
+                className="
+                  text-xs
+                  text-white/50
+                  block
+                  mb-2
+                "
+              >
+                Category
+              </label>
+
+              <select
+                value={categoryId}
+                onChange={(e) =>
+                  setCategoryId(
+                    e.target.value
+                  )
+                }
+                className="
+                  w-full
+                  h-11
+                  bg-black/20
+                  border
+                  border-white/10
+                  px-4
+                  outline-none
+                  focus:border-violet-500
+                "
+              >
+                <option value="">
+                  Uncategorized
+                </option>
+
+                {categories.map(
+                  (category) => (
+                    <option
+                      key={category.id}
+                      value={category.id}
+                    >
+                      {category.name}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
 
             <div>
               <label

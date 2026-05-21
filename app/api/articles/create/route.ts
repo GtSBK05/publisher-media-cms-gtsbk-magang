@@ -58,6 +58,9 @@ export async function POST(req: Request) {
           seoKeywords:
             body.seoKeywords,
 
+          categoryId:
+            body.categoryId || null,            
+
           healthScore,
 
           slug: slugify(body.title, {

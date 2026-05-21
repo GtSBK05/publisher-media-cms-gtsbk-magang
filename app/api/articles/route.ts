@@ -6,6 +6,11 @@ export async function GET() {
       await prisma.article.findMany({
         include: {
           author: true,
+          category: true,
+        },
+
+        orderBy: {
+          createdAt: "desc",
         },
       });
 
@@ -13,8 +18,13 @@ export async function GET() {
 
   } catch {
     return Response.json(
-      { error: "Failed to fetch articles" },
-      { status: 500 }
+      {
+        error:
+          "Failed to fetch articles",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
