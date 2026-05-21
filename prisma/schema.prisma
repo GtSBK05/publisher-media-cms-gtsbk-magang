@@ -17,6 +17,8 @@ model User {
   articles     Article[]
   activityLogs ActivityLog[]
 
+  resetTokens PasswordResetToken[]
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -73,6 +75,19 @@ model ActivityLog {
   article   Article? @relation(fields: [articleId], references: [id])
 
   action    String
+
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+
+  token     String   @unique
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  expiresAt DateTime
 
   createdAt DateTime @default(now())
 }

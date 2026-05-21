@@ -45,7 +45,8 @@ export async function PATCH(
     }
 
     if (
-      article.authorId !== decoded.id
+      article.authorId !== decoded.id && 
+      decoded.role !== "ADMIN"
     ) {
       return Response.json(
         { error: "Forbidden" },
@@ -153,7 +154,8 @@ export async function DELETE(
     }
 
     if (
-      article.authorId !== decoded.id
+      article.authorId !== decoded.id && 
+      decoded.role !== "ADMIN"
     ) {
       return Response.json(
         { error: "Forbidden" },
