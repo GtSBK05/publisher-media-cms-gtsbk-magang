@@ -871,13 +871,15 @@ export default function ArticlesPage() {
               py-8
               text-white/80
               leading-8
-              whitespace-pre-wrap
+              prose
+              prose-invert
+              max-w-none
             "
-          >
-            {
-              selectedArticle.content
-            }
-          </div>
+            dangerouslySetInnerHTML={{
+              __html:
+                selectedArticle.content,
+            }}
+          />
 
           <div
             className="

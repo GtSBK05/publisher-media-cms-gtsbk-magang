@@ -18,3 +18,61 @@ body {
   background-color: var(--background);
   color: var(--foreground);
 }
+
+.ProseMirror h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.ProseMirror ul {
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid #8b5cf6;
+  padding-left: 1rem;
+  color: rgba(255,255,255,0.7);
+}
+
+.ProseMirror p {
+  margin-bottom: 1rem;
+}
+
+.prose h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+.prose blockquote {
+  border-left: 3px solid #8b5cf6;
+  padding-left: 1rem;
+  color: rgba(255,255,255,0.7);
+  margin: 1rem 0;
+}
+
+.prose strong {
+  color: white;
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}

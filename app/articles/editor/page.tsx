@@ -1,13 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import {
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-
+import { useRouter, useSearchParams } from "next/navigation";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import RichTextEditor from "@/components/editor/RichTextEditor";
 
 export default function ArticleEditorPage() {
   const router = useRouter();
@@ -380,26 +376,9 @@ export default function ArticleEditorPage() {
                   Content
                 </label>
 
-                <textarea
-                  required
-                  rows={18}
-                  value={content}
-                  onChange={(e) =>
-                    setContent(
-                      e.target.value
-                    )
-                  }
-                  placeholder="Write your content..."
-                  className="
-                    w-full
-                    bg-black/20
-                    border
-                    border-white/10
-                    p-4
-                    outline-none
-                    focus:border-violet-500
-                    resize-none
-                  "
+                <RichTextEditor
+                  content={content}
+                  onChange={setContent}
                 />
               </div>
             </div>
