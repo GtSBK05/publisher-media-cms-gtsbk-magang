@@ -16,6 +16,11 @@ export default function ArticlesPage() {
   const [role, setRole] =
     useState("");    
 
+  const [
+    selectedArticle,
+    setSelectedArticle,
+  ] = useState<any>(null);    
+
   useEffect(() => {
     async function fetchArticles() {
       try {
@@ -366,15 +371,23 @@ export default function ArticlesPage() {
                     "
                   >
                     <td className="p-5">
-                      <div
+                      <button
+                        onClick={() =>
+                          setSelectedArticle(
+                            article
+                          )
+                        }
                         className="
                           text-sm
                           leading-6
                           text-white/90
+                          hover:text-violet-300
+                          transition
+                          text-left
                         "
                       >
                         {article.title}
-                      </div>
+                      </button>
                     </td>
 
                     <td
@@ -740,6 +753,270 @@ export default function ArticlesPage() {
           </div>
         </div>
       </div>
+
+    {selectedArticle && (
+      <div
+        className="
+          fixed
+          inset-0
+          bg-black/70
+          backdrop-blur-sm
+          z-50
+          flex
+          items-center
+          justify-center
+          p-6
+        "
+      >
+        <div
+          className="
+            w-full
+            max-w-4xl
+            max-h-[90vh]
+            overflow-y-auto
+            bg-[#12121a]
+            border
+            border-white/10
+            p-8
+          "
+        >
+          <div
+            className="
+              flex
+              items-start
+              justify-between
+              mb-8
+            "
+          >
+            <div>
+              <p
+                className="
+                  text-xs
+                  text-white/40
+                  mb-3
+                "
+              >
+                ARTICLE PREVIEW
+              </p>
+
+              <h2
+                className="
+                  text-3xl
+                  font-light
+                  leading-tight
+                "
+              >
+                {
+                  selectedArticle.title
+                }
+              </h2>
+
+              <div
+                className="
+                  flex
+                  gap-3
+                  mt-5
+                  text-sm
+                  text-white/40
+                "
+              >
+                <span>
+                  {
+                    selectedArticle
+                      .author?.name
+                  }
+                </span>
+
+                <span>•</span>
+
+                <span>
+                  {
+                    selectedArticle
+                      .category
+                      ?.name ||
+                    "Uncategorized"
+                  }
+                </span>
+
+                <span>•</span>
+
+                <span>
+                  {new Date(
+                    selectedArticle.createdAt
+                  ).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={() =>
+                setSelectedArticle(
+                  null
+                )
+              }
+              className="
+                text-white/40
+                hover:text-white
+                transition
+              "
+            >
+              ✕
+            </button>
+          </div>
+
+          <div
+            className="
+              border-y
+              border-white/5
+              py-8
+              text-white/80
+              leading-8
+              whitespace-pre-wrap
+            "
+          >
+            {
+              selectedArticle.content
+            }
+          </div>
+
+          <div
+            className="
+              grid
+              grid-cols-3
+              gap-5
+              mt-8
+            "
+          >
+            <div
+              className="
+                bg-black/20
+                border
+                border-white/5
+                p-5
+              "
+            >
+              <p
+                className="
+                  text-xs
+                  text-white/40
+                  mb-3
+                "
+              >
+                STATUS
+              </p>
+
+              <p className="text-sm">
+                {
+                  selectedArticle.status
+                }
+              </p>
+            </div>
+
+            <div
+              className="
+                bg-black/20
+                border
+                border-white/5
+                p-5
+              "
+            >
+              <p
+                className="
+                  text-xs
+                  text-white/40
+                  mb-3
+                "
+              >
+                HEALTH SCORE
+              </p>
+
+              <p className="text-sm">
+                {
+                  selectedArticle.healthScore
+                }
+              </p>
+            </div>
+
+            <div
+              className="
+                bg-black/20
+                border
+                border-white/5
+                p-5
+              "
+            >
+              <p
+                className="
+                  text-xs
+                  text-white/40
+                  mb-3
+                "
+              >
+                SEO TITLE
+              </p>
+
+              <p
+                className="
+                  text-sm
+                  line-clamp-2
+                "
+              >
+                {
+                  selectedArticle.seoTitle ||
+                  "--"
+                }
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="
+              flex
+              justify-end
+              gap-4
+              mt-8
+            "
+          >
+            <button
+              onClick={() =>
+                setSelectedArticle(
+                  null
+                )
+              }
+              className="
+                px-5
+                h-11
+                border
+                border-white/10
+                text-sm
+                hover:bg-white/5
+                transition
+              "
+            >
+              Close
+            </button>
+
+            <button
+              onClick={() =>
+                router.push(
+                  `/articles/editor?id=${selectedArticle.id}`
+                )
+              }
+              className="
+                px-5
+                h-11
+                bg-gradient-to-r
+                from-violet-500
+                to-orange-400
+                text-sm
+              "
+            >
+              Edit Article
+            </button>
+          </div>
+        </div>
+      </div>
+    )}    
     </DashboardLayout>
   );
 }
