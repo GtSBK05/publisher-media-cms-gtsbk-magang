@@ -4,7 +4,16 @@ import { useState } from "react";
 
 import Link from "next/link";
 
+import { useRouter } from "next/navigation";
+
+import {
+  GoogleLogin,
+} from "@react-oauth/google";
+
 export default function LoginPage() {
+  const router =
+    useRouter();
+
   const [email, setEmail] =
     useState("");
 
@@ -18,6 +27,53 @@ export default function LoginPage() {
     showPassword,
     setShowPassword,
   ] = useState(false);
+
+  async function handleGoogleLogin(
+    credentialResponse: any
+  ) {
+    try {
+      const res = await fetch(
+        "/api/auth/google",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            credential:
+              credentialResponse.credential,
+          }),
+        }
+      );
+
+      const data =
+        await res.json();
+
+      if (!res.ok) {
+        alert(data.error);
+        return;
+      }
+
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+
+      router.push(
+        "/dashboard"
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Google login failed"
+      );
+    }
+  }
 
   async function handleLogin(
     e: React.FormEvent
@@ -44,7 +100,8 @@ export default function LoginPage() {
         }
       );
 
-      const data = await res.json();
+      const data =
+        await res.json();
 
       if (!res.ok) {
         alert(data.error);
@@ -56,13 +113,16 @@ export default function LoginPage() {
         data.token
       );
 
-      window.location.href =
-        "/dashboard";
+      router.push(
+        "/dashboard"
+      );
 
     } catch (error) {
       console.error(error);
 
-      alert("Login failed");
+      alert(
+        "Login failed"
+      );
 
     } finally {
       setLoading(false);
@@ -73,24 +133,26 @@ export default function LoginPage() {
     <main
       className="
         min-h-screen
-        bg-black
+        bg-[#111318]
         flex
         items-center
         justify-center
         overflow-hidden
         relative
         px-6
+        py-10
       "
     >
       <div
         className="
           absolute
-          w-[250px]
-          h-[250px]
+          w-[260px]
+          h-[260px]
           border
-          border-orange-500/20
+          border-orange-500/15
           left-[12%]
-          bottom-[15%]
+          bottom-[10%]
+          pointer-events-none
         "
       />
 
@@ -100,23 +162,53 @@ export default function LoginPage() {
           w-[180px]
           h-[180px]
           border
-          border-violet-500/20
-          right-[20%]
-          top-[18%]
+          border-violet-500/15
+          right-[18%]
+          top-[15%]
+          pointer-events-none
+        "
+      />            
+
+      <div
+        className="
+          absolute
+          top-[-200px]
+          right-[-120px]
+          w-[420px]
+          h-[420px]
+          rounded-full
+          bg-violet-500/10
+          blur-3xl
+        "
+      />
+
+      <div
+        className="
+          absolute
+          bottom-[-200px]
+          left-[-120px]
+          w-[420px]
+          h-[420px]
+          rounded-full
+          bg-orange-400/10
+          blur-3xl
         "
       />
 
       <div
         className="
           w-full
-          max-w-5xl
-          bg-[#0f0f17]
+          max-w-6xl
+          bg-white/[0.04]
+          backdrop-blur-2xl
           border
           border-white/10
+          rounded-[32px]
+          overflow-hidden
+          shadow-2xl
+          shadow-black/30
           grid
           md:grid-cols-2
-          rounded-sm
-          overflow-hidden
           relative
           z-10
         "
@@ -124,47 +216,74 @@ export default function LoginPage() {
         <div
           className="
             p-14
+            border-r
+            border-white/10
             flex
             flex-col
             justify-between
-            border-r
-            border-white/5
           "
         >
           <div>
-            <div className="flex items-start gap-4">
-              <div
-                className="
-                  w-[3px]
-                  h-14
-                  bg-violet-500
-                "
-              />
-
-              <div>
-                <h1
+            <div
+              className="
+                flex
+                items-center
+                gap-4
+              "
+            >
+              <div className="flex gap-4">
+                <div
                   className="
-                    text-white
-                    text-2xl
-                    font-light
+                    w-[3px]
+                    h-16
+                    bg-violet-500
+                    rounded-full
                   "
-                >
-                  Publisher CMS
-                </h1>
+                />
 
-                <p
-                  className="
-                    text-white/40
-                    text-sm
-                    mt-1
-                  "
-                >
-                  Editorial Platform
-                </p>
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      uppercase
+                      tracking-[0.3em]
+                      text-white/30
+                    "
+                  >
+                    Community
+                  </p>
+
+                  <h1
+                    className="
+                      text-2xl
+                      font-light
+                      text-white
+                    "
+                  >
+                    Archive
+                  </h1>
+                </div>
               </div>
             </div>
 
-            <div className="mt-24 space-y-10">
+            <div className="mt-16">
+
+              <p
+                className="
+                  mt-5
+                  text-white/50
+                  leading-7
+                "
+              >
+                Preserve and organize
+                community knowledge
+                through collaborative
+                archive entries.
+              </p>
+            </div>
+
+            <div className="mt-20 space-y-10">
+
               <div className="flex gap-5">
                 <div
                   className="
@@ -177,13 +296,8 @@ export default function LoginPage() {
                 />
 
                 <div>
-                  <h2
-                    className="
-                      text-white
-                      text-sm
-                    "
-                  >
-                    Manage Content
+                  <h2 className="text-white text-sm">
+                    Create Entries
                   </h2>
 
                   <p
@@ -193,8 +307,8 @@ export default function LoginPage() {
                       mt-1
                     "
                   >
-                    Create, edit, and publish
-                    across all channels
+                    Build detailed archive
+                    entries for your community.
                   </p>
                 </div>
               </div>
@@ -211,13 +325,8 @@ export default function LoginPage() {
                 />
 
                 <div>
-                  <h2
-                    className="
-                      text-white
-                      text-sm
-                    "
-                  >
-                    Team Collaboration
+                  <h2 className="text-white text-sm">
+                    Review Contributions
                   </h2>
 
                   <p
@@ -227,8 +336,37 @@ export default function LoginPage() {
                       mt-1
                     "
                   >
-                    Work together in real-time
-                    with your editorial team
+                    Collaborate with editors
+                    and contributors.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-5">
+                <div
+                  className="
+                    w-5
+                    h-5
+                    border
+                    border-orange-500
+                    mt-1
+                  "
+                />
+
+                <div>
+                  <h2 className="text-white text-sm">
+                    Organize Categories
+                  </h2>
+
+                  <p
+                    className="
+                      text-white/30
+                      text-xs
+                      mt-1
+                    "
+                  >
+                    Keep archive knowledge
+                    structured and searchable.
                   </p>
                 </div>
               </div>
@@ -257,157 +395,174 @@ export default function LoginPage() {
                 bg-violet-500
               "
             />
-          </div>
+          </div>          
         </div>
 
         <div
           className="
             p-14
             flex
-            items-center
+            flex-col
+            justify-between
           "
         >
-          <div className="w-full">
+          <div 
+            className="
+              w-full
+              flex
+              flex-col
+              h-full
+            "
+          >
             <h2
               className="
-                text-3xl
-                text-white
+                text-4xl
                 font-light
+                text-white
               "
             >
-              Sign In
+              Access Community
+              Archive
             </h2>
 
             <p
               className="
                 text-white/40
-                text-sm
-                mt-2
+                mt-3
                 mb-10
               "
             >
-              Access your workspace
+              Contributor access for
+              writers, editors and
+              administrators.
             </p>
+
+            <div className="mb-6">
+              <GoogleLogin
+                onSuccess={
+                  handleGoogleLogin
+                }
+                onError={() =>
+                  alert(
+                    "Google login failed"
+                  )
+                }
+              />
+            </div>
+
+            <div
+              className="
+                flex
+                items-center
+                gap-4
+                mb-8
+              "
+            >
+              <div className="flex-1 h-px bg-white/10" />
+
+              <span
+                className="
+                  text-xs
+                  text-white/30
+                "
+              >
+                OR CONTINUE WITH EMAIL
+              </span>
+
+              <div className="flex-1 h-px bg-white/10" />
+            </div>
 
             <form
               onSubmit={handleLogin}
               className="space-y-6"
             >
-              <div>
-                <label
-                  className="
-                    text-xs
-                    text-white/60
-                    block
-                    mb-3
-                  "
-                >
-                  Email
-                </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) =>
+                  setEmail(
+                    e.target.value
+                  )
+                }
+                placeholder="Email"
+                className="
+                  w-full
+                  h-12
+                  rounded-2xl
+                  bg-white/[0.03]
+                  border
+                  border-white/10
+                  px-4
+                  text-white
+                  outline-none
+                  focus:border-violet-500/40
+                "
+              />
 
+              <div className="relative">
                 <input
-                  type="email"
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
                   required
-                  value={email}
+                  value={password}
                   onChange={(e) =>
-                    setEmail(
+                    setPassword(
                       e.target.value
                     )
                   }
-                  placeholder="your@email.com"
+                  placeholder="Password"
                   className="
                     w-full
-                    bg-transparent
+                    h-12
+                    rounded-2xl
+                    bg-white/[0.03]
                     border
                     border-white/10
-                    h-12
                     px-4
                     text-white
                     outline-none
-                    focus:border-violet-500
-                    transition
+                    focus:border-violet-500/40
                   "
                 />
-              </div>
 
-              <div>
-                <label
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowPassword(
+                      !showPassword
+                    )
+                  }
                   className="
+                    absolute
+                    right-4
+                    top-1/2
+                    -translate-y-1/2
                     text-xs
-                    text-white/60
-                    block
-                    mb-3
+                    text-white/40
                   "
                 >
-                  Password
-                </label>
-
-                <div className="relative">
-                  <input
-                    type={
-                      showPassword
-                        ? "text"
-                        : "password"
-                    }
-                    required
-                    value={password}
-                    onChange={(e) =>
-                      setPassword(
-                        e.target.value
-                      )
-                    }
-                    placeholder="Enter your password"
-                    className="
-                      w-full
-                      bg-transparent
-                      border
-                      border-white/10
-                      h-12
-                      px-4
-                      text-white
-                      outline-none
-                      focus:border-violet-500
-                      transition
-                    "
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setShowPassword(
-                        !showPassword
-                      )
-                    }
-                    className="
-                      absolute
-                      right-4
-                      top-1/2
-                      -translate-y-1/2
-                      text-xs
-                      text-white/40
-                      hover:text-white/70
-                    "
-                  >
-                    {showPassword
-                      ? "Hide"
-                      : "Show"}
-                  </button>
-                </div>
+                  {showPassword
+                    ? "Hide"
+                    : "Show"}
+                </button>
               </div>
 
               <div
                 className="
                   flex
                   justify-end
-                  text-xs
-                  text-white/30
                 "
               >
                 <Link
                   href="/forgot-password"
                   className="
-                    hover:text-white/60
-                    transition
+                    text-xs
+                    text-white/40
+                    hover:text-white
                   "
                 >
                   Forgot password?
@@ -420,11 +575,13 @@ export default function LoginPage() {
                 className="
                   w-full
                   h-12
-                  bg-white
-                  text-black
-                  text-sm
-                  hover:bg-white/90
-                  transition
+                  rounded-2xl
+                  bg-gradient-to-r
+                  from-violet-500
+                  to-orange-400
+                  text-white
+                  shadow-lg
+                  shadow-violet-500/20
                 "
               >
                 {loading
@@ -445,36 +602,36 @@ export default function LoginPage() {
               <Link
                 href="/register"
                 className="
-                  text-violet-400
+                  text-violet-300
                 "
               >
-                Register
+                Become a Contributor
               </Link>
             </div>
+          </div>
+
+          <div
+            className="
+              flex
+              justify-between
+              mt-10
+            "
+          >
+            <div
+              className="
+                w-2
+                h-2
+                bg-violet-500
+              "
+            />
 
             <div
               className="
-                flex
-                justify-between
-                mt-10
+                w-2
+                h-2
+                bg-orange-500
               "
-            >
-              <div
-                className="
-                  w-2
-                  h-2
-                  bg-violet-500
-                "
-              />
-
-              <div
-                className="
-                  w-2
-                  h-2
-                  bg-orange-500
-                "
-              />
-            </div>
+            />
           </div>
         </div>
       </div>

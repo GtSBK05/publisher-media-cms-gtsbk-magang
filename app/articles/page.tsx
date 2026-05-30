@@ -1,25 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter, } from "next/navigation";
+export const dynamic =
+  "force-dynamic";
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  useRouter,
+} from "next/navigation";
+
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function ArticlesPage() {
-  const router = useRouter();
+  const router =
+    useRouter();
 
-  const [articles, setArticles] =
-    useState<any[]>([]);
+  const [
+    articles,
+    setArticles,
+  ] = useState<any[]>([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
 
   const [role, setRole] =
-    useState("");    
+    useState("");
 
   const [
     selectedArticle,
     setSelectedArticle,
-  ] = useState<any>(null);    
+  ] = useState<any>(null);
 
   useEffect(() => {
     async function fetchArticles() {
@@ -46,7 +61,8 @@ export default function ArticlesPage() {
           }
         );
 
-        const data = await res.json();
+        const data =
+          await res.json();
 
         const tokenPayload =
           JSON.parse(
@@ -57,7 +73,7 @@ export default function ArticlesPage() {
 
         setRole(
           tokenPayload.role
-        );        
+        );
 
         setArticles(
           Array.isArray(data)
@@ -76,120 +92,122 @@ export default function ArticlesPage() {
     fetchArticles();
   }, []);
 
-    async function handleDelete(
-      id: string
-    ) {
-      const confirmed =
-        confirm(
-          "Delete this article?"
+  async function handleDelete(
+    id: string
+  ) {
+    const confirmed =
+      confirm(
+        "Delete this article?"
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
         );
 
-      if (!confirmed) {
+      const res = await fetch(
+        `/api/articles/${id}`,
+        {
+          method: "DELETE",
+
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data =
+        await res.json();
+
+      if (!res.ok) {
+        alert(data.error);
+
         return;
       }
 
-      try {
-        const token =
-          localStorage.getItem(
-            "token"
-          );
+      setArticles((prev) =>
+        prev.filter(
+          (article) =>
+            article.id !== id
+        )
+      );
 
-        const res = await fetch(
-          `/api/articles/${id}`,
-          {
-            method: "DELETE",
+      alert(
+        "Article deleted"
+      );
 
-            headers: {
-              Authorization:
-                `Bearer ${token}`,
-            },
-          }
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Delete failed"
+      );
+    }
+  }
+
+  async function handlePublish(
+    id: string
+  ) {
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
         );
 
-        const data =
-          await res.json();
+      const res = await fetch(
+        `/api/articles/${id}/publish`,
+        {
+          method: "PATCH",
 
-        if (!res.ok) {
-          alert(data.error);
-          return;
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
         }
+      );
 
-        setArticles((prev) =>
-          prev.filter(
-            (article) =>
-              article.id !== id
-          )
-        );
+      const data =
+        await res.json();
 
-        alert(
-          "Article deleted"
-        );
+      if (!res.ok) {
+        alert(data.error);
 
-      } catch (error) {
-        console.error(error);
-
-        alert(
-          "Delete failed"
-        );
+        return;
       }
-    }  
 
-    async function handlePublish(
-      id: string
-    ) {
-      try {
-        const token =
-          localStorage.getItem(
-            "token"
-          );
+      setArticles((prev) =>
+        prev.map((article) =>
+          article.id === id
+            ? {
+                ...article,
+                status:
+                  "PUBLISHED",
 
-        const res = await fetch(
-          `/api/articles/${id}/publish`,
-          {
-            method: "PATCH",
+                publishedAt:
+                  new Date(),
+              }
+            : article
+        )
+      );
 
-            headers: {
-              Authorization:
-                `Bearer ${token}`,
-            },
-          }
-        );
+      alert(
+        "Article published"
+      );
 
-        const data =
-          await res.json();
+    } catch (error) {
+      console.error(error);
 
-        if (!res.ok) {
-          alert(data.error);
-          return;
-        }
-
-        setArticles((prev) =>
-          prev.map((article) =>
-            article.id === id
-              ? {
-                  ...article,
-                  status:
-                    "PUBLISHED",
-
-                  publishedAt:
-                    new Date(),
-                }
-              : article
-          )
-        );
-
-        alert(
-          "Article published"
-        );
-
-      } catch (error) {
-        console.error(error);
-
-        alert(
-          "Publish failed"
-        );
-      }
-    }    
+      alert(
+        "Publish failed"
+      );
+    }
+  }
 
   if (loading) {
     return null;
@@ -210,25 +228,16 @@ export default function ArticlesPage() {
             className="
               text-3xl
               font-light
+              text-white
             "
           >
             Article Management
           </h1>
-
-          <p
-            className="
-              text-white/40
-              mt-1
-              text-sm
-            "
-          >
-            Manage and organize your
-            content library
-          </p>
         </div>
 
         <div className="flex gap-3">
-          {role === "ADMIN" && (
+          {role ===
+            "ADMIN" && (
             <button
               onClick={() =>
                 router.push(
@@ -238,10 +247,15 @@ export default function ArticlesPage() {
               className="
                 px-5
                 h-11
+                rounded-2xl
                 border
                 border-white/10
+                bg-white/[0.03]
+                backdrop-blur-xl
                 text-sm
-                hover:border-violet-500
+                text-white/70
+                hover:border-violet-500/30
+                hover:bg-white/[0.05]
                 transition
               "
             >
@@ -258,15 +272,18 @@ export default function ArticlesPage() {
             className="
               px-5
               h-11
+              rounded-2xl
               bg-gradient-to-r
               from-violet-500
               to-orange-400
               text-sm
+              shadow-lg
+              shadow-violet-500/20
             "
           >
             + Create Article
           </button>
-        </div>        
+        </div>
       </div>
 
       <div className="grid grid-cols-12 gap-6">
@@ -284,23 +301,31 @@ export default function ArticlesPage() {
               className="
                 flex-1
                 h-12
-                bg-[#12121a]
+                bg-white/[0.04]
+                backdrop-blur-xl
                 border
-                border-white/5
+                border-white/10
+                rounded-2xl
                 px-4
                 text-sm
+                text-white
                 outline-none
-                focus:border-violet-500
+                focus:border-violet-500/40
               "
             />
 
             <button
               className="
                 px-5
-                bg-[#12121a]
+                rounded-2xl
+                bg-white/[0.04]
+                backdrop-blur-xl
                 border
-                border-white/5
+                border-white/10
                 text-sm
+                text-white/70
+                hover:bg-white/[0.05]
+                transition
               "
             >
               Filters
@@ -309,17 +334,22 @@ export default function ArticlesPage() {
 
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-3xl
               overflow-hidden
+              shadow-xl
+              shadow-black/20
             "
           >
             <table className="w-full">
               <thead
                 className="
                   border-b
-                  border-white/5
+                  border-white/10
+                  bg-black/10
                 "
               >
                 <tr
@@ -360,214 +390,228 @@ export default function ArticlesPage() {
               </thead>
 
               <tbody>
-                {articles.map((article) => (
-                  <tr
-                    key={article.id}
-                    className="
-                      border-b
-                      border-white/5
-                      hover:bg-white/[0.02]
-                      transition
-                    "
-                  >
-                    <td className="p-5">
-                      <button
-                        onClick={() =>
-                          setSelectedArticle(
-                            article
-                          )
-                        }
+                {articles.map(
+                  (article) => (
+                    <tr
+                      key={
+                        article.id
+                      }
+                      className="
+                        border-b
+                        border-white/10
+                        hover:bg-white/[0.03]
+                        transition
+                      "
+                    >
+                      <td className="p-5">
+                        <button
+                          onClick={() =>
+                            setSelectedArticle(
+                              article
+                            )
+                          }
+                          className="
+                            text-sm
+                            leading-6
+                            text-white/90
+                            hover:text-violet-300
+                            transition
+                            text-left
+                          "
+                        >
+                          {
+                            article.title
+                          }
+                        </button>
+                      </td>
+
+                      <td
                         className="
                           text-sm
-                          leading-6
-                          text-white/90
-                          hover:text-violet-300
-                          transition
-                          text-left
+                          text-white/60
                         "
-                      >
-                        {article.title}
-                      </button>
-                    </td>
-
-                    <td
-                      className="
-                        text-sm
-                        text-white/60
-                      "
-                    >
-                      {article.author?.name}
-                    </td>
-
-                    <td>
-                      <span
-                        className="
-                          px-3
-                          py-1
-                          text-xs
-                          border
-                          border-white/10
-                          bg-white/[0.03]
-                        "
-                      >
-                        {article.category
-                          ?.name ||
-                          "Uncategorized"}
-                      </span>
-                    </td>
-
-                    <td>
-                      <span
-                        className={`
-                          px-3
-                          py-1
-                          rounded-full
-                          text-xs
-                          border
-                          ${
-                            article.status ===
-                            "PUBLISHED"
-                              ? `
-                                bg-orange-500/10
-                                border-orange-500/20
-                                text-orange-300
-                              `
-                              : article.status ===
-                                "REVIEW"
-                              ? `
-                                bg-violet-500/10
-                                border-violet-500/20
-                                text-violet-300
-                              `
-                              : `
-                                bg-white/5
-                                border-white/10
-                                text-white/50
-                              `
-                          }
-                        `}
-                      >
-                        {article.status}
-                      </span>
-                    </td>
-
-                    <td
-                      className="
-                        text-sm
-                        text-white/50
-                      "
-                    >
-                      {article.publishedAt
-                        ? new Date(
-                            article.publishedAt
-                          ).toLocaleDateString()
-                        : "--"}
-                    </td>
-
-                    <td>
-                      <span
-                        className={`
-                          text-xs
-                          px-3
-                          py-1
-                          rounded-full
-                          border
-                          ${
-                            article.healthScore >=
-                            80
-                              ? `
-                                bg-green-500/10
-                                border-green-500/20
-                                text-green-300
-                              `
-                              : article.healthScore >=
-                                50
-                              ? `
-                                bg-orange-500/10
-                                border-orange-500/20
-                                text-orange-300
-                              `
-                              : `
-                                bg-red-500/10
-                                border-red-500/20
-                                text-red-300
-                              `
-                          }
-                        `}
                       >
                         {
-                          article.healthScore
+                          article
+                            .author
+                            ?.name
                         }
-                      </span>
-                    </td>
+                      </td>
 
-                    <td>
-                      <div
-                        className="
-                          flex
-                          gap-4
-                          text-white/40
-                        "
-                      >
-                        <button
-                          onClick={() =>
-                            router.push(
-                              `/articles/editor?id=${article.id}`
-                            )
-                          }
+                      <td>
+                        <span
                           className="
-                            hover:text-violet-400
-                            transition
+                            px-3
+                            py-1
+                            text-xs
+                            rounded-full
+                            border
+                            border-white/10
+                            bg-white/[0.03]
                           "
                         >
-                          ✎
-                        </button>
+                          {article
+                            .category
+                            ?.name ||
+                            "Uncategorized"}
+                        </span>
+                      </td>
 
-                        <button
-                          onClick={() =>
-                            handleDelete(
-                              article.id
-                            )
-                          }
-                          className="
-                            hover:text-red-400
-                            transition
-                          "
-                        >
-                          ⌫
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            handlePublish(
-                              article.id
-                            )
-                          }
-                          disabled={
-                            article.status ===
-                            "PUBLISHED"
-                          }
+                      <td>
+                        <span
                           className={`
-                            transition
+                            px-3
+                            py-1
+                            rounded-full
+                            text-xs
+                            border
                             ${
                               article.status ===
                               "PUBLISHED"
                                 ? `
-                                  text-green-400
-                                  cursor-not-allowed
+                                  bg-orange-500/10
+                                  border-orange-500/20
+                                  text-orange-300
+                                `
+                                : article.status ===
+                                  "REVIEW"
+                                ? `
+                                  bg-violet-500/10
+                                  border-violet-500/20
+                                  text-violet-300
                                 `
                                 : `
-                                  hover:text-orange-400
+                                  bg-white/5
+                                  border-white/10
+                                  text-white/50
                                 `
                             }
                           `}
                         >
-                          ⋯
-                        </button>                        
-                      </div>                      
-                    </td>
-                  </tr>
-                ))}
+                          {
+                            article.status
+                          }
+                        </span>
+                      </td>
+
+                      <td
+                        className="
+                          text-sm
+                          text-white/50
+                        "
+                      >
+                        {article.publishedAt
+                          ? new Date(
+                              article.publishedAt
+                            ).toLocaleDateString()
+                          : "--"}
+                      </td>
+
+                      <td>
+                        <span
+                          className={`
+                            text-xs
+                            px-3
+                            py-1
+                            rounded-full
+                            border
+                            ${
+                              article.healthScore >=
+                              80
+                                ? `
+                                  bg-green-500/10
+                                  border-green-500/20
+                                  text-green-300
+                                `
+                                : article.healthScore >=
+                                  50
+                                ? `
+                                  bg-orange-500/10
+                                  border-orange-500/20
+                                  text-orange-300
+                                `
+                                : `
+                                  bg-red-500/10
+                                  border-red-500/20
+                                  text-red-300
+                                `
+                            }
+                          `}
+                        >
+                          {
+                            article.healthScore
+                          }
+                        </span>
+                      </td>
+
+                      <td>
+                        <div
+                          className="
+                            flex
+                            gap-4
+                            text-white/40
+                          "
+                        >
+                          <button
+                            onClick={() =>
+                              router.push(
+                                `/articles/editor?id=${article.id}`
+                              )
+                            }
+                            className="
+                              hover:text-violet-400
+                              transition
+                            "
+                          >
+                            ✎
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              handleDelete(
+                                article.id
+                              )
+                            }
+                            className="
+                              hover:text-red-400
+                              transition
+                            "
+                          >
+                            ⌫
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              handlePublish(
+                                article.id
+                              )
+                            }
+                            disabled={
+                              article.status ===
+                              "PUBLISHED"
+                            }
+                            className={`
+                              transition
+                              ${
+                                article.status ===
+                                "PUBLISHED"
+                                  ? `
+                                    text-green-400
+                                    cursor-not-allowed
+                                  `
+                                  : `
+                                    hover:text-orange-400
+                                  `
+                              }
+                            `}
+                          >
+                            ⋯
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </div>
@@ -576,13 +620,22 @@ export default function ArticlesPage() {
         <div className="col-span-3 space-y-6">
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
-            <h2 className="mb-6">
+            <h2
+              className="
+                mb-6
+                text-white
+              "
+            >
               Filter by Status
             </h2>
 
@@ -599,7 +652,9 @@ export default function ArticlesPage() {
                 </span>
 
                 <span className="text-white/40">
-                  {articles.length}
+                  {
+                    articles.length
+                  }
                 </span>
               </div>
 
@@ -679,13 +734,22 @@ export default function ArticlesPage() {
 
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
-            <h2 className="mb-6">
+            <h2
+              className="
+                mb-6
+                text-white
+              "
+            >
               Latest Article
             </h2>
 
@@ -699,7 +763,10 @@ export default function ArticlesPage() {
                       leading-6
                     "
                   >
-                    {articles[0].title}
+                    {
+                      articles[0]
+                        .title
+                    }
                   </p>
 
                   <p
@@ -712,7 +779,8 @@ export default function ArticlesPage() {
                     by{" "}
                     {
                       articles[0]
-                        .author?.name
+                        .author
+                        ?.name
                     }
                   </p>
                 </div>
@@ -754,271 +822,287 @@ export default function ArticlesPage() {
         </div>
       </div>
 
-    {selectedArticle && (
-      <div
-        className="
-          fixed
-          inset-0
-          bg-black/70
-          backdrop-blur-sm
-          z-50
-          flex
-          items-center
-          justify-center
-          p-6
-        "
-      >
+      {selectedArticle && (
         <div
           className="
-            w-full
-            max-w-4xl
-            max-h-[90vh]
-            overflow-y-auto
-            bg-[#12121a]
-            border
-            border-white/10
-            p-8
+            fixed
+            inset-0
+            bg-black/70
+            backdrop-blur-md
+            z-50
+            flex
+            items-center
+            justify-center
+            p-6
           "
         >
           <div
             className="
-              flex
-              items-start
-              justify-between
-              mb-8
+              w-full
+              max-w-4xl
+              max-h-[90vh]
+              overflow-y-auto
+              bg-[#171a20]/90
+              backdrop-blur-2xl
+              border
+              border-white/10
+              rounded-[32px]
+              p-8
+              shadow-2xl
+              shadow-black/40
             "
           >
-            <div>
-              <p
-                className="
-                  text-xs
-                  text-white/40
-                  mb-3
-                "
-              >
-                ARTICLE PREVIEW
-              </p>
+            <div
+              className="
+                flex
+                items-start
+                justify-between
+                mb-8
+              "
+            >
+              <div>
+                <p
+                  className="
+                    text-xs
+                    text-white/40
+                    mb-3
+                  "
+                >
+                  ARTICLE PREVIEW
+                </p>
 
-              <h2
+                <h2
+                  className="
+                    text-3xl
+                    font-light
+                    leading-tight
+                    text-white
+                  "
+                >
+                  {
+                    selectedArticle.title
+                  }
+                </h2>
+
+                <div
+                  className="
+                    flex
+                    gap-3
+                    mt-5
+                    text-sm
+                    text-white/40
+                  "
+                >
+                  <span>
+                    {
+                      selectedArticle
+                        .author?.name
+                    }
+                  </span>
+
+                  <span>•</span>
+
+                  <span>
+                    {
+                      selectedArticle
+                        .category
+                        ?.name ||
+                      "Uncategorized"
+                    }
+                  </span>
+
+                  <span>•</span>
+
+                  <span>
+                    {new Date(
+                      selectedArticle.createdAt
+                    ).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={() =>
+                  setSelectedArticle(
+                    null
+                  )
+                }
                 className="
-                  text-3xl
-                  font-light
-                  leading-tight
+                  text-white/40
+                  hover:text-white
+                  transition
                 "
               >
-                {
-                  selectedArticle.title
-                }
-              </h2>
+                ✕
+              </button>
+            </div>
+
+            <div
+              className="
+                border-y
+                border-white/10
+                py-8
+                text-white/80
+                leading-8
+                prose
+                prose-invert
+                max-w-none
+              "
+              dangerouslySetInnerHTML={{
+                __html:
+                  selectedArticle.content,
+              }}
+            />
+
+            <div
+              className="
+                grid
+                grid-cols-3
+                gap-5
+                mt-8
+              "
+            >
+              <div
+                className="
+                  bg-white/[0.03]
+                  backdrop-blur-xl
+                  border
+                  border-white/10
+                  rounded-2xl
+                  p-5
+                "
+              >
+                <p
+                  className="
+                    text-xs
+                    text-white/40
+                    mb-3
+                  "
+                >
+                  STATUS
+                </p>
+
+                <p className="text-sm">
+                  {
+                    selectedArticle.status
+                  }
+                </p>
+              </div>
 
               <div
                 className="
-                  flex
-                  gap-3
-                  mt-5
-                  text-sm
-                  text-white/40
+                  bg-white/[0.03]
+                  backdrop-blur-xl
+                  border
+                  border-white/10
+                  rounded-2xl
+                  p-5
                 "
               >
-                <span>
+                <p
+                  className="
+                    text-xs
+                    text-white/40
+                    mb-3
+                  "
+                >
+                  HEALTH SCORE
+                </p>
+
+                <p className="text-sm">
                   {
-                    selectedArticle
-                      .author?.name
+                    selectedArticle.healthScore
                   }
-                </span>
+                </p>
+              </div>
 
-                <span>•</span>
+              <div
+                className="
+                  bg-white/[0.03]
+                  backdrop-blur-xl
+                  border
+                  border-white/10
+                  rounded-2xl
+                  p-5
+                "
+              >
+                <p
+                  className="
+                    text-xs
+                    text-white/40
+                    mb-3
+                  "
+                >
+                  Alternative Titla
+                </p>
 
-                <span>
+                <p
+                  className="
+                    text-sm
+                    line-clamp-2
+                  "
+                >
                   {
-                    selectedArticle
-                      .category
-                      ?.name ||
-                    "Uncategorized"
+                    selectedArticle.seoTitle ||
+                    "--"
                   }
-                </span>
-
-                <span>•</span>
-
-                <span>
-                  {new Date(
-                    selectedArticle.createdAt
-                  ).toLocaleDateString()}
-                </span>
+                </p>
               </div>
             </div>
 
-            <button
-              onClick={() =>
-                setSelectedArticle(
-                  null
-                )
-              }
-              className="
-                text-white/40
-                hover:text-white
-                transition
-              "
-            >
-              ✕
-            </button>
-          </div>
-
-          <div
-            className="
-              border-y
-              border-white/5
-              py-8
-              text-white/80
-              leading-8
-              prose
-              prose-invert
-              max-w-none
-            "
-            dangerouslySetInnerHTML={{
-              __html:
-                selectedArticle.content,
-            }}
-          />
-
-          <div
-            className="
-              grid
-              grid-cols-3
-              gap-5
-              mt-8
-            "
-          >
             <div
               className="
-                bg-black/20
-                border
-                border-white/5
-                p-5
+                flex
+                justify-end
+                gap-4
+                mt-8
               "
             >
-              <p
-                className="
-                  text-xs
-                  text-white/40
-                  mb-3
-                "
-              >
-                STATUS
-              </p>
-
-              <p className="text-sm">
-                {
-                  selectedArticle.status
+              <button
+                onClick={() =>
+                  setSelectedArticle(
+                    null
+                  )
                 }
-              </p>
-            </div>
-
-            <div
-              className="
-                bg-black/20
-                border
-                border-white/5
-                p-5
-              "
-            >
-              <p
                 className="
-                  text-xs
-                  text-white/40
-                  mb-3
-                "
-              >
-                HEALTH SCORE
-              </p>
-
-              <p className="text-sm">
-                {
-                  selectedArticle.healthScore
-                }
-              </p>
-            </div>
-
-            <div
-              className="
-                bg-black/20
-                border
-                border-white/5
-                p-5
-              "
-            >
-              <p
-                className="
-                  text-xs
-                  text-white/40
-                  mb-3
-                "
-              >
-                SEO TITLE
-              </p>
-
-              <p
-                className="
+                  px-5
+                  h-11
+                  rounded-2xl
+                  border
+                  border-white/10
+                  bg-white/[0.03]
                   text-sm
-                  line-clamp-2
+                  hover:bg-white/[0.05]
+                  transition
                 "
               >
-                {
-                  selectedArticle.seoTitle ||
-                  "--"
+                Close
+              </button>
+
+              <button
+                onClick={() =>
+                  router.push(
+                    `/articles/editor?id=${selectedArticle.id}`
+                  )
                 }
-              </p>
+                className="
+                  px-5
+                  h-11
+                  rounded-2xl
+                  bg-gradient-to-r
+                  from-violet-500
+                  to-orange-400
+                  text-sm
+                  shadow-lg
+                  shadow-violet-500/20
+                "
+              >
+                Edit Article
+              </button>
             </div>
-          </div>
-
-          <div
-            className="
-              flex
-              justify-end
-              gap-4
-              mt-8
-            "
-          >
-            <button
-              onClick={() =>
-                setSelectedArticle(
-                  null
-                )
-              }
-              className="
-                px-5
-                h-11
-                border
-                border-white/10
-                text-sm
-                hover:bg-white/5
-                transition
-              "
-            >
-              Close
-            </button>
-
-            <button
-              onClick={() =>
-                router.push(
-                  `/articles/editor?id=${selectedArticle.id}`
-                )
-              }
-              className="
-                px-5
-                h-11
-                bg-gradient-to-r
-                from-violet-500
-                to-orange-400
-                text-sm
-              "
-            >
-              Edit Article
-            </button>
           </div>
         </div>
-      </div>
-    )}    
+      )}
     </DashboardLayout>
   );
 }

@@ -1,7 +1,12 @@
 "use client";
 
+export const dynamic =
+  "force-dynamic";
+
 import { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
+
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function DashboardPage() {
@@ -39,7 +44,8 @@ export default function DashboardPage() {
           }
         );
 
-        const data = await res.json();
+        const data =
+          await res.json();
 
         setStats(data);
 
@@ -60,39 +66,47 @@ export default function DashboardPage() {
 
   const cards = [
     {
-      title: "Total Articles",
+      title:
+        "Total Articles",
 
       value:
         stats?.totalArticles || 0,
 
-      change: "+12.5%",
+      change:
+        "+12.5%",
     },
 
     {
-      title: "Published",
+      title:
+        "Published",
 
       value:
         stats?.publishedArticles || 0,
 
-      change: "+7",
+      change:
+        "+7",
     },
 
     {
-      title: "Drafts",
+      title:
+        "Drafts",
 
       value:
         stats?.draftArticles || 0,
 
-      change: "+3",
+      change:
+        "+3",
     },
 
     {
-      title: "Users",
+      title:
+        "Users",
 
       value:
         stats?.totalUsers || 0,
 
-      change: "+1",
+      change:
+        "+1",
     },
   ];
 
@@ -111,21 +125,11 @@ export default function DashboardPage() {
             className="
               text-3xl
               font-light
+              text-white
             "
           >
             Dashboard
           </h1>
-
-          <p
-            className="
-              text-white/40
-              mt-1
-              text-sm
-            "
-          >
-            Overview of your
-            publishing activity
-          </p>
         </div>
 
         <div className="flex gap-3">
@@ -140,9 +144,14 @@ export default function DashboardPage() {
               h-11
               border
               border-white/10
+              bg-white/[0.03]
+              backdrop-blur-xl
               text-sm
-              hover:bg-white/5
+              text-white/70
+              hover:bg-white/[0.05]
+              hover:border-white/20
               transition
+              rounded-2xl
             "
           >
             View Articles
@@ -157,10 +166,13 @@ export default function DashboardPage() {
             className="
               px-5
               h-11
+              rounded-2xl
               bg-gradient-to-r
               from-violet-500
               to-orange-400
               text-sm
+              shadow-lg
+              shadow-violet-500/20
             "
           >
             + New Article
@@ -175,11 +187,14 @@ export default function DashboardPage() {
               <div
                 key={item.title}
                 className="
-                  bg-[#12121a]
+                  bg-white/[0.04]
+                  backdrop-blur-2xl
                   border
-                  border-white/5
+                  border-white/10
                   p-5
-                  rounded-sm
+                  rounded-3xl
+                  shadow-xl
+                  shadow-black/20
                 "
               >
                 <div
@@ -193,7 +208,7 @@ export default function DashboardPage() {
                     className="
                       w-10
                       h-10
-                      rounded-lg
+                      rounded-2xl
                       bg-violet-500/10
                       border
                       border-violet-500/20
@@ -220,6 +235,7 @@ export default function DashboardPage() {
                   className="
                     text-4xl
                     font-light
+                    text-white
                   "
                 >
                   {item.value}
@@ -241,94 +257,112 @@ export default function DashboardPage() {
           <div
             className="
               mt-6
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
-              rounded-sm
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
             <h2
               className="
                 text-lg
                 mb-8
+                text-white
               "
             >
               Recent Articles
             </h2>
 
             <div className="space-y-8">
-            {stats?.recentArticles?.map(
-              (article: any) => (
-                <div
-                  key={article.title}
-                  className="
-                    flex
-                    items-center
-                    justify-between
-                  "
-                >
-                  <div>
-                    <h3
-                      className="
-                        text-white/90
-                      "
-                    >
-                      {article.title}
-                    </h3>
-
-                    <p
-                      className="
-                        text-sm
-                        text-white/30
-                        mt-2
-                      "
-                    >
-                    {article.author?.name}
-                    {" • "}
-                    {new Date(
-                      article.createdAt
-                    ).toLocaleDateString()}
-                    {" • "}
-                    {article.category?.name ||
-                      "Uncategorized"}
-                    </p>
-                  </div>
-
-                  <span
-                    className={`
-                      px-3
-                      py-1
-                      rounded-full
-                      text-xs
-                      border
-                      ${
-                        article.status ===
-                        "PUBLISHED"
-                          ? `
-                            bg-orange-500/10
-                            border-orange-500/20
-                            text-orange-300
-                          `
-                          : article.status ===
-                            "REVIEW"
-                          ? `
-                            bg-violet-500/10
-                            border-violet-500/20
-                            text-violet-300
-                          `
-                          : `
-                            bg-white/5
-                            border-white/10
-                            text-white/50
-                          `
-                      }
-                    `}
+              {stats?.recentArticles?.map(
+                (
+                  article: any
+                ) => (
+                  <div
+                    key={
+                      article.title
+                    }
+                    className="
+                      flex
+                      items-center
+                      justify-between
+                    "
                   >
-                    {article.status}
-                  </span>
-                </div>
-              ))}
+                    <div>
+                      <h3
+                        className="
+                          text-white/90
+                        "
+                      >
+                        {
+                          article.title
+                        }
+                      </h3>
+
+                      <p
+                        className="
+                          text-sm
+                          text-white/30
+                          mt-2
+                        "
+                      >
+                        {
+                          article.author
+                            ?.name
+                        }
+                        {" • "}
+                        {new Date(
+                          article.createdAt
+                        ).toLocaleDateString()}
+                        {" • "}
+                        {article
+                          .category
+                          ?.name ||
+                          "Uncategorized"}
+                      </p>
+                    </div>
+
+                    <span
+                      className={`
+                        px-3
+                        py-1
+                        rounded-full
+                        text-xs
+                        border
+                        ${
+                          article.status ===
+                          "PUBLISHED"
+                            ? `
+                              bg-orange-500/10
+                              border-orange-500/20
+                              text-orange-300
+                            `
+                            : article.status ===
+                              "REVIEW"
+                            ? `
+                              bg-violet-500/10
+                              border-violet-500/20
+                              text-violet-300
+                            `
+                            : `
+                              bg-white/5
+                              border-white/10
+                              text-white/50
+                            `
+                        }
+                      `}
+                    >
+                      {
+                        article.status
+                      }
+                    </span>
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
@@ -336,14 +370,22 @@ export default function DashboardPage() {
         <div className="col-span-4 space-y-6">
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
-              rounded-sm
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
-            <h2 className="mb-8">
+            <h2
+              className="
+                mb-8
+                text-white
+              "
+            >
               Engagement
             </h2>
 
@@ -355,8 +397,13 @@ export default function DashboardPage() {
                   text-white/60
                 "
               >
-                <span>Views</span>
-                <span>145.2k</span>
+                <span>
+                  Views
+                </span>
+
+                <span>
+                  145.2k
+                </span>
               </div>
             </div>
 
@@ -364,7 +411,7 @@ export default function DashboardPage() {
               className="
                 mt-8
                 h-40
-                rounded-sm
+                rounded-3xl
                 bg-gradient-to-br
                 from-violet-500/20
                 to-orange-400/20
@@ -374,12 +421,15 @@ export default function DashboardPage() {
                 flex-col
                 items-center
                 justify-center
+                shadow-lg
+                shadow-violet-500/10
               "
             >
               <h2
                 className="
                   text-5xl
                   font-light
+                  text-white
                 "
               >
                 +32%

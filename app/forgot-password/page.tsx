@@ -40,6 +40,7 @@ export default function ForgotPasswordPage() {
 
       if (!res.ok) {
         alert(data.error);
+
         return;
       }
 
@@ -55,30 +56,32 @@ export default function ForgotPasswordPage() {
     } finally {
       setLoading(false);
     }
-  }    
+  }
 
   return (
     <main
       className="
         min-h-screen
-        bg-black
+        bg-[#111318]
         flex
         items-center
         justify-center
         overflow-hidden
         relative
         px-6
+        py-10
       "
     >
       <div
         className="
           absolute
-          w-[250px]
-          h-[250px]
+          w-[260px]
+          h-[260px]
           border
-          border-orange-500/20
+          border-orange-500/15
           left-[12%]
-          bottom-[15%]
+          bottom-[10%]
+          pointer-events-none
         "
       />
 
@@ -88,23 +91,53 @@ export default function ForgotPasswordPage() {
           w-[180px]
           h-[180px]
           border
-          border-violet-500/20
-          right-[20%]
-          top-[18%]
+          border-violet-500/15
+          right-[18%]
+          top-[15%]
+          pointer-events-none
+        "
+      />
+
+      <div
+        className="
+          absolute
+          top-[-200px]
+          right-[-120px]
+          w-[420px]
+          h-[420px]
+          rounded-full
+          bg-violet-500/10
+          blur-3xl
+        "
+      />
+
+      <div
+        className="
+          absolute
+          bottom-[-200px]
+          left-[-120px]
+          w-[420px]
+          h-[420px]
+          rounded-full
+          bg-orange-400/10
+          blur-3xl
         "
       />
 
       <div
         className="
           w-full
-          max-w-5xl
-          bg-[#0f0f17]
+          max-w-6xl
+          bg-white/[0.04]
+          backdrop-blur-2xl
           border
           border-white/10
+          rounded-[32px]
+          overflow-hidden
+          shadow-2xl
+          shadow-black/30
           grid
           md:grid-cols-2
-          rounded-sm
-          overflow-hidden
           relative
           z-10
         "
@@ -112,47 +145,81 @@ export default function ForgotPasswordPage() {
         <div
           className="
             p-14
+            border-r
+            border-white/10
             flex
             flex-col
             justify-between
-            border-r
-            border-white/5
           "
         >
           <div>
-            <div className="flex items-start gap-4">
-              <div
-                className="
-                  w-[3px]
-                  h-14
-                  bg-violet-500
-                "
-              />
-
-              <div>
-                <h1
+            <div
+              className="
+                flex
+                items-center
+                gap-4
+              "
+            >
+              <div className="flex gap-4">
+                <div
                   className="
-                    text-white
-                    text-2xl
-                    font-light
+                    w-[3px]
+                    h-16
+                    bg-violet-500
+                    rounded-full
                   "
-                >
-                  Publisher CMS
-                </h1>
+                />
 
-                <p
-                  className="
-                    text-white/40
-                    text-sm
-                    mt-1
-                  "
-                >
-                  Editorial Platform
-                </p>
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      uppercase
+                      tracking-[0.3em]
+                      text-white/30
+                    "
+                  >
+                    Community
+                  </p>
+
+                  <h1
+                    className="
+                      text-2xl
+                      font-light
+                      text-white
+                    "
+                  >
+                    Archive
+                  </h1>
+                </div>
               </div>
             </div>
 
-            <div className="mt-24 space-y-10">
+            <div className="mt-16">
+              <h2
+                className="
+                  text-3xl
+                  font-light
+                  text-white
+                "
+              >
+                Recover Access
+              </h2>
+
+              <p
+                className="
+                  mt-5
+                  text-white/50
+                  leading-7
+                "
+              >
+                Securely restore access
+                to your contributor
+                account.
+              </p>
+            </div>
+
+            <div className="mt-16 space-y-10">
               <div className="flex gap-5">
                 <div
                   className="
@@ -165,12 +232,7 @@ export default function ForgotPasswordPage() {
                 />
 
                 <div>
-                  <h2
-                    className="
-                      text-white
-                      text-sm
-                    "
-                  >
+                  <h2 className="text-white text-sm">
                     Secure Recovery
                   </h2>
 
@@ -181,9 +243,8 @@ export default function ForgotPasswordPage() {
                       mt-1
                     "
                   >
-                    Reset your password
-                    securely through your
-                    registered email
+                    Receive a password
+                    reset link.
                   </p>
                 </div>
               </div>
@@ -200,12 +261,7 @@ export default function ForgotPasswordPage() {
                 />
 
                 <div>
-                  <h2
-                    className="
-                      text-white
-                      text-sm
-                    "
-                  >
+                  <h2 className="text-white text-sm">
                     Account Protection
                   </h2>
 
@@ -216,9 +272,8 @@ export default function ForgotPasswordPage() {
                       mt-1
                     "
                   >
-                    Your editorial workspace
-                    stays protected with
-                    secure authentication
+                    Your archive account
+                    remains protected.
                   </p>
                 </div>
               </div>
@@ -254,72 +309,60 @@ export default function ForgotPasswordPage() {
           className="
             p-14
             flex
-            items-center
+            flex-col
+            justify-between
           "
         >
           <div className="w-full">
             <h2
               className="
-                text-3xl
-                text-white
+                text-4xl
                 font-light
+                text-white
               "
             >
-              Forgot Password
+              Recover Access
             </h2>
 
             <p
               className="
                 text-white/40
-                text-sm
-                mt-2
+                mt-3
                 mb-10
               "
             >
-              Enter your email to reset
-              your password
+              Enter your contributor
+              email to receive a secure
+              password reset link.
             </p>
 
             <form
               onSubmit={handleSubmit}
               className="space-y-6"
             >
-              <div>
-                <label
-                  className="
-                    text-xs
-                    text-white/60
-                    block
-                    mb-3
-                  "
-                >
-                  Email
-                </label>
-
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) =>
-                    setEmail(
-                      e.target.value
-                    )
-                  }
-                  placeholder="your@email.com"
-                  className="
-                    w-full
-                    bg-transparent
-                    border
-                    border-white/10
-                    h-12
-                    px-4
-                    text-white
-                    outline-none
-                    focus:border-violet-500
-                    transition
-                  "
-                />
-              </div>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) =>
+                  setEmail(
+                    e.target.value
+                  )
+                }
+                placeholder="Email"
+                className="
+                  w-full
+                  h-12
+                  rounded-2xl
+                  bg-white/[0.03]
+                  border
+                  border-white/10
+                  px-4
+                  text-white
+                  outline-none
+                  focus:border-violet-500/40
+                "
+              />
 
               <button
                 type="submit"
@@ -327,11 +370,13 @@ export default function ForgotPasswordPage() {
                 className="
                   w-full
                   h-12
-                  bg-white
-                  text-black
-                  text-sm
-                  hover:bg-white/90
-                  transition
+                  rounded-2xl
+                  bg-gradient-to-r
+                  from-violet-500
+                  to-orange-400
+                  text-white
+                  shadow-lg
+                  shadow-violet-500/20
                 "
               >
                 {loading
@@ -347,41 +392,41 @@ export default function ForgotPasswordPage() {
                 text-white/40
               "
             >
-              Back to{" "}
+              Remember your password?{" "}
 
               <Link
                 href="/login"
                 className="
-                  text-violet-400
+                  text-violet-300
                 "
               >
                 Sign In
               </Link>
             </div>
+          </div>
+
+          <div
+            className="
+              flex
+              justify-between
+              mt-10
+            "
+          >
+            <div
+              className="
+                w-2
+                h-2
+                bg-violet-500
+              "
+            />
 
             <div
               className="
-                flex
-                justify-between
-                mt-10
+                w-2
+                h-2
+                bg-orange-500
               "
-            >
-              <div
-                className="
-                  w-2
-                  h-2
-                  bg-violet-500
-                "
-              />
-
-              <div
-                className="
-                  w-2
-                  h-2
-                  bg-orange-500
-                "
-              />
-            </div>
+            />
           </div>
         </div>
       </div>

@@ -22,16 +22,22 @@ export default async function NewsPage() {
       take: 20,
     });
 
-  const categories =
+  const categories: string[] =
     Array.from(
       new Set(
-        articles.map(
-          (article) =>
-            article.category
-              ?.name
-        )
+        articles
+          .map(
+            (article) =>
+              article.category?.name
+          )
+          .filter(
+            (
+              name
+            ): name is string =>
+              name !== undefined
+          )
       )
-    ).filter(Boolean);
+    );
 
   return (
     <NewsPageClient

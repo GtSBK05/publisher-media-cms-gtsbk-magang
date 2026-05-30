@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+export const dynamic =
+  "force-dynamic";
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function UsersPage() {
@@ -14,7 +21,37 @@ export default function UsersPage() {
     useState(true);
 
   const [role, setRole] =
-    useState("");    
+    useState("");
+
+  const [
+    selectedUser,
+    setSelectedUser,
+  ] = useState<any>(null);
+
+  const [
+    editName,
+    setEditName,
+  ] = useState("");
+
+  const [
+    editEmail,
+    setEditEmail,
+  ] = useState("");
+
+  const [
+    editRole,
+    setEditRole,
+  ] = useState("");
+
+  const [
+    editActive,
+    setEditActive,
+  ] = useState(true);
+
+  const [
+    savingUser,
+    setSavingUser,
+  ] = useState(false);    
 
   useEffect(() => {
     fetchData();
@@ -29,32 +66,36 @@ export default function UsersPage() {
 
       const payload =
         JSON.parse(
-            atob(
+          atob(
             token!.split(".")[1]
-            )
+          )
         );
 
-    setRole(payload.role);        
-        
-      const [usersRes, logsRes] =
-        await Promise.all([
-          fetch("/api/users", {
+      setRole(
+        payload.role
+      );
+
+      const [
+        usersRes,
+        logsRes,
+      ] = await Promise.all([
+        fetch("/api/users", {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }),
+
+        fetch(
+          "/api/activity-logs",
+          {
             headers: {
               Authorization:
                 `Bearer ${token}`,
             },
-          }),
-
-          fetch(
-            "/api/activity-logs",
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`,
-              },
-            }
-          ),
-        ]);
+          }
+        ),
+      ]);
 
       const usersData =
         await usersRes.json();
@@ -63,13 +104,17 @@ export default function UsersPage() {
         await logsRes.json();
 
       setUsers(
-        Array.isArray(usersData)
+        Array.isArray(
+          usersData
+        )
           ? usersData
           : []
       );
 
       setLogs(
-        Array.isArray(logsData)
+        Array.isArray(
+          logsData
+        )
           ? logsData
           : []
       );
@@ -82,126 +127,10 @@ export default function UsersPage() {
     }
   }
 
-  async function handleEditUser(
+  async function handleDeactivate(
     user: any
   ) {
     try {
-      const choice = prompt(
-        `
-  1 = Name
-  2 = Email
-  3 = Role
-        `
-      );
-
-      if (!choice) {
-        return;
-      }
-
-      let body: any = {
-        isActive:
-          user.isActive,
-      };
-
-      if (choice === "1") {
-        const name = prompt(
-          "New name",
-          user.name
-        );
-
-        if (!name) return;
-
-        body = {
-          ...body,
-          name,
-          email: user.email,
-          role: user.role,
-        };
-      }
-
-      else if (
-        choice === "2"
-      ) {
-        const email = prompt(
-          "New email",
-          user.email
-        );
-
-        if (!email) return;
-
-        body = {
-          ...body,
-          name: user.name,
-          email,
-          role: user.role,
-        };
-      }
-
-      else if (
-        choice === "3"
-      ) {
-        const roleChoice = prompt(
-          `
-  Select Role
-
-  1 = ADMIN
-  2 = EDITOR
-  3 = WRITER
-          `
-        );
-
-        if (!roleChoice) {
-          return;
-        }
-
-        let selectedRole =
-          user.role;
-
-        if (
-          roleChoice === "1"
-        ) {
-          selectedRole =
-            "ADMIN";
-        }
-
-        else if (
-          roleChoice === "2"
-        ) {
-          selectedRole =
-            "EDITOR";
-        }
-
-        else if (
-          roleChoice === "3"
-        ) {
-          selectedRole =
-            "WRITER";
-        }
-
-        else {
-          alert(
-            "Invalid role"
-          );
-
-          return;
-        }
-
-        body = {
-          ...body,
-          name: user.name,
-          email: user.email,
-          role: selectedRole,
-        };
-      }
-
-      else {
-        alert(
-          "Invalid option"
-        );
-
-        return;
-      }
-
       const token =
         localStorage.getItem(
           "token"
@@ -220,9 +149,11 @@ export default function UsersPage() {
               `Bearer ${token}`,
           },
 
-          body: JSON.stringify(
-            body
-          ),
+          body: JSON.stringify({
+            ...user,
+            isActive:
+              !user.isActive,
+          }),
         }
       );
 
@@ -231,80 +162,103 @@ export default function UsersPage() {
 
       if (!res.ok) {
         alert(data.error);
+
         return;
       }
 
       setUsers((prev) =>
         prev.map((item) =>
-          item.id === user.id
+          item.id ===
+          user.id
             ? data
             : item
         )
-      );
-
-      alert(
-        "User updated"
       );
 
     } catch (error) {
       console.error(error);
-
-      alert(
-        "Update failed"
-      );
     }
-  } 
+  }
 
-  async function handleDeactivate(
+  function openEditModal(
     user: any
-    ) {
+  ) {
+    setSelectedUser(user);
+
+    setEditName(user.name);
+
+    setEditEmail(
+      user.email
+    );
+
+    setEditRole(
+      user.role
+    );
+
+    setEditActive(
+      user.isActive
+    );
+  }
+
+  async function saveUserEdit() {
     try {
-        const token =
+      setSavingUser(true);
+
+      const token =
         localStorage.getItem(
-            "token"
+          "token"
         );
 
-        const res = await fetch(
-        `/api/users/${user.id}`,
+      const res = await fetch(
+        `/api/users/${selectedUser.id}`,
         {
-            method: "PATCH",
+          method: "PATCH",
 
-            headers: {
+          headers: {
             "Content-Type":
-                "application/json",
+              "application/json",
 
             Authorization:
-                `Bearer ${token}`,
-            },
+              `Bearer ${token}`,
+          },
 
-            body: JSON.stringify({
-            ...user,
+          body: JSON.stringify({
+            name: editName,
+            email: editEmail,
+            role: editRole,
             isActive:
-                !user.isActive,
-            }),
+              editActive,
+          }),
         }
-        );
+      );
 
-        const data =
+      const data =
         await res.json();
 
-        if (!res.ok) {
+      if (!res.ok) {
         alert(data.error);
-        return;
-        }
 
-        setUsers((prev) =>
+        return;
+      }
+
+      setUsers((prev) =>
         prev.map((item) =>
-            item.id === user.id
+          item.id ===
+          selectedUser.id
             ? data
             : item
         )
-        );
+      );
+
+      setSelectedUser(null);
 
     } catch (error) {
-        console.error(error);
+      console.error(error);
+
+    } finally {
+      setSavingUser(false);
     }
-    }    
+  }  
 
   function formatAction(
     action: string
@@ -334,7 +288,9 @@ export default function UsersPage() {
       Math.floor(
         (
           new Date().getTime() -
-          new Date(date).getTime()
+          new Date(
+            date
+          ).getTime()
         ) / 1000
       );
 
@@ -359,20 +315,26 @@ export default function UsersPage() {
 
     if (minutes < 60) {
       return `${minutes} minute${
-        minutes > 1 ? "s" : ""
+        minutes > 1
+          ? "s"
+          : ""
       } ago`;
     }
 
     if (hours < 24) {
       return `${hours} hour${
-        hours > 1 ? "s" : ""
+        hours > 1
+          ? "s"
+          : ""
       } ago`;
     }
 
     return `${days} day${
-      days > 1 ? "s" : ""
+      days > 1
+        ? "s"
+        : ""
     } ago`;
-  }    
+  }
 
   if (loading) {
     return null;
@@ -387,21 +349,11 @@ export default function UsersPage() {
               className="
                 text-3xl
                 font-light
+                text-white
               "
             >
               User Management
             </h1>
-
-            <p
-              className="
-                text-sm
-                text-white/40
-                mt-2
-              "
-            >
-              Manage team members
-              and permissions
-            </p>
           </div>
 
           <div className="mb-5">
@@ -411,30 +363,38 @@ export default function UsersPage() {
               className="
                 w-full
                 h-12
-                bg-[#12121a]
+                bg-white/[0.04]
+                backdrop-blur-xl
                 border
-                border-white/5
+                border-white/10
+                rounded-2xl
                 px-4
                 text-sm
+                text-white
                 outline-none
-                focus:border-violet-500
+                focus:border-violet-500/40
               "
             />
           </div>
 
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-[32px]
               overflow-hidden
+              shadow-xl
+              shadow-black/20
             "
           >
             <table className="w-full">
               <thead
                 className="
                   border-b
-                  border-white/5
+                  border-white/10
+                  bg-black/10
                 "
               >
                 <tr
@@ -448,11 +408,12 @@ export default function UsersPage() {
                     User
                   </th>
 
-                {role === "ADMIN" && (
-                <th className="font-normal">
-                    Email
-                </th>
-                )}
+                  {role ===
+                    "ADMIN" && (
+                    <th className="font-normal">
+                      Email
+                    </th>
+                  )}
 
                   <th className="font-normal">
                     Role
@@ -462,186 +423,214 @@ export default function UsersPage() {
                     Articles
                   </th>
 
-                {role === "ADMIN" && (
-                <th className="font-normal">
-                    Status
-                </th>
-                )}
+                  {role ===
+                    "ADMIN" && (
+                    <th className="font-normal">
+                      Status
+                    </th>
+                  )}
 
-                {role === "ADMIN" && (
-                <th className="font-normal">
-                    Actions
-                </th>
-                )}
+                  {role ===
+                    "ADMIN" && (
+                    <th className="font-normal">
+                      Actions
+                    </th>
+                  )}
                 </tr>
               </thead>
 
               <tbody>
-                {users.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="
-                      border-b
-                      border-white/5
-                      hover:bg-white/[0.02]
-                    "
-                  >
-                    <td className="p-5">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="
-                            w-9
-                            h-9
-                            rounded-full
-                            bg-gradient-to-br
-                            from-violet-500
-                            to-orange-400
-                            flex
-                            items-center
-                            justify-center
-                            text-xs
-                          "
-                        >
-                          {user.name
-                            ?.charAt(0)}
-                        </div>
-
-                        <div>
-                          <p className="text-sm">
-                            {user.name}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    {role === "ADMIN" && (
-                    <td
-                        className="
-                        text-sm
-                        text-white/50
-                        "
-                    >
-                        {user.email}
-                    </td>
-                    )}
-
-                    <td>
-                      <span
-                        className={`
-                          px-3
-                          py-1
-                          text-xs
-                          rounded-full
-                          border
-                          ${
-                            user.role ===
-                            "ADMIN"
-                              ? `
-                                bg-orange-500/10
-                                border-orange-500/20
-                                text-orange-300
-                              `
-                              : user.role ===
-                                "EDITOR"
-                              ? `
-                                bg-violet-500/10
-                                border-violet-500/20
-                                text-violet-300
-                              `
-                              : `
-                                bg-yellow-500/10
-                                border-yellow-500/20
-                                text-yellow-300
-                              `
-                          }
-                        `}
-                      >
-                        {user.role}
-                      </span>
-                    </td>
-
-                    <td
+                {users.map(
+                  (user) => (
+                    <tr
+                      key={
+                        user.id
+                      }
                       className="
-                        text-sm
-                        text-white/60
+                        border-b
+                        border-white/10
+                        hover:bg-white/[0.03]
+                        transition
                       "
                     >
-                      {
-                        user._count
-                          ?.articles
-                      }
-                    </td>
-
-                    {role === "ADMIN" && (
-                    <td>
-                    <span
-                    className={`
-                        px-3
-                        py-1
-                        rounded-full
-                        text-xs
-                        border
-                        ${
-                        user.isActive
-                            ? `
-                            bg-green-500/10
-                            border-green-500/20
-                            text-green-300
-                            `
-                            : `
-                            bg-red-500/10
-                            border-red-500/20
-                            text-red-300
-                            `
-                        }
-                    `}
-                    >
-                    {user.isActive
-                        ? "Active"
-                        : "Deactivated"}
-                    </span>
-                    </td>
-                    )}
-
-                    {role === "ADMIN" && (
-                    <td>
+                      <td className="p-5">
                         <div
-                        className="
+                          className="
                             flex
-                            gap-4
-                            text-white/40
-                        "
+                            items-center
+                            gap-3
+                          "
                         >
-                        <button
-                        onClick={() =>
-                            handleEditUser(
-                            user
-                            )
-                        }
-                        className="
-                            hover:text-violet-400
-                        "
-                        >
-                        ✎
-                        </button>
+                          <div
+                            className="
+                              w-9
+                              h-9
+                              rounded-full
+                              bg-gradient-to-br
+                              from-violet-500
+                              to-orange-400
+                              flex
+                              items-center
+                              justify-center
+                              text-xs
+                              shadow-lg
+                              shadow-violet-500/20
+                            "
+                          >
+                            {user.name?.charAt(
+                              0
+                            )}
+                          </div>
 
-                        <button
-                        onClick={() =>
-                            handleDeactivate(
-                            user
-                            )
-                        }
-                        className="
-                            hover:text-orange-400
-                        "
-                        >
-                        ⋯
-                        </button>
+                          <div>
+                            <p className="text-sm text-white">
+                              {
+                                user.name
+                              }
+                            </p>
+                          </div>
                         </div>
-                    </td>
-                    )}
-                  </tr>
-                ))}
+                      </td>
+
+                      {role ===
+                        "ADMIN" && (
+                        <td
+                          className="
+                            text-sm
+                            text-white/50
+                          "
+                        >
+                          {
+                            user.email
+                          }
+                        </td>
+                      )}
+
+                      <td>
+                        <span
+                          className={`
+                            px-3
+                            py-1
+                            text-xs
+                            rounded-full
+                            border
+                            ${
+                              user.role ===
+                              "ADMIN"
+                                ? `
+                                  bg-orange-500/10
+                                  border-orange-500/20
+                                  text-orange-300
+                                `
+                                : user.role ===
+                                  "EDITOR"
+                                ? `
+                                  bg-violet-500/10
+                                  border-violet-500/20
+                                  text-violet-300
+                                `
+                                : `
+                                  bg-yellow-500/10
+                                  border-yellow-500/20
+                                  text-yellow-300
+                                `
+                            }
+                          `}
+                        >
+                          {
+                            user.role
+                          }
+                        </span>
+                      </td>
+
+                      <td
+                        className="
+                          text-sm
+                          text-white/60
+                        "
+                      >
+                        {
+                          user
+                            ._count
+                            ?.articles
+                        }
+                      </td>
+
+                      {role ===
+                        "ADMIN" && (
+                        <td>
+                          <span
+                            className={`
+                              px-3
+                              py-1
+                              rounded-full
+                              text-xs
+                              border
+                              ${
+                                user.isActive
+                                  ? `
+                                    bg-green-500/10
+                                    border-green-500/20
+                                    text-green-300
+                                  `
+                                  : `
+                                    bg-red-500/10
+                                    border-red-500/20
+                                    text-red-300
+                                  `
+                              }
+                            `}
+                          >
+                            {user.isActive
+                              ? "Active"
+                              : "Deactivated"}
+                          </span>
+                        </td>
+                      )}
+
+                      {role ===
+                        "ADMIN" && (
+                        <td>
+                          <div
+                            className="
+                              flex
+                              gap-4
+                              text-white/40
+                            "
+                          >
+                            <button
+                              onClick={() =>
+                                openEditModal(
+                                  user
+                                )
+                              }
+                              className="
+                                hover:text-violet-400
+                                transition
+                              "
+                            >
+                              ✎
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                handleDeactivate(
+                                  user
+                                )
+                              }
+                              className="
+                                hover:text-orange-400
+                                transition
+                              "
+                            >
+                              ⋯
+                            </button>
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </div>
@@ -650,13 +639,22 @@ export default function UsersPage() {
         <div className="col-span-3 space-y-6">
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-[32px]
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
-            <h2 className="mb-6">
+            <h2
+              className="
+                mb-6
+                text-white
+              "
+            >
               Team Overview
             </h2>
 
@@ -668,14 +666,16 @@ export default function UsersPage() {
                   text-sm
                 "
               >
-                <span>
+                <span className="text-white/70">
                   Admin
                 </span>
 
-                <span>
+                <span className="text-white/40">
                   {
                     users.filter(
-                      (user) =>
+                      (
+                        user
+                      ) =>
                         user.role ===
                         "ADMIN"
                     ).length
@@ -690,14 +690,16 @@ export default function UsersPage() {
                   text-sm
                 "
               >
-                <span>
+                <span className="text-violet-300">
                   Editor
                 </span>
 
-                <span>
+                <span className="text-violet-300">
                   {
                     users.filter(
-                      (user) =>
+                      (
+                        user
+                      ) =>
                         user.role ===
                         "EDITOR"
                     ).length
@@ -712,14 +714,16 @@ export default function UsersPage() {
                   text-sm
                 "
               >
-                <span>
+                <span className="text-orange-300">
                   Writer
                 </span>
 
-                <span>
+                <span className="text-orange-300">
                   {
                     users.filter(
-                      (user) =>
+                      (
+                        user
+                      ) =>
                         user.role ===
                         "WRITER"
                     ).length
@@ -729,73 +733,423 @@ export default function UsersPage() {
             </div>
           </div>
 
-        {role === "ADMIN" && (
-          <div
-            className="
-              bg-[#12121a]
-              border
-              border-white/5
-              p-6
-            "
-          >
-            <h2 className="mb-6">
-              Recent Activity
-            </h2>
+          {role ===
+            "ADMIN" && (
+            <div
+              className="
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-[32px]
+                p-6
+                shadow-xl
+                shadow-black/20
+              "
+            >
+              <h2
+                className="
+                  mb-6
+                  text-white
+                "
+              >
+                Recent Activity
+              </h2>
 
-            <div className="space-y-4">
-              {logs
-                .slice(0, 5)
-                .map((log) => (
-                  <div
-                    key={log.id}
-                    className="
-                      border-b
-                      border-white/5
-                      pb-4
-                    "
-                  >
-                    <p
+              <div className="space-y-4">
+                {logs
+                  .slice(0, 5)
+                  .map((log) => (
+                    <div
+                      key={log.id}
                       className="
-                        text-sm
-                        text-white
-                        leading-6
+                        border-b
+                        border-white/10
+                        pb-4
                       "
                     >
-                      {log.user?.name}{" "}
-                      {formatAction(
-                        log.action
-                      )}
+                      <p
+                        className="
+                          text-sm
+                          text-white
+                          leading-6
+                        "
+                      >
+                        {
+                          log.user
+                            ?.name
+                        }{" "}
+                        {formatAction(
+                          log.action
+                        )}
 
-                      {log.article && (
-                        <>
-                          {" "}
-                          "
-                          {
-                            log.article.title
-                          }
-                          "
-                        </>
-                      )}
-                    </p>
+                        {log.article && (
+                          <>
+                            {" "}
+                            "
+                            {
+                              log
+                                .article
+                                .title
+                            }
+                            "
+                          </>
+                        )}
+                      </p>
 
-                    <p
-                      className="
-                        text-xs
-                        text-white/40
-                        mt-2
-                      "
-                    >
-                      {formatTimeAgo(
-                        log.createdAt
-                      )}
-                    </p>
-                  </div>
-                ))}
+                      <p
+                        className="
+                          text-xs
+                          text-white/40
+                          mt-2
+                        "
+                      >
+                        {formatTimeAgo(
+                          log.createdAt
+                        )}
+                      </p>
+                    </div>
+                  ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
         </div>
       </div>
+    {selectedUser && (
+      <div
+        className="
+          fixed
+          inset-0
+          z-50
+          bg-black/70
+          backdrop-blur-md
+          flex
+          items-center
+          justify-center
+          p-6
+        "
+      >
+        <div
+          className="
+            w-full
+            max-w-xl
+            bg-[#171a20]/90
+            backdrop-blur-2xl
+            border
+            border-white/10
+            rounded-[32px]
+            p-8
+            shadow-2xl
+            shadow-black/40
+          "
+        >
+          <div
+            className="
+              flex
+              items-start
+              justify-between
+              mb-8
+            "
+          >
+            <div>
+              <p
+                className="
+                  text-xs
+                  text-white/40
+                  mb-3
+                "
+              >
+                USER EDITOR
+              </p>
+
+              <h2
+                className="
+                  text-3xl
+                  font-light
+                  text-white
+                "
+              >
+                Edit User
+              </h2>
+            </div>
+
+            <button
+              onClick={() =>
+                setSelectedUser(
+                  null
+                )
+              }
+              className="
+                text-white/40
+                hover:text-white
+                transition
+              "
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="space-y-5">
+            <div>
+              <label
+                className="
+                  text-xs
+                  text-white/50
+                  block
+                  mb-2
+                "
+              >
+                Name
+              </label>
+
+              <input
+                type="text"
+                value={editName}
+                onChange={(e) =>
+                  setEditName(
+                    e.target.value
+                  )
+                }
+                className="
+                  w-full
+                  h-12
+                  bg-white/[0.03]
+                  backdrop-blur-xl
+                  border
+                  border-white/10
+                  rounded-2xl
+                  px-4
+                  text-white
+                  outline-none
+                  focus:border-violet-500/40
+                "
+              />
+            </div>
+
+            <div>
+              <label
+                className="
+                  text-xs
+                  text-white/50
+                  block
+                  mb-2
+                "
+              >
+                Email
+              </label>
+
+              <input
+                type="email"
+                value={editEmail}
+                onChange={(e) =>
+                  setEditEmail(
+                    e.target.value
+                  )
+                }
+                className="
+                  w-full
+                  h-12
+                  bg-white/[0.03]
+                  backdrop-blur-xl
+                  border
+                  border-white/10
+                  rounded-2xl
+                  px-4
+                  text-white
+                  outline-none
+                  focus:border-violet-500/40
+                "
+              />
+            </div>
+
+            <div>
+              <label
+                className="
+                  text-xs
+                  text-white/50
+                  block
+                  mb-2
+                "
+              >
+                Role
+              </label>
+
+              <select
+                value={editRole}
+                onChange={(e) =>
+                  setEditRole(
+                    e.target.value
+                  )
+                }
+                className="
+                  w-full
+                  h-12
+                  bg-white/[0.03]
+                  backdrop-blur-xl
+                  border
+                  border-white/10
+                  rounded-2xl
+                  px-4
+                  text-white
+                  outline-none
+                  focus:border-violet-500/40
+                "
+              >
+                <option value="ADMIN">
+                  ADMIN
+                </option>
+
+                <option value="EDITOR">
+                  EDITOR
+                </option>
+
+                <option value="WRITER">
+                  WRITER
+                </option>
+              </select>
+            </div>
+
+            <div
+              className="
+                flex
+                items-center
+                justify-between
+                bg-white/[0.03]
+                border
+                border-white/10
+                rounded-2xl
+                px-5
+                py-4
+              "
+            >
+              <div>
+                <p
+                  className="
+                    text-sm
+                    text-white
+                  "
+                >
+                  Account Status
+                </p>
+
+                <p
+                  className="
+                    text-xs
+                    text-white/40
+                    mt-1
+                  "
+                >
+                  Enable or disable
+                  account access
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setEditActive(
+                    !editActive
+                  )
+                }
+                className={`
+                  w-16
+                  h-9
+                  rounded-full
+                  transition
+                  relative
+                  ${
+                    editActive
+                      ? `
+                        bg-gradient-to-r
+                        from-violet-500
+                        to-orange-400
+                      `
+                      : `
+                        bg-white/10
+                      `
+                  }
+                `}
+              >
+                <div
+                  className={`
+                    absolute
+                    top-1
+                    w-7
+                    h-7
+                    rounded-full
+                    bg-white
+                    transition
+                    ${
+                      editActive
+                        ? `
+                          right-1
+                        `
+                        : `
+                          left-1
+                        `
+                    }
+                  `}
+                />
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="
+              flex
+              justify-end
+              gap-4
+              mt-8
+            "
+          >
+            <button
+              onClick={() =>
+                setSelectedUser(
+                  null
+                )
+              }
+              className="
+                px-5
+                h-11
+                rounded-2xl
+                border
+                border-white/10
+                bg-white/[0.03]
+                text-sm
+                hover:bg-white/[0.05]
+                transition
+              "
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={
+                saveUserEdit
+              }
+              disabled={
+                savingUser
+              }
+              className="
+                px-5
+                h-11
+                rounded-2xl
+                bg-gradient-to-r
+                from-violet-500
+                to-orange-400
+                text-sm
+                shadow-lg
+                shadow-violet-500/20
+              "
+            >
+              {savingUser
+                ? "Saving..."
+                : "Save Changes"}
+            </button>
+          </div>
+        </div>
+      </div>
+    )}      
     </DashboardLayout>
   );
 }

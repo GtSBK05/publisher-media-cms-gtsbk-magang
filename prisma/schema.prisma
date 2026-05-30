@@ -9,9 +9,15 @@ datasource db {
 
 model User {
   id           String   @id @default(uuid())
+
   name         String
   email        String   @unique
-  password     String
+
+  password     String?
+
+  googleId     String?  @unique
+  avatar       String?
+
   role         Role     @default(WRITER)
 
   isActive     Boolean  @default(true)
@@ -19,7 +25,7 @@ model User {
   articles     Article[]
   activityLogs ActivityLog[]
 
-  resetTokens PasswordResetToken[]
+  resetTokens  PasswordResetToken[]
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

@@ -1,5 +1,8 @@
 "use client";
 
+export const dynamic =
+  "force-dynamic";
+
 import {
   useEffect,
   useState,
@@ -69,21 +72,11 @@ export default function AnalyticsPage() {
           className="
             text-4xl
             font-light
+            text-white
           "
         >
           Analytics
         </h1>
-
-        <p
-          className="
-            text-sm
-            text-white/40
-            mt-2
-          "
-        >
-          Editorial insights and
-          publishing performance
-        </p>
       </div>
 
       <div className="space-y-6">
@@ -96,10 +89,14 @@ export default function AnalyticsPage() {
         >
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
             <p
@@ -116,6 +113,7 @@ export default function AnalyticsPage() {
                 text-5xl
                 font-light
                 mt-5
+                text-white
               "
             >
               {
@@ -126,10 +124,14 @@ export default function AnalyticsPage() {
 
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
             <p
@@ -157,10 +159,14 @@ export default function AnalyticsPage() {
 
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
             <p
@@ -188,10 +194,14 @@ export default function AnalyticsPage() {
 
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-3xl
               p-6
+              shadow-xl
+              shadow-black/20
             "
           >
             <p
@@ -208,6 +218,7 @@ export default function AnalyticsPage() {
                 text-5xl
                 font-light
                 mt-5
+                text-white
               "
             >
               {
@@ -219,10 +230,14 @@ export default function AnalyticsPage() {
 
         <div
           className="
-            bg-[#12121a]
+            bg-white/[0.04]
+            backdrop-blur-2xl
             border
-            border-white/5
+            border-white/10
+            rounded-[32px]
             p-6
+            shadow-xl
+            shadow-black/20
           "
         >
           <div
@@ -238,6 +253,7 @@ export default function AnalyticsPage() {
                 className="
                   text-xl
                   font-light
+                  text-white
                 "
               >
                 Publishing Trend
@@ -268,10 +284,23 @@ export default function AnalyticsPage() {
               >
                 <XAxis
                   dataKey="date"
-                  stroke="#666"
+                  stroke="#777"
                 />
 
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    background:
+                      "rgba(20,20,28,0.95)",
+                    border:
+                      "1px solid rgba(255,255,255,0.1)",
+                    borderRadius:
+                      "18px",
+                    backdropFilter:
+                      "blur(20px)",
+                    color:
+                      "#fff",
+                  }}
+                />
 
                 <Area
                   type="monotone"
@@ -295,10 +324,14 @@ export default function AnalyticsPage() {
           <div className="col-span-7">
             <div
               className="
-                bg-[#12121a]
+                bg-white/[0.04]
+                backdrop-blur-2xl
                 border
-                border-white/5
+                border-white/10
+                rounded-[32px]
                 p-6
+                shadow-xl
+                shadow-black/20
               "
             >
               <div
@@ -314,6 +347,7 @@ export default function AnalyticsPage() {
                     className="
                       text-xl
                       font-light
+                      text-white
                     "
                   >
                     Category
@@ -345,17 +379,30 @@ export default function AnalyticsPage() {
                   >
                     <XAxis
                       dataKey="name"
-                      stroke="#666"
+                      stroke="#777"
                     />
 
-                    <Tooltip />
+                    <Tooltip
+                      contentStyle={{
+                        background:
+                          "rgba(20,20,28,0.95)",
+                        border:
+                          "1px solid rgba(255,255,255,0.1)",
+                        borderRadius:
+                          "18px",
+                        backdropFilter:
+                          "blur(20px)",
+                        color:
+                          "#fff",
+                      }}
+                    />
 
                     <Bar
                       dataKey="count"
                       fill="#f97316"
                       radius={[
-                        6,
-                        6,
+                        10,
+                        10,
                         0,
                         0,
                       ]}
@@ -369,11 +416,15 @@ export default function AnalyticsPage() {
           <div className="col-span-5">
             <div
               className="
-                bg-[#12121a]
+                bg-white/[0.04]
+                backdrop-blur-2xl
                 border
-                border-white/5
+                border-white/10
+                rounded-[32px]
                 p-6
                 h-full
+                shadow-xl
+                shadow-black/20
               "
             >
               <h2
@@ -381,6 +432,7 @@ export default function AnalyticsPage() {
                   text-xl
                   font-light
                   mb-8
+                  text-white
                 "
               >
                 Top Writers
@@ -392,7 +444,9 @@ export default function AnalyticsPage() {
                     writer: any
                   ) => (
                     <div
-                      key={writer.id}
+                      key={
+                        writer.id
+                      }
                       className="
                         flex
                         items-center
@@ -418,6 +472,8 @@ export default function AnalyticsPage() {
                             items-center
                             justify-center
                             text-xs
+                            shadow-lg
+                            shadow-violet-500/20
                           "
                         >
                           {writer.name?.charAt(
@@ -426,7 +482,7 @@ export default function AnalyticsPage() {
                         </div>
 
                         <div>
-                          <p className="text-sm">
+                          <p className="text-sm text-white">
                             {
                               writer.name
                             }
@@ -453,7 +509,8 @@ export default function AnalyticsPage() {
                         "
                       >
                         {
-                          writer._count
+                          writer
+                            ._count
                             .articles
                         }{" "}
                         articles
