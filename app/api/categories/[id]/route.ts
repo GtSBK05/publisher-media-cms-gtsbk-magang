@@ -1,23 +1,52 @@
 import { prisma } from "@/lib/prisma";
-
 import jwt from "jsonwebtoken";
 
-export async function DELETE(
-  req: Request,
-  context: any
+function verifyToken(
+  req: Request
 ) {
   try {
-    const params =
-      await context.params;
-
-    const id = params.id;
-
     const authHeader =
       req.headers.get(
         "authorization"
       );
 
     if (!authHeader) {
+      return null;
+    }
+
+    const token =
+      authHeader.replace(
+        "Bearer ",
+        ""
+      );
+
+    if (
+      !token ||
+      token === "undefined" ||
+      token === "null"
+    ) {
+      return null;
+    }
+
+    return jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as any;
+
+  } catch {
+    return null;
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  context: any
+) {
+  try {
+    const decoded =
+      verifyToken(req);
+
+    if (!decoded) {
       return Response.json(
         {
           error:
@@ -28,15 +57,6 @@ export async function DELETE(
         }
       );
     }
-
-    const token =
-      authHeader.split(" ")[1];
-
-    const decoded: any =
-      jwt.verify(
-        token,
-        process.env.JWT_SECRET!
-      );
 
     if (
       decoded.role !==
@@ -53,22 +73,26 @@ export async function DELETE(
       );
     }
 
-    const category =
-      await prisma.category.findUnique(
-        {
-          where: {
-            id,
-          },
+    const params =
+      await context.params;
 
-          include: {
-            _count: {
-              select: {
-                articles: true,
-              },
+    const id =
+      params.id;
+
+    const category =
+      await prisma.category.findUnique({
+        where: {
+          id,
+        },
+
+        include: {
+          _count: {
+            select: {
+              articles: true,
             },
           },
-        }
-      );
+        },
+      });
 
     if (!category) {
       return Response.json(
@@ -97,13 +121,11 @@ export async function DELETE(
       );
     }
 
-    await prisma.category.delete(
-      {
-        where: {
-          id,
-        },
-      }
-    );
+    await prisma.category.delete({
+      where: {
+        id,
+      },
+    });
 
     return Response.json({
       message:

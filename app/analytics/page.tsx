@@ -28,6 +28,22 @@ export default function AnalyticsPage() {
     useState(true);
 
   useEffect(() => {
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    if (
+      !token ||
+      token === "undefined" ||
+      token === "null"
+    ) {
+      window.location.href =
+        "/login";
+
+      return;
+    }
+
     fetchAnalytics();
   }, []);
 
@@ -38,6 +54,14 @@ export default function AnalyticsPage() {
           "token"
         );
 
+      if (
+        !token ||
+        token === "undefined" ||
+        token === "null"
+      ) {
+        return;
+      }
+
       const res = await fetch(
         "/api/analytics",
         {
@@ -47,6 +71,17 @@ export default function AnalyticsPage() {
           },
         }
       );
+
+      if (res.status === 401) {
+        localStorage.removeItem(
+          "token"
+        );
+
+        window.location.href =
+          "/login";
+
+        return;
+      }
 
       const result =
         await res.json();

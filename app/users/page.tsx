@@ -64,10 +64,21 @@ export default function UsersPage() {
           "token"
         );
 
+      if (
+        !token ||
+        token === "null" ||
+        token === "undefined"
+      ) {
+        window.location.href =
+          "/login";
+
+        return;
+      }
+
       const payload =
         JSON.parse(
           atob(
-            token!.split(".")[1]
+            token.split(".")[1]
           )
         );
 
@@ -97,6 +108,20 @@ export default function UsersPage() {
         ),
       ]);
 
+      if (
+        usersRes.status === 401 ||
+        logsRes.status === 401
+      ) {
+        localStorage.removeItem(
+          "token"
+        );
+
+        window.location.href =
+          "/login";
+
+        return;
+      }
+
       const usersData =
         await usersRes.json();
 
@@ -121,6 +146,13 @@ export default function UsersPage() {
 
     } catch (error) {
       console.error(error);
+
+      localStorage.removeItem(
+        "token"
+      );
+
+      window.location.href =
+        "/login";
 
     } finally {
       setLoading(false);

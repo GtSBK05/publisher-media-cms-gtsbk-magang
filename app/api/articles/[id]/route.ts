@@ -1,34 +1,74 @@
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
-import { logActivity } from "@/lib/logger";
-import { calculateHealthScore } from "@/lib/healthScore";
+
+import { logActivity }
+from "@/lib/logger";
+
+import { calculateHealthScore }
+from "@/lib/healthScore";
+
+function verifyToken(
+  req: Request
+) {
+  try {
+    const authHeader =
+      req.headers.get(
+        "authorization"
+      );
+
+    if (!authHeader) {
+      return null;
+    }
+
+    const token =
+      authHeader.replace(
+        "Bearer ",
+        ""
+      );
+
+    if (
+      !token ||
+      token === "undefined" ||
+      token === "null"
+    ) {
+      return null;
+    }
+
+    return jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as any;
+
+  } catch {
+    return null;
+  }
+}
 
 export async function PATCH(
   req: Request,
   context: any
 ) {
   try {
-    const params = await context.params;
+    const decoded =
+      verifyToken(req);
 
-    const id = params.id;
-
-    const authHeader =
-      req.headers.get("authorization");
-
-    if (!authHeader) {
+    if (!decoded) {
       return Response.json(
-        { error: "Unauthorized" },
-        { status: 401 }
+        {
+          error:
+            "Unauthorized",
+        },
+        {
+          status: 401,
+        }
       );
     }
 
-    const token =
-      authHeader.split(" ")[1];
+    const params =
+      await context.params;
 
-    const decoded: any = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    );
+    const id =
+      params.id;
 
     const article =
       await prisma.article.findUnique({
@@ -39,27 +79,43 @@ export async function PATCH(
 
     if (!article) {
       return Response.json(
-        { error: "Article not found" },
-        { status: 404 }
+        {
+          error:
+            "Article not found",
+        },
+        {
+          status: 404,
+        }
       );
     }
 
     if (
-      article.authorId !== decoded.id && 
-      decoded.role !== "ADMIN"
+      article.authorId !==
+        decoded.id &&
+      decoded.role !==
+        "ADMIN"
     ) {
       return Response.json(
-        { error: "Forbidden" },
-        { status: 403 }
+        {
+          error:
+            "Forbidden",
+        },
+        {
+          status: 403,
+        }
       );
     }
 
-    const body = await req.json();
+    const body =
+      await req.json();
 
     const healthScore =
       calculateHealthScore({
-        title: body.title,
-        content: body.content,
+        title:
+          body.title,
+
+        content:
+          body.content,
 
         seoTitle:
           body.seoTitle,
@@ -78,8 +134,11 @@ export async function PATCH(
         },
 
         data: {
-          title: body.title,
-          content: body.content,
+          title:
+            body.title,
+
+          content:
+            body.content,
 
           seoTitle:
             body.seoTitle,
@@ -91,7 +150,8 @@ export async function PATCH(
             body.seoKeywords,
 
           categoryId:
-            body.categoryId || null,            
+            body.categoryId ||
+            null,
 
           healthScore,
         },
@@ -103,14 +163,21 @@ export async function PATCH(
       updated.id
     );
 
-    return Response.json(updated);
+    return Response.json(
+      updated
+    );
 
   } catch (error) {
     console.error(error);
 
     return Response.json(
-      { error: "Update failed" },
-      { status: 500 }
+      {
+        error:
+          "Update failed",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
@@ -120,27 +187,26 @@ export async function DELETE(
   context: any
 ) {
   try {
-    const params = await context.params;
+    const decoded =
+      verifyToken(req);
 
-    const id = params.id;
-
-    const authHeader =
-      req.headers.get("authorization");
-
-    if (!authHeader) {
+    if (!decoded) {
       return Response.json(
-        { error: "Unauthorized" },
-        { status: 401 }
+        {
+          error:
+            "Unauthorized",
+        },
+        {
+          status: 401,
+        }
       );
     }
 
-    const token =
-      authHeader.split(" ")[1];
+    const params =
+      await context.params;
 
-    const decoded: any = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    );
+    const id =
+      params.id;
 
     const article =
       await prisma.article.findUnique({
@@ -151,18 +217,30 @@ export async function DELETE(
 
     if (!article) {
       return Response.json(
-        { error: "Article not found" },
-        { status: 404 }
+        {
+          error:
+            "Article not found",
+        },
+        {
+          status: 404,
+        }
       );
     }
 
     if (
-      article.authorId !== decoded.id && 
-      decoded.role !== "ADMIN"
+      article.authorId !==
+        decoded.id &&
+      decoded.role !==
+        "ADMIN"
     ) {
       return Response.json(
-        { error: "Forbidden" },
-        { status: 403 }
+        {
+          error:
+            "Forbidden",
+        },
+        {
+          status: 403,
+        }
       );
     }
 
@@ -179,15 +257,21 @@ export async function DELETE(
     });
 
     return Response.json({
-      message: "Deleted",
+      message:
+        "Deleted",
     });
 
   } catch (error) {
     console.error(error);
 
     return Response.json(
-      { error: "Delete failed" },
-      { status: 500 }
+      {
+        error:
+          "Delete failed",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }

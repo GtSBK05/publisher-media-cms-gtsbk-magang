@@ -1,8 +1,7 @@
 import { prisma } from "@/lib/prisma";
-
 import jwt from "jsonwebtoken";
 
-export async function GET(
+function verifyToken(
   req: Request
 ) {
   try {
@@ -12,6 +11,41 @@ export async function GET(
       );
 
     if (!authHeader) {
+      return null;
+    }
+
+    const token =
+      authHeader.replace(
+        "Bearer ",
+        ""
+      );
+
+    if (
+      !token ||
+      token === "undefined" ||
+      token === "null"
+    ) {
+      return null;
+    }
+
+    return jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as any;
+
+  } catch {
+    return null;
+  }
+}
+
+export async function GET(
+  req: Request
+) {
+  try {
+    const decoded =
+      verifyToken(req);
+
+    if (!decoded) {
       return Response.json(
         {
           error:
@@ -23,33 +57,42 @@ export async function GET(
       );
     }
 
-    const token =
-      authHeader.split(" ")[1];
-
-    const decoded: any =
-      jwt.verify(
-        token,
-        process.env.JWT_SECRET!
-      );
-
     const users =
-      await prisma.user.findMany(
-        {
-          include: {
-            _count: {
-              select: {
-                articles: true,
-              },
+      await prisma.user.findMany({
+        include: {
+          _count: {
+            select: {
+              articles: true,
             },
           },
+        },
 
-          orderBy: {
-            name: "asc",
-          },
-        }
+        orderBy: {
+          name: "asc",
+        },
+      });
+
+    if (
+      decoded.role ===
+      "ADMIN"
+    ) {
+      return Response.json(
+        users
+      );
+    }
+
+    const filteredUsers =
+      users.map(
+        ({
+          email,
+          isActive,
+          ...user
+        }) => user
       );
 
-    return Response.json(users);
+    return Response.json(
+      filteredUsers
+    );
 
   } catch (error) {
     console.error(error);

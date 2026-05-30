@@ -1,23 +1,52 @@
 import { prisma } from "@/lib/prisma";
-
 import jwt from "jsonwebtoken";
 
-export async function PATCH(
-  req: Request,
-  context: any
+function verifyToken(
+  req: Request
 ) {
   try {
-    const params =
-      await context.params;
-
-    const id = params.id;
-
     const authHeader =
       req.headers.get(
         "authorization"
       );
 
     if (!authHeader) {
+      return null;
+    }
+
+    const token =
+      authHeader.replace(
+        "Bearer ",
+        ""
+      );
+
+    if (
+      !token ||
+      token === "undefined" ||
+      token === "null"
+    ) {
+      return null;
+    }
+
+    return jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as any;
+
+  } catch {
+    return null;
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  context: any
+) {
+  try {
+    const decoded =
+      verifyToken(req);
+
+    if (!decoded) {
       return Response.json(
         {
           error:
@@ -28,15 +57,6 @@ export async function PATCH(
         }
       );
     }
-
-    const token =
-      authHeader.split(" ")[1];
-
-    const decoded: any =
-      jwt.verify(
-        token,
-        process.env.JWT_SECRET!
-      );
 
     if (
       decoded.role !==
@@ -52,6 +72,12 @@ export async function PATCH(
         }
       );
     }
+
+    const params =
+      await context.params;
+
+    const id =
+      params.id;
 
     const body =
       await req.json();

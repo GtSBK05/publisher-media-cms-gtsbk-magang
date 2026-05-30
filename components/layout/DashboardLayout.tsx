@@ -1,4 +1,5 @@
 import Sidebar from "./Sidebar";
+import UserDropdown from "./UserDropdown";
 
 export default function DashboardLayout({
   children,
@@ -68,7 +69,7 @@ export default function DashboardLayout({
               border-white/10
               bg-white/[0.04]
               backdrop-blur-2xl
-              overflow-hidden
+              overflow-visible
               relative
               shadow-2xl
               shadow-black/30
@@ -89,7 +90,7 @@ export default function DashboardLayout({
             <div
               className="
                 relative
-                z-10
+                z-50
                 border-b
                 border-white/10
                 px-8
@@ -131,51 +132,7 @@ export default function DashboardLayout({
                   gap-3
                 "
               >
-                <div
-                  className="
-                    hidden
-                    md:flex
-                    items-center
-                    gap-2
-                    px-4
-                    h-10
-                    rounded-full
-                    border
-                    border-white/10
-                    bg-white/[0.03]
-                    text-sm
-                    text-white/50
-                  "
-                >
-                  <span
-                    className="
-                      text-orange-300
-                    "
-                  >
-                    ●
-                  </span>
-
-                  Archive Online
-                </div>
-
-                <div
-                  className="
-                    w-10
-                    h-10
-                    rounded-full
-                    bg-gradient-to-br
-                    from-violet-500
-                    to-orange-400
-                    flex
-                    items-center
-                    justify-center
-                    text-sm
-                    shadow-lg
-                    shadow-violet-500/20
-                  "
-                >
-                  A
-                </div>
+                <UserDropdown />
               </div>
             </div>
 

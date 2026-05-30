@@ -68,12 +68,26 @@ export default function ArticleEditorPage() {
   ] = useState("");
 
   useEffect(() => {
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    if (
+      !token ||
+      token === "null" ||
+      token === "undefined"
+    ) {
+      router.push("/login");
+      return;
+    }
+
     fetchCategories();
 
     if (articleId) {
       fetchArticle();
     }
-  }, []);
+  }, [articleId, router]);
 
   async function fetchArticle() {
     try {
@@ -84,6 +98,15 @@ export default function ArticleEditorPage() {
           "token"
         );
 
+      if (
+        !token ||
+        token === "null" ||
+        token === "undefined"
+      ) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         "/api/articles",
         {
@@ -93,6 +116,16 @@ export default function ArticleEditorPage() {
           },
         }
       );
+
+      if (res.status === 401) {
+        localStorage.removeItem(
+          "token"
+        );
+
+        router.push("/login");
+
+        return;
+      }
 
       const data =
         await res.json();
@@ -157,6 +190,15 @@ export default function ArticleEditorPage() {
           "token"
         );
 
+      if (
+        !token ||
+        token === "null" ||
+        token === "undefined"
+      ) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         "/api/categories",
         {
@@ -166,6 +208,16 @@ export default function ArticleEditorPage() {
           },
         }
       );
+
+      if (res.status === 401) {
+        localStorage.removeItem(
+          "token"
+        );
+
+        router.push("/login");
+
+        return;
+      }
 
       const data =
         await res.json();
