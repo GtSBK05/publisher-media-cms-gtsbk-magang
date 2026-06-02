@@ -283,21 +283,85 @@ export default function NewsDetailClient({
             prose
             max-w-none
             leading-9
+
+            [&_strong]:font-bold
+            [&_strong]:text-inherit
+
+            [&_em]:italic
+            [&_em]:text-inherit
+
+            [&_h1]:text-4xl
+            [&_h1]:font-bold
+            [&_h1]:text-inherit
+
+            [&_h2]:text-3xl
+            [&_h2]:font-semibold
+            [&_h2]:text-inherit
+
+            [&_h3]:text-2xl
+            [&_h3]:font-semibold
+            [&_h3]:text-inherit
+
+            [&_blockquote]:border-l-4
+            [&_blockquote]:border-violet-500
+            [&_blockquote]:pl-4
+
+            [&_blockquote]:text-inherit
+
+            [&_blockquote_p]:text-inherit
+            [&_blockquote_h1]:text-inherit
+            [&_blockquote_h2]:text-inherit
+            [&_blockquote_h3]:text-inherit
+
+            [&_blockquote_strong]:font-bold
+            [&_blockquote_strong]:text-inherit
+
+            [&_blockquote_em]:italic
+            [&_blockquote_em]:text-inherit
+
+            [&_ul]:list-disc
+            [&_ul]:pl-6
+
+            [&_ol]:list-decimal
+            [&_ol]:pl-6
+
+            [&_a]:text-sky-400
+            [&_a]:underline
+            [&_a]:underline-offset-4
+            [&_a]:cursor-pointer
+            [&_a]:hover:text-sky-300            
+
+            [&_img]:w-full
+            [&_img]:my-8
+
             ${
-              lightMode
-                ? `
+            lightMode
+              ? `
                   prose-neutral
-                  text-black/80
+                  text-black
+
+                  prose-headings:text-black
+                  prose-strong:text-black
+                  prose-em:text-black
+                  prose-li:text-black
+                  prose-p:text-black
+                  prose-blockquote:text-black
                 `
-                : `
+              : `
                   prose-invert
-                  text-white/80
+                  text-white
+
+                  prose-headings:text-white
+                  prose-strong:text-white
+                  prose-em:text-white
+                  prose-li:text-white
+                  prose-p:text-white
+                  prose-blockquote:text-white
                 `
             }
           `}
           dangerouslySetInnerHTML={{
-            __html:
-              article.content,
+            __html: article.content,
           }}
         />
       </div>
