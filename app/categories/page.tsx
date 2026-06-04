@@ -22,6 +22,14 @@ export default function CategoriesPage() {
   const [loading, setLoading] =
     useState(false);
 
+  const [search, setSearch] =
+    useState("");
+
+  const [sortDirection, setSortDirection] =
+    useState<"asc" | "desc">(
+      "asc"
+    );    
+
   async function fetchCategories() {
     try {
       const token =
@@ -163,6 +171,27 @@ export default function CategoriesPage() {
     }
   }
 
+  const filteredCategories =
+    categories
+      .filter((category) =>
+        category.name
+          ?.toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
+      )
+      .sort((a, b) => {
+        const result =
+          a.name.localeCompare(
+            b.name
+          );
+
+        return sortDirection ===
+          "asc"
+          ? result
+          : -result;
+      });  
+
   return (
     <DashboardLayout>
       <div
@@ -199,11 +228,15 @@ export default function CategoriesPage() {
         <div className="col-span-4">
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-[32px]
               p-6
               space-y-5
+              shadow-xl
+              shadow-black/20
             "
           >
             <h2
@@ -224,16 +257,19 @@ export default function CategoriesPage() {
                 )
               }
               placeholder="Category name..."
-              className="
-                w-full
-                h-12
-                bg-black/20
-                border
-                border-white/10
-                px-4
-                outline-none
-                focus:border-violet-500
-              "
+            className="
+              w-full
+              h-12
+              bg-white/[0.03]
+              backdrop-blur-xl
+              border
+              border-white/10
+              rounded-2xl
+              px-4
+              text-white
+              outline-none
+              focus:border-violet-500/40
+            "
             />
 
             <button
@@ -244,10 +280,13 @@ export default function CategoriesPage() {
               className="
                 w-full
                 h-12
+                rounded-2xl
                 bg-gradient-to-r
                 from-violet-500
                 to-orange-400
                 text-sm
+                shadow-lg
+                shadow-violet-500/20
               "
             >
               {loading
@@ -258,12 +297,42 @@ export default function CategoriesPage() {
         </div>
 
         <div className="col-span-8">
+          <div className="mb-5">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value
+                )
+              }
+              placeholder="Search category..."
+              className="
+                w-full
+                h-12
+                bg-white/[0.04]
+                backdrop-blur-xl
+                border
+                border-white/10
+                rounded-2xl
+                px-4
+                text-sm
+                text-white
+                outline-none
+                focus:border-violet-500/40
+              "
+            />
+          </div>          
           <div
             className="
-              bg-[#12121a]
+              bg-white/[0.04]
+              backdrop-blur-2xl
               border
-              border-white/5
+              border-white/10
+              rounded-[32px]
               overflow-hidden
+              shadow-xl
+              shadow-black/20
             "
           >
             <table className="w-full">
@@ -280,8 +349,24 @@ export default function CategoriesPage() {
                     text-sm
                   "
                 >
-                  <th className="p-5 font-normal">
-                    Name
+                  <th
+                    onClick={() =>
+                      setSortDirection(
+                        sortDirection ===
+                          "asc"
+                          ? "desc"
+                          : "asc"
+                      )
+                    }
+                    className="
+                      p-5
+                      font-normal
+                      cursor-pointer
+                      hover:text-violet-300
+                      transition
+                    "
+                  >
+                    Name ↕
                   </th>
 
                   <th className="font-normal">
@@ -295,7 +380,7 @@ export default function CategoriesPage() {
               </thead>
 
               <tbody>
-                {categories.map(
+                {filteredCategories.map(
                   (category) => (
                     <tr
                       key={

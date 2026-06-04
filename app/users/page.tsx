@@ -23,6 +23,18 @@ export default function UsersPage() {
   const [role, setRole] =
     useState("");
 
+  const [search, setSearch] =
+    useState("");
+
+  const [roleFilter, setRoleFilter] =
+    useState("ALL");
+
+  const [sortField, setSortField] =
+    useState("name");
+
+  const [sortDirection, setSortDirection] =
+    useState("asc");    
+
   const [
     selectedUser,
     setSelectedUser,
@@ -368,6 +380,77 @@ export default function UsersPage() {
     } ago`;
   }
 
+  const filteredUsers =
+    users
+      .filter((user) => {
+        const keyword =
+          search.toLowerCase();
+
+        const matchSearch =
+          user.name
+            ?.toLowerCase()
+            .includes(keyword) ||
+
+          user.email
+            ?.toLowerCase()
+            .includes(keyword) ||
+
+          user.role
+            ?.toLowerCase()
+            .includes(keyword);
+
+        const matchRole =
+          roleFilter === "ALL"
+            ? true
+            : user.role ===
+              roleFilter;
+
+        return (
+          matchSearch &&
+          matchRole
+        );
+      })
+      .sort((a, b) => {
+        let result = 0;
+
+        if (sortField === "name") {
+          result =
+            a.name.localeCompare(
+              b.name
+            );
+        }
+
+        if (sortField === "email") {
+          result =
+            a.email.localeCompare(
+              b.email
+            );
+        }
+
+        if (sortField === "role") {
+          result =
+            a.role.localeCompare(
+              b.role
+            );
+        }
+
+        if (
+          sortField ===
+          "articles"
+        ) {
+          result =
+            (a._count?.articles ||
+              0) -
+            (b._count?.articles ||
+              0);
+        }
+
+        return sortDirection ===
+          "asc"
+          ? result
+          : -result;
+      });  
+
   if (loading) {
     return null;
   }
@@ -388,12 +471,24 @@ export default function UsersPage() {
             </h1>
           </div>
 
-          <div className="mb-5">
+          <div
+            className="
+              flex
+              gap-3
+              mb-5
+            "
+          >
             <input
               type="text"
-              placeholder="Search users by name, email, or role..."
+              value={search}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value
+                )
+              }
+              placeholder="Search users..."
               className="
-                w-full
+                flex-1
                 h-12
                 bg-white/[0.04]
                 backdrop-blur-xl
@@ -407,6 +502,54 @@ export default function UsersPage() {
                 focus:border-violet-500/40
               "
             />
+
+            <select
+              value={roleFilter}
+              onChange={(e) =>
+                setRoleFilter(
+                  e.target.value
+                )
+              }
+              className="
+                h-12
+                px-4
+                rounded-2xl
+                border
+                border-white/10
+                bg-white/[0.04]
+                text-white
+                text-sm
+                outline-none
+              "
+            >
+              <option
+                value="ALL"
+                className="bg-[#171a20]"
+              >
+                All Roles
+              </option>
+
+              <option
+                value="ADMIN"
+                className="bg-[#171a20]"
+              >
+                Admin
+              </option>
+
+              <option
+                value="EDITOR"
+                className="bg-[#171a20]"
+              >
+                Editor
+              </option>
+
+              <option
+                value="WRITER"
+                className="bg-[#171a20]"
+              >
+                Writer
+              </option>
+            </select>
           </div>
 
           <div
@@ -436,14 +579,51 @@ export default function UsersPage() {
                     text-sm
                   "
                 >
-                  <th className="p-5 font-normal">
-                    User
-                  </th>
+                    <th
+                      className="
+                        p-5
+                        font-normal
+                        cursor-pointer
+                        hover:text-violet-300
+                      "
+                      onClick={() => {
+                        setSortField(
+                          "name"
+                        );
+
+                        setSortDirection(
+                          sortDirection ===
+                          "asc"
+                            ? "desc"
+                            : "asc"
+                        );
+                      }}
+                    >
+                      User ↕
+                    </th>
 
                   {role ===
                     "ADMIN" && (
-                    <th className="font-normal">
-                      Email
+                    <th
+                      className="
+                        font-normal
+                        cursor-pointer
+                        hover:text-violet-300
+                      "
+                      onClick={() => {
+                        setSortField(
+                          "email"
+                        );
+
+                        setSortDirection(
+                          sortDirection ===
+                          "asc"
+                            ? "desc"
+                            : "asc"
+                        );
+                      }}
+                    >
+                      Email ↕
                     </th>
                   )}
 
@@ -451,9 +631,27 @@ export default function UsersPage() {
                     Role
                   </th>
 
-                  <th className="font-normal">
-                    Articles
-                  </th>
+                    <th
+                      className="
+                        font-normal
+                        cursor-pointer
+                        hover:text-violet-300
+                      "
+                      onClick={() => {
+                        setSortField(
+                          "articles"
+                        );
+
+                        setSortDirection(
+                          sortDirection ===
+                          "asc"
+                            ? "desc"
+                            : "asc"
+                        );
+                      }}
+                    >
+                      Articles ↕
+                    </th>
 
                   {role ===
                     "ADMIN" && (
@@ -472,7 +670,7 @@ export default function UsersPage() {
               </thead>
 
               <tbody>
-                {users.map(
+                {filteredUsers.map(
                   (user) => (
                     <tr
                       key={

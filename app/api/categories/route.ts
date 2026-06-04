@@ -38,25 +38,8 @@ function verifyToken(
   }
 }
 
-export async function GET(
-  req: Request
-) {
+export async function GET() {
   try {
-    const decoded =
-      verifyToken(req);
-
-    if (!decoded) {
-      return Response.json(
-        {
-          error:
-            "Unauthorized",
-        },
-        {
-          status: 401,
-        }
-      );
-    }
-
     const categories =
       await prisma.category.findMany({
         include: {
@@ -66,23 +49,17 @@ export async function GET(
             },
           },
         },
-
         orderBy: {
           name: "asc",
         },
       });
 
-    return Response.json(
-      categories
-    );
+    return Response.json(categories);
 
-  } catch (error) {
-    console.error(error);
-
+  } catch {
     return Response.json(
       {
-        error:
-          "Failed to fetch categories",
+        error: "Failed to fetch categories",
       },
       {
         status: 500,

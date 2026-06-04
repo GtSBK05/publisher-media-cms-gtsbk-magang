@@ -31,6 +31,27 @@ export default function ArticlesPage() {
   const [role, setRole] =
     useState("");
 
+  const [search, setSearch] =
+    useState("");
+
+  const [searchType,setSearchType] = 
+    useState("GLOBAL");    
+
+  const [statusFilter, setStatusFilter] =
+    useState("ALL");
+
+  const [categoryFilter, setCategoryFilter] =
+    useState("ALL");
+
+  const [showFilters, setShowFilters] =
+    useState(false);
+
+  const [sortField, setSortField] =
+    useState("createdAt");
+
+  const [sortDirection, setSortDirection] =
+    useState("desc");   
+
   const [
     selectedArticle,
     setSelectedArticle,
@@ -209,6 +230,139 @@ export default function ArticlesPage() {
     }
   }
 
+  const filteredArticles =
+    articles
+      .filter((article) => {
+        const keyword =
+          search.toLowerCase();
+
+        let matchSearch = true;
+
+        if (keyword) {
+          switch (searchType) {
+            case "TITLE":
+              matchSearch =
+                article.title
+                  ?.toLowerCase()
+                  .includes(
+                    keyword
+                  );
+              break;
+
+            case "AUTHOR":
+              matchSearch =
+                article.author?.name
+                  ?.toLowerCase()
+                  .includes(
+                    keyword
+                  );
+              break;
+
+            case "CATEGORY":
+              matchSearch =
+                article.category?.name
+                  ?.toLowerCase()
+                  .includes(
+                    keyword
+                  );
+              break;
+
+            default:
+              matchSearch =
+                article.title
+                  ?.toLowerCase()
+                  .includes(
+                    keyword
+                  ) ||
+
+                article.author?.name
+                  ?.toLowerCase()
+                  .includes(
+                    keyword
+                  ) ||
+
+                article.category?.name
+                  ?.toLowerCase()
+                  .includes(
+                    keyword
+                  );
+          }
+        }
+
+        const matchStatus =
+          statusFilter === "ALL"
+            ? true
+            : article.status ===
+              statusFilter;
+
+        const matchCategory =
+          categoryFilter === "ALL"
+            ? true
+            : article.category?.name ===
+              categoryFilter;
+
+        return (
+          matchSearch &&
+          matchStatus &&
+          matchCategory
+        );
+      })
+      .sort((a, b) => {
+        let result = 0;
+
+        if (
+          sortField === "title"
+        ) {
+          result =
+            a.title.localeCompare(
+              b.title
+            );
+        }
+
+        if (
+          sortField === "author"
+        ) {
+          result =
+            (
+              a.author?.name || ""
+            ).localeCompare(
+              b.author?.name || ""
+            );
+        }
+
+        if (
+          sortField ===
+          "category"
+        ) {
+          result =
+            (
+              a.category?.name ||
+              ""
+            ).localeCompare(
+              b.category?.name ||
+              ""
+            );
+        }
+
+        if (
+          sortField ===
+          "createdAt"
+        ) {
+          result =
+            new Date(
+              a.createdAt
+            ).getTime() -
+            new Date(
+              b.createdAt
+            ).getTime();
+        }
+
+        return sortDirection ===
+          "asc"
+          ? result
+          : -result;
+      }); 
+
   if (loading) {
     return null;
   }
@@ -291,45 +445,186 @@ export default function ArticlesPage() {
           <div
             className="
               flex
+              flex-col
               gap-4
               mb-5
             "
           >
-            <input
-              type="text"
-              placeholder="Search articles by title, author, or category..."
+            <div
               className="
-                flex-1
-                h-12
-                bg-white/[0.04]
-                backdrop-blur-xl
-                border
-                border-white/10
-                rounded-2xl
-                px-4
-                text-sm
-                text-white
-                outline-none
-                focus:border-violet-500/40
-              "
-            />
-
-            <button
-              className="
-                px-5
-                rounded-2xl
-                bg-white/[0.04]
-                backdrop-blur-xl
-                border
-                border-white/10
-                text-sm
-                text-white/70
-                hover:bg-white/[0.05]
-                transition
+                flex
+                gap-3
               "
             >
-              Filters
-            </button>
+              <select
+                value={searchType}
+                onChange={(e) =>
+                  setSearchType(
+                    e.target.value
+                  )
+                }
+                className="
+                  h-12
+                  rounded-2xl
+                  border
+                  border-white/10
+                  bg-white/[0.04]
+                  backdrop-blur-xl
+                  px-4
+                  text-white
+                  text-sm
+                  outline-none
+                  focus:border-violet-500/40
+                "
+              >
+                <option
+                  value="GLOBAL"
+                  className="
+                    bg-[#171a20]
+                  "
+                >
+                  All
+                </option>
+
+                <option
+                  value="TITLE"
+                  className="
+                    bg-[#171a20]
+                  "
+                >
+                  Title
+                </option>
+
+                <option
+                  value="AUTHOR"
+                  className="
+                    bg-[#171a20]
+                  "
+                >
+                  Author
+                </option>
+
+                <option
+                  value="CATEGORY"
+                  className="
+                    bg-[#171a20]
+                  "
+                >
+                  Category
+                </option>
+              </select>
+
+              <input
+                type="text"
+                value={search}
+                onChange={(e) =>
+                  setSearch(
+                    e.target.value
+                  )
+                }
+                placeholder="Search..."
+                className="
+                  flex-1
+                  h-12
+
+                  bg-white/[0.04]
+                  backdrop-blur-xl
+
+                  border
+                  border-white/10
+
+                  rounded-2xl
+
+                  px-4
+
+                  text-white
+
+                  outline-none
+
+                  focus:border-violet-500/40
+                "
+              />
+
+              <button
+                onClick={() =>
+                  setShowFilters(
+                    !showFilters
+                  )
+                }
+                className="
+                  h-12
+                  px-5
+
+                  rounded-2xl
+
+                  border
+                  border-white/10
+
+                  bg-white/[0.03]
+
+                  text-white/70
+
+                  hover:bg-white/[0.05]
+
+                  transition
+                "
+              >
+                Filter
+              </button>
+            </div>
+
+            {showFilters && (
+              <div
+                className="
+                  flex
+                  gap-2
+                  flex-wrap
+                "
+              >
+                {[
+                  "ALL",
+                  "DRAFT",
+                  "REVIEW",
+                  "PUBLISHED",
+                ].map((status) => (
+                  <button
+                    key={status}
+                    onClick={() =>
+                      setStatusFilter(
+                        status
+                      )
+                    }
+                    className={`
+                      px-4
+                      h-11
+
+                      rounded-2xl
+
+                      border
+
+                      transition
+
+                      ${
+                        statusFilter ===
+                        status
+                          ? `
+                            border-violet-500/40
+                            bg-violet-500/10
+                            text-violet-300
+                          `
+                          : `
+                            border-white/10
+                            bg-white/[0.03]
+                            text-white/60
+                          `
+                      }
+                    `}
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div
@@ -359,28 +654,97 @@ export default function ArticlesPage() {
                     text-sm
                   "
                 >
-                  <th className="p-5 font-normal">
-                    Title
+                  <th
+                    className="
+                      p-5
+                      font-normal
+                      cursor-pointer
+                      hover:text-violet-300
+                    "
+                    onClick={() => {
+                      setSortField(
+                        "title"
+                      );
+
+                      setSortDirection(
+                        sortDirection ===
+                        "asc"
+                          ? "desc"
+                          : "asc"
+                      );
+                    }}
+                  >
+                    Title ↕
                   </th>
 
-                  <th className="font-normal">
-                    Author
+                  <th
+                    className="
+                      font-normal
+                      cursor-pointer
+                      hover:text-violet-300
+                    "
+                    onClick={() => {
+                      setSortField(
+                        "author"
+                      );
+
+                      setSortDirection(
+                        sortDirection ===
+                        "asc"
+                          ? "desc"
+                          : "asc"
+                      );
+                    }}
+                  >
+                    Author ↕
                   </th>
 
-                  <th className="font-normal">
-                    Category
+                  <th
+                    className="
+                      font-normal
+                      cursor-pointer
+                      hover:text-violet-300
+                    "
+                    onClick={() => {
+                      setSortField(
+                        "category"
+                      );
+
+                      setSortDirection(
+                        sortDirection ===
+                        "asc"
+                          ? "desc"
+                          : "asc"
+                      );
+                    }}
+                  >
+                    Category ↕
                   </th>
 
                   <th className="font-normal">
                     Status
                   </th>
 
-                  <th className="font-normal">
-                    Publish Date
-                  </th>
+                  <th
+                    className="
+                      font-normal
+                      cursor-pointer
+                      hover:text-violet-300
+                    "
+                    onClick={() => {
+                      setSortField(
+                        "createdAt"
+                      );
 
-                  <th className="font-normal">
-                    Health
+                      setSortDirection(
+                        sortDirection ===
+                        "asc"
+                          ? "desc"
+                          : "asc"
+                      );
+                    }}
+                  >
+                    Date ↕
                   </th>
 
                   <th className="font-normal">
@@ -390,7 +754,7 @@ export default function ArticlesPage() {
               </thead>
 
               <tbody>
-                {articles.map(
+                {filteredArticles.map(
                   (article) => (
                     <tr
                       key={
@@ -505,43 +869,6 @@ export default function ArticlesPage() {
                               article.publishedAt
                             ).toLocaleDateString()
                           : "--"}
-                      </td>
-
-                      <td>
-                        <span
-                          className={`
-                            text-xs
-                            px-3
-                            py-1
-                            rounded-full
-                            border
-                            ${
-                              article.healthScore >=
-                              80
-                                ? `
-                                  bg-green-500/10
-                                  border-green-500/20
-                                  text-green-300
-                                `
-                                : article.healthScore >=
-                                  50
-                                ? `
-                                  bg-orange-500/10
-                                  border-orange-500/20
-                                  text-orange-300
-                                `
-                                : `
-                                  bg-red-500/10
-                                  border-red-500/20
-                                  text-red-300
-                                `
-                            }
-                          `}
-                        >
-                          {
-                            article.healthScore
-                          }
-                        </span>
                       </td>
 
                       <td>
@@ -1006,13 +1333,11 @@ export default function ArticlesPage() {
                     mb-3
                   "
                 >
-                  HEALTH SCORE
+                  
                 </p>
 
                 <p className="text-sm">
-                  {
-                    selectedArticle.healthScore
-                  }
+
                 </p>
               </div>
 

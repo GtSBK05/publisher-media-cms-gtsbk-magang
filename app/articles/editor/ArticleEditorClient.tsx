@@ -494,7 +494,7 @@ export default function ArticleEditorPage() {
                 text-white
               "
             >
-              SEO Settings
+              Article Metadata
             </h2>
 
             <div>
@@ -581,7 +581,7 @@ export default function ArticleEditorPage() {
                   mb-2
                 "
               >
-                Alternative Title
+                Aliases
               </label>
 
               <input
@@ -592,6 +592,7 @@ export default function ArticleEditorPage() {
                     e.target.value
                   )
                 }
+                placeholder="Alternative names separated by comma"
                 className="
                   w-full
                   h-11
@@ -617,7 +618,7 @@ export default function ArticleEditorPage() {
                   mb-2
                 "
               >
-                Description
+                Summary
               </label>
 
               <textarea
@@ -630,6 +631,7 @@ export default function ArticleEditorPage() {
                     e.target.value
                   )
                 }
+                placeholder="Short summary shown in search results and previews"
                 className="
                   w-full
                   bg-white/[0.03]
@@ -642,44 +644,6 @@ export default function ArticleEditorPage() {
                   outline-none
                   focus:border-violet-500/40
                   resize-none
-                "
-              />
-            </div>
-
-            <div>
-              <label
-                className="
-                  text-xs
-                  text-white/50
-                  block
-                  mb-2
-                "
-              >
-                Keywords
-              </label>
-
-              <input
-                type="text"
-                value={
-                  seoKeywords
-                }
-                onChange={(e) =>
-                  setSeoKeywords(
-                    e.target.value
-                  )
-                }
-                className="
-                  w-full
-                  h-11
-                  bg-white/[0.03]
-                  backdrop-blur-xl
-                  border
-                  border-white/10
-                  rounded-2xl
-                  px-4
-                  text-white
-                  outline-none
-                  focus:border-violet-500/40
                 "
               />
             </div>
