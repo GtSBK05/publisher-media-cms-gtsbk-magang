@@ -38,7 +38,7 @@ Status: Selesai
 - Setup Prisma dan PostgreSQL
 - Desain schema database
 - Implementasi Role (ADMIN, EDITOR, WRITER)
-- Implementasi workflow Article (DRAFT, REVIEW, PUBLISHED, REJECTED)
+- Implementasi workflow Article (DRAFT, REVISIONS, PUBLISHED)
 - Relasi User dan Article
 - Struktur ActivityLog
 - Migration database berhasil

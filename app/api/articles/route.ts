@@ -7,12 +7,37 @@ export async function GET() {
         include: {
           author: true,
           category: true,
+
+          revisions: {
+            where: {
+              status: "PENDING",
+            },
+
+            select: {
+              id: true,
+            },
+          },
         },
 
         orderBy: {
           createdAt: "desc",
         },
       });
+
+    const result =
+      articles.map(
+        (article) => ({
+          ...article,
+
+          pendingCount:
+            article.revisions
+              .length,
+        })
+      );
+
+    return Response.json(
+      result
+    );      
 
     return Response.json(articles);
 

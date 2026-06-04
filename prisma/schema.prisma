@@ -8,93 +8,132 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  name         String
-  email        String   @unique
+  name  String
+  email String @unique
 
-  password     String?
+  password String?
 
-  googleId     String?  @unique
-  avatar       String?
+  googleId String? @unique
+  avatar   String?
 
-  role         Role     @default(WRITER)
+  role Role @default(WRITER)
 
-  isActive     Boolean  @default(true)
+  isActive Boolean @default(true)
 
-  articles     Article[]
+  articles Article[]
+
+  revisions         ArticleRevision[]
+  approvedRevisions ArticleRevision[] @relation("RevisionApprover")
+
   activityLogs ActivityLog[]
 
-  resetTokens  PasswordResetToken[]
+  resetTokens PasswordResetToken[]
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Article {
-  id          String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  title       String
-  content     String
+  title   String
+  content String
 
   seoTitle       String?
   seoDescription String?
   seoKeywords    String?
 
-  views Int @default(0)
-  healthScore    Int @default(0)
+  views       Int @default(0)
+  healthScore Int @default(0)
 
-  slug        String   @unique
-  status      Status   @default(DRAFT)
+  version Int @default(1)
 
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
+  slug   String @unique
+  status Status @default(DRAFT)
 
-  categoryId  String?
-  category    Category? @relation(fields: [categoryId], references: [id])
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  revisions ArticleRevision[]
 
   scheduledAt DateTime?
   publishedAt DateTime?
 
-  logs        ActivityLog[]
+  logs ActivityLog[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ArticleRevision {
+  id String @id @default(uuid())
+
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id])
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  title   String
+  content String
+
+  categoryId String?
+
+  summary String?
+
+  baseVersion Int
+
+  status RevisionStatus @default(PENDING)
+
+  approvedById String?
+
+  approvedBy User? @relation(name: "RevisionApprover", fields: [approvedById], references: [id])
+
+  approvedAt DateTime?
+
+  createdAt DateTime @default(now())
 }
 
 model Category {
-  id       String    @id @default(uuid())
-  name     String
+  id String @id @default(uuid())
+
+  name String
 
   articles Article[]
 }
 
 model Tag {
-  id   String @id @default(uuid())
+  id String @id @default(uuid())
+
   name String
 }
 
 model ActivityLog {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   articleId String?
   article   Article? @relation(fields: [articleId], references: [id])
 
-  action    String
+  action String
 
   createdAt DateTime @default(now())
 }
 
 model PasswordResetToken {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  token     String   @unique
+  token String @unique
 
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   expiresAt DateTime
 
@@ -109,7 +148,12 @@ enum Role {
 
 enum Status {
   DRAFT
-  REVIEW
   PUBLISHED
+}
+
+enum RevisionStatus {
+  PENDING
+  APPROVED
   REJECTED
+  OUTDATED
 }

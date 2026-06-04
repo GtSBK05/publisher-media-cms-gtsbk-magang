@@ -311,6 +311,9 @@ export default function UsersPage() {
       case "CREATE_ARTICLE":
         return "created an article";
 
+      case "CREATE_REVISION":
+        return "submitted a revision";        
+
       case "UPDATE_ARTICLE":
         return "updated an article";
 

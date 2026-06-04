@@ -54,6 +54,15 @@ export default function ArticleEditorPage() {
   const [loading, setLoading] =
     useState(false);
 
+  const [userId, setUserId] =
+    useState("");
+
+  const [userRole, setUserRole] =
+    useState("");
+
+  const [articleAuthorId, setArticleAuthorId] =
+    useState("");    
+
   const [fetching, setFetching] =
     useState(false);
 
@@ -81,6 +90,21 @@ export default function ArticleEditorPage() {
       router.push("/login");
       return;
     }
+
+    const payload =
+      JSON.parse(
+        atob(
+          token.split(".")[1]
+        )
+      );
+
+    setUserId(
+      payload.id
+    );
+
+    setUserRole(
+      payload.role
+    );    
 
     fetchCategories();
 
@@ -175,6 +199,10 @@ export default function ArticleEditorPage() {
           ""
       );
 
+      setArticleAuthorId(
+        article.authorId
+      );      
+
     } catch (error) {
       console.error(error);
 
@@ -232,6 +260,14 @@ export default function ArticleEditorPage() {
       console.error(error);
     }
   }
+
+      const canEditDirectly =
+        articleAuthorId ===
+          userId ||
+        userRole ===
+          "EDITOR" ||
+        userRole ===
+          "ADMIN";  
 
   async function handleSubmit(
     e: React.FormEvent
@@ -291,11 +327,21 @@ export default function ArticleEditorPage() {
         return;
       }
 
-      alert(
-        isEditMode
-          ? "Article updated"
-          : "Article created"
-      );
+      if (!isEditMode) {
+        alert(
+          "Article created"
+        );
+      } else if (
+        canEditDirectly
+      ) {
+        alert(
+          "Article updated"
+        );
+      } else {
+        alert(
+          "Revision submitted"
+        );
+      }
 
       router.push(
         "/articles"
@@ -666,9 +712,11 @@ export default function ArticleEditorPage() {
           >
             {loading
               ? "Processing..."
-              : isEditMode
+              : !isEditMode
+              ? "Create Draft"
+              : canEditDirectly
               ? "Update Article"
-              : "Publish Draft"}
+              : "Submit Revision"}
           </button>
         </div>
       </form>

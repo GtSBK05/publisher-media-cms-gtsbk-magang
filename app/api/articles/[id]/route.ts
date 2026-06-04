@@ -89,25 +89,49 @@ export async function PATCH(
       );
     }
 
-    if (
-      article.authorId !==
-        decoded.id &&
-      decoded.role !==
-        "ADMIN"
-    ) {
-      return Response.json(
-        {
-          error:
-            "Forbidden",
-        },
-        {
-          status: 403,
-        }
-      );
-    }
-
     const body =
       await req.json();
+
+    if (
+      decoded.role ===
+      "WRITER"
+    ) {
+      const revision =
+        await prisma.articleRevision.create({
+          data: {
+            articleId:
+              article.id,
+
+            authorId:
+              decoded.id,
+
+            title:
+              body.title,
+
+            content:
+              body.content,
+
+            categoryId:
+              body.categoryId,
+
+            baseVersion:
+              article.version,
+          },
+        });
+
+      await logActivity(
+        decoded.id,
+        "CREATE_REVISION",
+        article.id
+      );
+
+      return Response.json({
+        message:
+          "Revision submitted",
+
+        revision,
+      });
+    }
 
     const healthScore =
       calculateHealthScore({

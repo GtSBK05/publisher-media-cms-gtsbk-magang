@@ -57,6 +57,28 @@ export default function ArticlesPage() {
     setSelectedArticle,
   ] = useState<any>(null);
 
+  const [
+    selectedRevisionArticle,
+    setSelectedRevisionArticle,
+  ] = useState<any>(null);
+
+  const [
+    revisions,
+    setRevisions,
+  ] = useState<any[]>([]);  
+
+  const [
+    selectedRevision,
+    setSelectedRevision,
+  ] = useState<any>(null);  
+
+  const [
+    revisionPage,
+    setRevisionPage,
+  ] = useState(1);
+
+  const revisionsPerPage = 3;  
+
   useEffect(() => {
     async function fetchArticles() {
       try {
@@ -230,6 +252,222 @@ export default function ArticlesPage() {
     }
   }
 
+  async function openRevisions(
+    article: any
+  ) {
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
+        );
+
+      const res =
+        await fetch(
+          `/api/revisions?articleId=${article.id}&status`,
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      const data =
+        await res.json();
+
+      setRevisions(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+      setSelectedRevisionArticle(
+        article
+      );
+
+    } catch (error) {
+      console.error(error);
+    }
+  }  
+
+  async function approveRevision(
+    revisionId: string
+  ) {
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
+        );
+
+      const res =
+        await fetch(
+          `/api/revisions/${revisionId}/approve`,
+          {
+            method: "PATCH",
+
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      const data =
+        await res.json();
+
+      if (!res.ok) {
+        alert(
+          data.error
+        );
+
+        return;
+      }
+
+      alert(
+        "Revision approved"
+      );
+
+      setRevisions((prev) =>
+        prev.map((revision) =>
+          revision.id === revisionId
+            ? {
+                ...revision,
+                status:
+                  "APPROVED",
+              }
+            : revision
+        )
+      );
+
+      setArticles((prev) =>
+        prev.map((article) =>
+          article.id ===
+          selectedRevisionArticle?.id
+            ? {
+                ...article,
+                pendingCount:
+                  Math.max(
+                    0,
+                    (article.pendingCount ||
+                      0) - 1
+                  ),
+              }
+            : article
+        )
+      );
+
+    } catch (error) {
+      console.error(error);
+    }
+  }  
+
+  async function rejectRevision(
+    revisionId: string
+  ) {
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
+        );
+
+      const res =
+        await fetch(
+          `/api/revisions/${revisionId}/reject`,
+          {
+            method: "PATCH",
+
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      const data =
+        await res.json();
+
+      if (!res.ok) {
+        alert(
+          data.error
+        );
+
+        return;
+      }
+
+      alert(
+        "Revision rejected"
+      );
+
+      setRevisions((prev) =>
+        prev.map((revision) =>
+          revision.id === revisionId
+            ? {
+                ...revision,
+                status:
+                  "REJECTED",
+              }
+            : revision
+        )
+      );
+
+      setArticles((prev) =>
+        prev.map((article) =>
+          article.id ===
+          selectedRevisionArticle?.id
+            ? {
+                ...article,
+                pendingCount:
+                  Math.max(
+                    0,
+                    (article.pendingCount ||
+                      0) - 1
+                  ),
+              }
+            : article
+        )
+      );
+
+    } catch (error) {
+      console.error(error);
+    }
+  }  
+
+  function timeAgo(
+    date: string
+  ) {
+    const diff =
+      Date.now() -
+      new Date(
+        date
+      ).getTime();
+
+    const minutes =
+      Math.floor(
+        diff / 60000
+      );
+
+    const hours =
+      Math.floor(
+        minutes / 60
+      );
+
+    const days =
+      Math.floor(
+        hours / 24
+      );
+
+    if (minutes < 1)
+      return "Just now";
+
+    if (minutes < 60)
+      return `${minutes}m ago`;
+
+    if (hours < 24)
+      return `${hours}h ago`;
+
+    return `${days}d ago`;
+  }  
+
   const filteredArticles =
     articles
       .filter((article) => {
@@ -362,6 +600,21 @@ export default function ArticlesPage() {
           ? result
           : -result;
       }); 
+
+  const paginatedRevisions =
+    revisions.slice(
+      (revisionPage - 1) *
+        revisionsPerPage,
+
+      revisionPage *
+        revisionsPerPage
+    );
+
+  const totalPages =
+    Math.ceil(
+      revisions.length /
+        revisionsPerPage
+    );      
 
   if (loading) {
     return null;
@@ -584,7 +837,6 @@ export default function ArticlesPage() {
                 {[
                   "ALL",
                   "DRAFT",
-                  "REVIEW",
                   "PUBLISHED",
                 ].map((status) => (
                   <button
@@ -724,6 +976,10 @@ export default function ArticlesPage() {
                   <th className="font-normal">
                     Status
                   </th>
+                  
+                  <th className="font-normal">
+                    Pending
+                  </th>
 
                   <th
                     className="
@@ -856,6 +1112,30 @@ export default function ArticlesPage() {
                             article.status
                           }
                         </span>
+                      </td>
+
+                      <td>
+                        <button
+                          onClick={() =>
+                            openRevisions(
+                              article
+                            )
+                          }
+                          className="
+                            px-3
+                            py-1
+                            rounded-full
+                            text-xs
+                            border
+                            border-violet-500/20
+                            bg-violet-500/10
+                            text-violet-300
+                            hover:bg-violet-500/20
+                            transition
+                          "
+                        >
+                          {article.pendingCount || 0}
+                        </button>
                       </td>
 
                       <td
@@ -1428,6 +1708,646 @@ export default function ArticlesPage() {
           </div>
         </div>
       )}
+      
+      {selectedRevisionArticle && (
+        <div
+          className="
+            fixed
+            inset-0
+            bg-black/70
+            backdrop-blur-md
+            z-50
+            flex
+            items-center
+            justify-center
+            p-6
+          "
+        >
+          <div
+            className="
+              w-full
+              max-w-3xl
+              max-h-[75vh]
+              overflow-y-auto
+              bg-[#171a20]/90
+              backdrop-blur-2xl
+              border
+              border-white/10
+              rounded-[32px]
+              p-8
+            "
+          >
+            <div
+              className="
+                flex
+                justify-between
+                mb-8
+              "
+            >
+              <div>
+                <p className="text-xs text-white/40">
+                  ARTICLE REVISIONS
+                </p>
+
+                <h2
+                  className="
+                    text-3xl
+                    font-light
+                    text-white
+                  "
+                >
+                  {
+                    selectedRevisionArticle.title
+                  }
+                </h2>
+              </div>
+
+              <button
+                onClick={() =>
+                  setSelectedRevisionArticle(
+                    null
+                  )
+                }
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {paginatedRevisions.map(
+                (revision) => (
+                  <div
+                    key={revision.id}
+                    className="
+                      bg-white/[0.03]
+                      border
+                      border-white/10
+                      rounded-2xl
+                      p-5
+                    "
+                  >
+                    <div
+                      className="
+                        flex
+                        justify-between
+                        items-center
+                      "
+                    >
+                      <div>
+                        <h3
+                          className="
+                            text-white
+                          "
+                        >
+                          {
+                            revision.author
+                              ?.name
+                          }
+                        </h3>
+
+                        <div>
+                          <p
+                            className="
+                              text-xs
+                              text-white/40
+                            "
+                          >
+                            Base Version:
+                            {
+                              revision.baseVersion
+                            }
+                          </p>
+
+                          <p
+                            className="
+                              text-xs
+                              text-white/30
+                              mt-1
+                            "
+                          >
+                            {timeAgo(
+                              revision.createdAt
+                            )}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span
+                        className="
+                        "
+                      >
+                        {
+                        }
+                      </span>
+                    </div>
+
+                    <div
+                      className="
+                        flex
+                        gap-3
+                        mt-4
+                      "
+                    >
+                      <div
+                        className="
+                          flex
+                          gap-3
+                          mt-4
+                        "
+                      >
+                        <button
+                          onClick={() =>
+                            setSelectedRevision(
+                              revision
+                            )
+                          }
+                          className="
+                            px-4
+                            h-10
+                            rounded-xl
+                            border
+                            border-white/10
+                          "
+                        >
+                          Preview
+                        </button>
+
+                        {revision.status ===
+                          "APPROVED" && (
+                          <div
+                            className="
+                              px-4
+                              h-10
+
+                              rounded-xl
+
+                              bg-green-500/15
+                              border
+                              border-green-500/30
+
+                              flex
+                              items-center
+                              justify-center
+
+                              text-green-300
+                            "
+                          >
+                            Approved
+                          </div>
+                        )}
+
+                        {revision.status ===
+                          "REJECTED" && (
+                          <div
+                            className="
+                              px-4
+                              h-10
+
+                              rounded-xl
+
+                              bg-red-500/15
+                              border
+                              border-red-500/30
+
+                              flex
+                              items-center
+                              justify-center
+
+                              text-red-300
+                            "
+                          >
+                            Rejected
+                          </div>
+                        )}
+
+                        {revision.status ===
+                          "OUTDATED" && (
+                          <>
+                            <div
+                              className="
+                                px-4
+                                h-10
+
+                                rounded-xl
+
+                                bg-orange-500/10
+                                border
+                                border-orange-500/20
+
+                                flex
+                                items-center
+                                justify-center
+
+                                text-orange-300
+                              "
+                            >
+                              OUTDATED
+                            </div>
+
+                            <button
+                              onClick={() =>
+                                router.push(
+                                  `/articles/editor?id=${selectedRevisionArticle.id}`
+                                )
+                              }
+                              className="
+                                px-4
+                                h-10
+
+                                rounded-xl
+
+                                bg-violet-500/15
+                                border
+                                border-violet-500/20
+
+                                text-violet-300
+                              "
+                            >
+                              New Revision
+                            </button>
+                          </>
+                        )}
+
+                        {revision.status ===
+                          "PENDING" &&
+                          (role ===
+                            "EDITOR" ||
+                            role ===
+                            "ADMIN") && (
+                            <>
+                              <button
+                                onClick={() =>
+                                  approveRevision(
+                                    revision.id
+                                  )
+                                }
+                                className="
+                                  px-4
+                                  h-10
+
+                                  rounded-xl
+
+                                  bg-green-500/20
+                                  text-green-300
+                                "
+                              >
+                                Approve
+                              </button>
+
+                              <button
+                                onClick={() =>
+                                  rejectRevision(
+                                    revision.id
+                                  )
+                                }
+                                className="
+                                  px-4
+                                  h-10
+
+                                  rounded-xl
+
+                                  bg-red-500/20
+                                  text-red-300
+                                "
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+
+            <div
+              className="
+                flex
+                justify-center
+                gap-2
+                mt-6
+              "
+            >
+              {Array.from(
+                {
+                  length: totalPages,
+                },
+                (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() =>
+                      setRevisionPage(
+                        i + 1
+                      )
+                    }
+                    className={`
+                      w-10
+                      h-10
+
+                      rounded-xl
+
+                      ${
+                        revisionPage ===
+                        i + 1
+                          ? `
+                            bg-violet-500/20
+                            border
+                            border-violet-500/30
+                            text-violet-300
+                          `
+                          : `
+                            bg-white/[0.03]
+                            border
+                            border-white/10
+                            text-white/50
+                          `
+                      }
+                    `}
+                  >
+                    {i + 1}
+                  </button>
+                )
+              )}
+            </div>            
+          </div>
+        </div>
+      )}      
+      
+      {selectedRevision && (
+        <div
+          className="
+            fixed
+            inset-0
+            bg-black/80
+            backdrop-blur-md
+            z-[60]
+            flex
+            items-center
+            justify-center
+            p-6
+          "
+        >
+          <div
+            className="
+              w-full
+              max-w-7xl
+              max-h-[90vh]
+              overflow-y-auto
+
+              bg-[#171a20]/95
+              backdrop-blur-2xl
+
+              border
+              border-white/10
+
+              rounded-[32px]
+
+              p-8
+            "
+          >
+            <div
+              className="
+                flex
+                justify-between
+                items-center
+                mb-8
+              "
+            >
+              <div>
+                <p
+                  className="
+                    text-xs
+                    uppercase
+                    tracking-[0.3em]
+                    text-violet-300
+                  "
+                >
+                  Revision Diff
+                </p>
+
+                <h2
+                  className="
+                    text-3xl
+                    font-light
+                  "
+                >
+                  Compare Changes
+                </h2>
+              </div>
+
+              <button
+                onClick={() =>
+                  setSelectedRevision(
+                    null
+                  )
+                }
+                className="
+                  text-white/40
+                  hover:text-white
+                "
+              >
+                ✕
+              </button>
+            </div>
+
+            <div
+              className="
+                grid
+                grid-cols-2
+                gap-6
+              "
+            >
+              <div
+                className="
+                  rounded-3xl
+                  border
+                  border-white/10
+
+                  bg-white/[0.03]
+
+                  p-6
+                "
+              >
+                <div
+                  className="
+                    flex
+                    justify-between
+                    mb-6
+                  "
+                >
+                  <h3
+                    className="
+                      text-white/60
+                      text-sm
+                    "
+                  >
+                    CURRENT ARTICLE
+                  </h3>
+
+                  <span
+                    className="
+                      text-xs
+                      text-white/40
+                    "
+                  >
+                    v
+                    {
+                      selectedRevision
+                        .article
+                        ?.version
+                    }
+                  </span>
+                </div>
+
+                <h2
+                  className="
+                    text-2xl
+                    mb-6
+                  "
+                >
+                  {
+                    selectedRevision
+                      .article
+                      ?.title
+                  }
+                </h2>
+
+                <div
+                  className="
+                    prose
+                    prose-invert
+                    max-w-none
+                  "
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      selectedRevision
+                        .article
+                        ?.content || "",
+                  }}
+                />
+              </div>
+
+              <div
+                className="
+                  rounded-3xl
+                  border
+                  border-violet-500/20
+
+                  bg-violet-500/[0.04]
+
+                  p-6
+                "
+              >
+                <div
+                  className="
+                    flex
+                    justify-between
+                    mb-6
+                  "
+                >
+                  <h3
+                    className="
+                      text-violet-300
+                      text-sm
+                    "
+                  >
+                    PROPOSED REVISION
+                  </h3>
+
+                  <span
+                    className="
+                      text-xs
+                      text-violet-300
+                    "
+                  >
+                    base v
+                    {
+                      selectedRevision
+                        .baseVersion
+                    }
+                  </span>
+                </div>
+
+                <h2
+                  className="
+                    text-2xl
+                    mb-6
+                  "
+                >
+                  {
+                    selectedRevision
+                      .title
+                  }
+                </h2>
+
+                <div
+                  className="
+                    prose
+                    prose-invert
+                    max-w-none
+                  "
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      selectedRevision
+                        .content,
+                  }}
+                />
+              </div>
+            </div>
+
+            {(role === "EDITOR" ||
+              role === "ADMIN") && (
+              <div
+                className="
+                  flex
+                  justify-end
+                  gap-3
+                  mt-8
+                "
+              >
+                <button
+                  onClick={() =>
+                    rejectRevision(
+                      selectedRevision.id
+                    )
+                  }
+                  className="
+                    px-5
+                    h-11
+
+                    rounded-2xl
+
+                    bg-red-500/15
+                    text-red-300
+                  "
+                >
+                  Reject
+                </button>
+
+                <button
+                  onClick={() =>
+                    approveRevision(
+                      selectedRevision.id
+                    )
+                  }
+                  className="
+                    px-5
+                    h-11
+
+                    rounded-2xl
+
+                    bg-green-500/15
+                    text-green-300
+                  "
+                >
+                  Approve
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}     
     </DashboardLayout>
   );
 }
