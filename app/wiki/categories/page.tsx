@@ -32,8 +32,12 @@ export default async function CategoriesPage({
     slug,
   } = await params;
 
-  const categories =
-    await prisma.category.findMany({
+  const [
+    categories,
+    sidebarCategories,
+    settings,
+  ] = await Promise.all([
+    prisma.category.findMany({
       include: {
         _count: {
           select: {
@@ -45,10 +49,12 @@ export default async function CategoriesPage({
       orderBy: {
         name: "asc",
       },
-    });
+    }),
 
-  const sidebarCategories =
-    await getSidebarCategories();
+    getSidebarCategories(),
+
+    prisma.wikiSettings.findFirst(),
+  ]);
 
   const grouped =
     categories.reduce(
@@ -103,6 +109,9 @@ export default async function CategoriesPage({
 
   return (
     <WikiLayout
+        backgroundUrl={
+          settings?.backgroundUrl
+        }
       sidebar={
         <WikiSidebar
           categories={

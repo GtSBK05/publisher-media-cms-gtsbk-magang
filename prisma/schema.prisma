@@ -154,6 +154,30 @@ model WikiBlock {
   updatedAt   DateTime @updatedAt
 }
 
+model WikiSettings {
+  id String @id @default(uuid())
+
+  heroTitle       String? @db.Text
+  heroSubtitle    String? @db.Text
+
+  featuredTitle   String? @db.Text
+  featuredContent String? @db.Text
+
+  announcementTitle   String? @db.Text
+  announcementContent String? @db.Text
+
+  communityTitle   String? @db.Text
+  communityContent String? @db.Text
+
+  linksTitle   String? @db.Text
+  linksContent String? @db.Text
+
+  backgroundUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   ADMIN
   EDITOR

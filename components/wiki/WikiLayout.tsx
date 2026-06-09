@@ -15,12 +15,14 @@ interface WikiLayoutProps {
   children: ReactNode;
   sidebar?: ReactNode;
   rightPanel?: ReactNode;
+  backgroundUrl?: string | null;
 }
 
 export default function WikiLayout({
   children,
   sidebar,
   rightPanel,
+  backgroundUrl,
 }: WikiLayoutProps) {
   const [
     mobileSidebar,
@@ -63,11 +65,13 @@ export default function WikiLayout({
           bg-center
           bg-fixed
 
-          opacity-20
+          opacity-90
         "
         style={{
           backgroundImage:
-            "url('/wiki-background.jpg')",
+            backgroundUrl
+              ? `url(${backgroundUrl})`
+              : "url('/wiki-background.jpg')",
         }}
       />
 
@@ -81,14 +85,14 @@ export default function WikiLayout({
           ${
             lightMode
               ? `
-                from-orange-100/80
-                via-white/90
-                to-violet-100/80
+                from-orange-100/35
+                via-white/55
+                to-violet-100/30
               `
               : `
-                from-violet-950/70
-                via-[#111318]/90
-                to-orange-950/60
+                from-violet-950/35
+                via-[#111318]/55
+                to-orange-950/30
               `
           }
         `}

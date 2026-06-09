@@ -66,11 +66,20 @@ export default async function WikiArticle(
     },
   });
 
-  const categories =
-    await getSidebarCategories();  
+  const [
+    categories,
+    settings,
+  ] = await Promise.all([
+    getSidebarCategories(),
+
+    prisma.wikiSettings.findFirst(),
+  ]); 
 
   return (
     <WikiLayout
+        backgroundUrl={
+          settings?.backgroundUrl
+        }
       sidebar={
         <WikiSidebar 
         categories={categories}/>

@@ -364,8 +364,14 @@ export default async function RecentChangesPage({
         ? `&date=${date}`
         : "";   
 
-  const categories =
-    await getSidebarCategories();    
+  const [
+    categories,
+    settings,
+  ] = await Promise.all([
+    getSidebarCategories(),
+
+    prisma.wikiSettings.findFirst(),
+  ]);   
 
   const article =
     await prisma.article.findFirst({
@@ -388,6 +394,9 @@ export default async function RecentChangesPage({
 
   return (
     <WikiLayout
+        backgroundUrl={
+          settings?.backgroundUrl
+        }
       sidebar={
         <WikiSidebar 
         categories={categories}/>

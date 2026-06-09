@@ -49,6 +49,7 @@ export default async function SearchPage({
   const [
     articles,
     sidebarCategories,
+    settings,
   ] = await Promise.all([
     prisma.article.findMany({
       where: {
@@ -99,6 +100,8 @@ export default async function SearchPage({
     }),
 
     getSidebarCategories(),
+
+    prisma.wikiSettings.findFirst(),
   ]);
 
   const rankedArticles =
@@ -130,6 +133,9 @@ export default async function SearchPage({
 
   return (
     <WikiLayout
+        backgroundUrl={
+          settings?.backgroundUrl
+        }
       sidebar={
         <WikiSidebar
           categories={
