@@ -82,6 +82,9 @@ export async function PATCH(
 
           status:
             "PUBLISHED",
+
+          lastContentUpdate:
+            new Date(),             
         },
       });
 

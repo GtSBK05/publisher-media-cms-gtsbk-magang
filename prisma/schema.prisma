@@ -65,6 +65,7 @@ model Article {
   publishedAt DateTime?
 
   logs ActivityLog[]
+  lastContentUpdate DateTime @default(now())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -138,6 +139,19 @@ model PasswordResetToken {
   expiresAt DateTime
 
   createdAt DateTime @default(now())
+}
+
+model WikiBlock {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  title       String
+  content     String   @db.Text
+  imageUrl    String?
+  position    Int
+  isVisible   Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum Role {

@@ -19,9 +19,29 @@ body {
   color: var(--foreground);
 }
 
+.ProseMirror {
+  outline: none;
+}
+
 .ProseMirror h1 {
   font-size: 2rem;
   font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.ProseMirror h2 {
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.ProseMirror h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.ProseMirror p {
   margin-bottom: 1rem;
 }
 
@@ -30,21 +50,67 @@ body {
   list-style: disc;
 }
 
+.ProseMirror ol {
+  padding-left: 1.5rem;
+  list-style: decimal;
+}
+
+.ProseMirror li {
+  margin-bottom: 0.5rem;
+}
+
 .ProseMirror blockquote {
   border-left: 3px solid #8b5cf6;
   padding-left: 1rem;
-  color: rgba(255,255,255,0.7);
+  margin: 1rem 0;
 }
 
-.ProseMirror p {
-  margin-bottom: 1rem;
+.ProseMirror strong {
+  font-weight: 700;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  padding: 0.75rem;
+}
+
+.ProseMirror th {
+  font-weight: 600;
+}
+
+.ProseMirror img {
+  border-radius: 1rem;
+  max-width: 100%;
+  height: auto;
 }
 
 .prose h1 {
   font-size: 2rem;
   font-weight: 300;
   margin-bottom: 1rem;
-  color: white;
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
 .prose p {
@@ -57,6 +123,12 @@ body {
   margin-bottom: 1rem;
 }
 
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 .prose li {
   margin-bottom: 0.5rem;
 }
@@ -64,15 +136,47 @@ body {
 .prose blockquote {
   border-left: 3px solid #8b5cf6;
   padding-left: 1rem;
-  color: rgba(255,255,255,0.7);
   margin: 1rem 0;
 }
 
 .prose strong {
-  color: white;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .prose em {
   font-style: italic;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  padding: 0.75rem;
+}
+
+.prose th {
+  font-weight: 600;
+}
+
+.prose img {
+  border-radius: 1rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.prose a,
+.ProseMirror a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.prose a:hover,
+.ProseMirror a:hover {
+  text-decoration: underline;
+  color: #1d4ed8;
 }

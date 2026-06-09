@@ -14,7 +14,9 @@ C:.
 |   postcss.config.mjs
 |   README.md
 |   struktur
-|   struktur-proect-magang04062026-2.txt
+|   struktur-project-magang080626-2.txt
+|   struktur-project-magang080626.txt
+|   struktur-project-magang090626.txt
 |   tailwind.config.js
 |   tsconfig.json
 |   
@@ -60,6 +62,7 @@ C:.
 |   |       
 |   +---dev
 |   |   |   build-manifest.json
+|   |   |   lock
 |   |   |   package.json
 |   |   |   prerender-manifest.json
 |   |   |   react-loadable-manifest.json
@@ -106,7 +109,12 @@ C:.
 |   |   |       |       34.pack.gz
 |   |   |       |       35.pack.gz
 |   |   |       |       36.pack.gz
+|   |   |       |       37.pack.gz
+|   |   |       |       38.pack.gz
+|   |   |       |       39.pack.gz
 |   |   |       |       4.pack.gz
+|   |   |       |       40.pack.gz
+|   |   |       |       41.pack.gz
 |   |   |       |       5.pack.gz
 |   |   |       |       6.pack.gz
 |   |   |       |       7.pack.gz
@@ -183,7 +191,17 @@ C:.
 |   |   |               55.pack.gz
 |   |   |               56.pack.gz
 |   |   |               57.pack.gz
+|   |   |               58.pack.gz
+|   |   |               59.pack.gz
 |   |   |               6.pack.gz
+|   |   |               60.pack.gz
+|   |   |               61.pack.gz
+|   |   |               62.pack.gz
+|   |   |               63.pack.gz
+|   |   |               64.pack.gz
+|   |   |               65.pack.gz
+|   |   |               66.pack.gz
+|   |   |               67.pack.gz
 |   |   |               7.pack.gz
 |   |   |               8.pack.gz
 |   |   |               9.pack.gz
@@ -209,19 +227,7 @@ C:.
 |   |   |   |   webpack-runtime.js
 |   |   |   |   
 |   |   |   +---app
-|   |   |   |   +---analytics
-|   |   |   |   |       page.js
-|   |   |   |   |       page_client-reference-manifest.js
-|   |   |   |   |       
 |   |   |   |   +---api
-|   |   |   |   |   +---activity-logs
-|   |   |   |   |   |       route.js
-|   |   |   |   |   |       route_client-reference-manifest.js
-|   |   |   |   |   |       
-|   |   |   |   |   +---analytics
-|   |   |   |   |   |       route.js
-|   |   |   |   |   |       route_client-reference-manifest.js
-|   |   |   |   |   |       
 |   |   |   |   |   +---articles
 |   |   |   |   |   |   |   route.js
 |   |   |   |   |   |   |   route_client-reference-manifest.js
@@ -231,42 +237,25 @@ C:.
 |   |   |   |   |   |   |       route_client-reference-manifest.js
 |   |   |   |   |   |   |       
 |   |   |   |   |   |   \---[id]
-|   |   |   |   |   |           route.js
-|   |   |   |   |   |           route_client-reference-manifest.js
-|   |   |   |   |   |           
-|   |   |   |   |   +---auth
-|   |   |   |   |   |   +---google
-|   |   |   |   |   |   |       route.js
-|   |   |   |   |   |   |       route_client-reference-manifest.js
-|   |   |   |   |   |   |       
-|   |   |   |   |   |   \---login
-|   |   |   |   |   |           route.js
-|   |   |   |   |   |           route_client-reference-manifest.js
-|   |   |   |   |   |           
+|   |   |   |   |   |       |   route.js
+|   |   |   |   |   |       |   route_client-reference-manifest.js
+|   |   |   |   |   |       |   
+|   |   |   |   |   |       \---publish
+|   |   |   |   |   |               route.js
+|   |   |   |   |   |               route_client-reference-manifest.js
+|   |   |   |   |   |               
 |   |   |   |   |   +---categories
-|   |   |   |   |   |   |   route.js
-|   |   |   |   |   |   |   route_client-reference-manifest.js
-|   |   |   |   |   |   |   
-|   |   |   |   |   |   \---[id]
-|   |   |   |   |   |           route.js
-|   |   |   |   |   |           route_client-reference-manifest.js
-|   |   |   |   |   |           
+|   |   |   |   |   |       route.js
+|   |   |   |   |   |       route_client-reference-manifest.js
+|   |   |   |   |   |       
 |   |   |   |   |   +---dashboard
 |   |   |   |   |   |       route.js
 |   |   |   |   |   |       route_client-reference-manifest.js
 |   |   |   |   |   |       
-|   |   |   |   |   +---profile
-|   |   |   |   |   |       route.js
-|   |   |   |   |   |       route_client-reference-manifest.js
-|   |   |   |   |   |       
-|   |   |   |   |   \---users
-|   |   |   |   |       |   route.js
-|   |   |   |   |       |   route_client-reference-manifest.js
-|   |   |   |   |       |   
-|   |   |   |   |       \---[id]
-|   |   |   |   |               route.js
-|   |   |   |   |               route_client-reference-manifest.js
-|   |   |   |   |               
+|   |   |   |   |   \---profile
+|   |   |   |   |           route.js
+|   |   |   |   |           route_client-reference-manifest.js
+|   |   |   |   |           
 |   |   |   |   +---articles
 |   |   |   |   |   |   page.js
 |   |   |   |   |   |   page_client-reference-manifest.js
@@ -275,27 +264,23 @@ C:.
 |   |   |   |   |           page.js
 |   |   |   |   |           page_client-reference-manifest.js
 |   |   |   |   |           
-|   |   |   |   +---categories
-|   |   |   |   |       page.js
-|   |   |   |   |       page_client-reference-manifest.js
-|   |   |   |   |       
 |   |   |   |   +---dashboard
 |   |   |   |   |       page.js
 |   |   |   |   |       page_client-reference-manifest.js
 |   |   |   |   |       
-|   |   |   |   +---login
-|   |   |   |   |       page.js
-|   |   |   |   |       page_client-reference-manifest.js
-|   |   |   |   |       
-|   |   |   |   +---news
+|   |   |   |   +---wiki
 |   |   |   |   |   |   page.js
 |   |   |   |   |   |   page_client-reference-manifest.js
 |   |   |   |   |   |   
+|   |   |   |   |   +---recent
+|   |   |   |   |   |       page.js
+|   |   |   |   |   |       page_client-reference-manifest.js
+|   |   |   |   |   |       
 |   |   |   |   |   \---[slug]
 |   |   |   |   |           page.js
 |   |   |   |   |           page_client-reference-manifest.js
 |   |   |   |   |           
-|   |   |   |   \---users
+|   |   |   |   \---_not-found
 |   |   |   |           page.js
 |   |   |   |           page_client-reference-manifest.js
 |   |   |   |           
@@ -305,44 +290,12 @@ C:.
 |   |   |   |           
 |   |   |   \---vendor-chunks
 |   |   |           @react-oauth.js
-|   |   |           @reduxjs.js
 |   |   |           @swc.js
 |   |   |           @tiptap.js
-|   |   |           agent-base.js
-|   |   |           base64-js.js
-|   |   |           bcryptjs.js
-|   |   |           bignumber.js.js
 |   |   |           browser-image-compression.js
 |   |   |           buffer-equal-constant-time.js
-|   |   |           clsx.js
-|   |   |           d3-array.js
-|   |   |           d3-color.js
-|   |   |           d3-format.js
-|   |   |           d3-interpolate.js
-|   |   |           d3-path.js
-|   |   |           d3-scale.js
-|   |   |           d3-shape.js
-|   |   |           d3-time-format.js
-|   |   |           d3-time.js
-|   |   |           data-uri-to-buffer.js
-|   |   |           debug.js
-|   |   |           decimal.js-light.js
 |   |   |           ecdsa-sig-formatter.js
-|   |   |           es-toolkit.js
-|   |   |           eventemitter3.js
-|   |   |           extend.js
 |   |   |           fast-equals.js
-|   |   |           fetch-blob.js
-|   |   |           formdata-polyfill.js
-|   |   |           gaxios.js
-|   |   |           gcp-metadata.js
-|   |   |           google-auth-library.js
-|   |   |           google-logging-utils.js
-|   |   |           has-flag.js
-|   |   |           https-proxy-agent.js
-|   |   |           immer.js
-|   |   |           internmap.js
-|   |   |           json-bigint.js
 |   |   |           jsonwebtoken.js
 |   |   |           jwa.js
 |   |   |           jws.js
@@ -356,8 +309,6 @@ C:.
 |   |   |           lodash.once.js
 |   |   |           ms.js
 |   |   |           next.js
-|   |   |           node-domexception.js
-|   |   |           node-fetch.js
 |   |   |           orderedmap.js
 |   |   |           prosemirror-commands.js
 |   |   |           prosemirror-dropcursor.js
@@ -370,22 +321,12 @@ C:.
 |   |   |           prosemirror-tables.js
 |   |   |           prosemirror-transform.js
 |   |   |           prosemirror-view.js
-|   |   |           react-is.js
-|   |   |           react-redux.js
-|   |   |           recharts.js
-|   |   |           redux-thunk.js
-|   |   |           redux.js
-|   |   |           reselect.js
 |   |   |           rope-sequence.js
 |   |   |           safe-buffer.js
 |   |   |           slugify.js
-|   |   |           supports-color.js
-|   |   |           tiny-invariant.js
 |   |   |           tiptap-extension-resize-image.js
 |   |   |           use-sync-external-store.js
-|   |   |           victory-vendor.js
 |   |   |           w3c-keyname.js
-|   |   |           web-streams-polyfill.js
 |   |   |           
 |   |   +---static
 |   |   |   +---chunks
@@ -398,16 +339,7 @@ C:.
 |   |   |   |   \---app
 |   |   |   |       |   layout.js
 |   |   |   |       |   
-|   |   |   |       +---analytics
-|   |   |   |       |       page.js
-|   |   |   |       |       
 |   |   |   |       +---api
-|   |   |   |       |   +---activity-logs
-|   |   |   |       |   |       route.js
-|   |   |   |       |   |       
-|   |   |   |       |   +---analytics
-|   |   |   |       |   |       route.js
-|   |   |   |       |   |       
 |   |   |   |       |   +---articles
 |   |   |   |       |   |   |   route.js
 |   |   |   |       |   |   |   
@@ -415,55 +347,39 @@ C:.
 |   |   |   |       |   |   |       route.js
 |   |   |   |       |   |   |       
 |   |   |   |       |   |   \---[id]
-|   |   |   |       |   |           route.js
-|   |   |   |       |   |           
-|   |   |   |       |   +---auth
-|   |   |   |       |   |   +---google
-|   |   |   |       |   |   |       route.js
-|   |   |   |       |   |   |       
-|   |   |   |       |   |   \---login
-|   |   |   |       |   |           route.js
-|   |   |   |       |   |           
+|   |   |   |       |   |       |   route.js
+|   |   |   |       |   |       |   
+|   |   |   |       |   |       \---publish
+|   |   |   |       |   |               route.js
+|   |   |   |       |   |               
 |   |   |   |       |   +---categories
-|   |   |   |       |   |   |   route.js
-|   |   |   |       |   |   |   
-|   |   |   |       |   |   \---[id]
-|   |   |   |       |   |           route.js
-|   |   |   |       |   |           
+|   |   |   |       |   |       route.js
+|   |   |   |       |   |       
 |   |   |   |       |   +---dashboard
 |   |   |   |       |   |       route.js
 |   |   |   |       |   |       
-|   |   |   |       |   +---profile
-|   |   |   |       |   |       route.js
-|   |   |   |       |   |       
-|   |   |   |       |   \---users
-|   |   |   |       |       |   route.js
-|   |   |   |       |       |   
-|   |   |   |       |       \---[id]
-|   |   |   |       |               route.js
-|   |   |   |       |               
+|   |   |   |       |   \---profile
+|   |   |   |       |           route.js
+|   |   |   |       |           
 |   |   |   |       +---articles
 |   |   |   |       |   |   page.js
 |   |   |   |       |   |   
 |   |   |   |       |   \---editor
 |   |   |   |       |           page.js
 |   |   |   |       |           
-|   |   |   |       +---categories
-|   |   |   |       |       page.js
-|   |   |   |       |       
 |   |   |   |       +---dashboard
 |   |   |   |       |       page.js
 |   |   |   |       |       
-|   |   |   |       +---login
-|   |   |   |       |       page.js
-|   |   |   |       |       
-|   |   |   |       +---news
+|   |   |   |       +---wiki
 |   |   |   |       |   |   page.js
 |   |   |   |       |   |   
+|   |   |   |       |   +---recent
+|   |   |   |       |   |       page.js
+|   |   |   |       |   |       
 |   |   |   |       |   \---[slug]
 |   |   |   |       |           page.js
 |   |   |   |       |           
-|   |   |   |       \---users
+|   |   |   |       \---_not-found
 |   |   |   |               page.js
 |   |   |   |               
 |   |   |   +---css
@@ -488,473 +404,42 @@ C:.
 |   |   |   |       f639721981034f88-s.woff2
 |   |   |   |       
 |   |   |   \---webpack
-|   |   |       |   01ceb97957d56225.webpack.hot-update.json
-|   |   |       |   07e3487108e85c8d.webpack.hot-update.json
-|   |   |       |   090373a645c2cabd.webpack.hot-update.json
-|   |   |       |   0a0d987c77b332ef.webpack.hot-update.json
-|   |   |       |   0a49955412308d13.webpack.hot-update.json
-|   |   |       |   0a71fa0e6e15d97a.webpack.hot-update.json
-|   |   |       |   0b58a69e254b9354.webpack.hot-update.json
-|   |   |       |   11662b10a22e9e09.webpack.hot-update.json
-|   |   |       |   11f720877a659c31.webpack.hot-update.json
-|   |   |       |   16e868cc694313f0.webpack.hot-update.json
-|   |   |       |   19cd4244c7a99be9.webpack.hot-update.json
-|   |   |       |   1c528d7a1826c3d2.webpack.hot-update.json
-|   |   |       |   1cc9fc02a25880fb.webpack.hot-update.json
-|   |   |       |   1cfd7a869a9671c8.webpack.hot-update.json
-|   |   |       |   1d35205a1f73adc7.webpack.hot-update.json
-|   |   |       |   21c03a6b0ce6a375.webpack.hot-update.json
-|   |   |       |   21eda9b0bac2eac3.webpack.hot-update.json
-|   |   |       |   22d52619a5b8a022.webpack.hot-update.json
-|   |   |       |   23b7138d52493b81.webpack.hot-update.json
-|   |   |       |   25337b7280c1776e.webpack.hot-update.json
-|   |   |       |   26593d3825d5a28e.webpack.hot-update.json
-|   |   |       |   283591966b5a4bf6.webpack.hot-update.json
-|   |   |       |   2ac3b7bd2bbbdd30.webpack.hot-update.json
-|   |   |       |   2b9d26ee5172d708.webpack.hot-update.json
-|   |   |       |   2e3acd45964668e0.webpack.hot-update.json
-|   |   |       |   2e4522a661a4cd76.webpack.hot-update.json
-|   |   |       |   31309e9c59efe61d.webpack.hot-update.json
-|   |   |       |   316451918c6f1c14.webpack.hot-update.json
-|   |   |       |   31abaa8337180a0b.webpack.hot-update.json
-|   |   |       |   33f8161eaf92e2a9.webpack.hot-update.json
-|   |   |       |   3734933f359f8bb3.webpack.hot-update.json
-|   |   |       |   3ccef16589a49b50.webpack.hot-update.json
-|   |   |       |   3d495dcb189dddbb.webpack.hot-update.json
-|   |   |       |   3fb1f8c39b150679.webpack.hot-update.json
-|   |   |       |   44c41feebeeafdda.webpack.hot-update.json
-|   |   |       |   47942bd10e1cc058.webpack.hot-update.json
-|   |   |       |   47d0d03a7cfbedd7.webpack.hot-update.json
-|   |   |       |   48449d45d3132a3b.webpack.hot-update.json
-|   |   |       |   48d3a437da2b615b.webpack.hot-update.json
-|   |   |       |   49289d4fa48e1630.webpack.hot-update.json
-|   |   |       |   4d623ae112c45666.webpack.hot-update.json
-|   |   |       |   4f1070699cd7cc22.webpack.hot-update.json
-|   |   |       |   50cb64c664959d2a.webpack.hot-update.json
-|   |   |       |   51174b355ef349c5.webpack.hot-update.json
-|   |   |       |   515cf5abe40ee29f.webpack.hot-update.json
-|   |   |       |   51e56241027c7f90.webpack.hot-update.json
-|   |   |       |   589b65c8e838c5f6.webpack.hot-update.json
-|   |   |       |   5ce35f6fe31fe7d2.webpack.hot-update.json
-|   |   |       |   5e745e638f2146a0.webpack.hot-update.json
-|   |   |       |   60700774e4032920.webpack.hot-update.json
-|   |   |       |   6280c9a5a1f7f18e.webpack.hot-update.json
+|   |   |       |   2da12341026593b7.webpack.hot-update.json
+|   |   |       |   38b87dbf23a45da3.webpack.hot-update.json
+|   |   |       |   3dc177bb3cb764f7.webpack.hot-update.json
+|   |   |       |   404ebb5174e861a1.webpack.hot-update.json
+|   |   |       |   479200a20ec2ef1f.webpack.hot-update.json
 |   |   |       |   633457081244afec._.hot-update.json
-|   |   |       |   654a2d91cdd16299.webpack.hot-update.json
-|   |   |       |   65dd87ddc4d254fc.webpack.hot-update.json
-|   |   |       |   66234de0882f2b73.webpack.hot-update.json
-|   |   |       |   66638daaab9f8c32.webpack.hot-update.json
-|   |   |       |   6779e1c77c3a7636.webpack.hot-update.json
-|   |   |       |   6d47c31168a90939.webpack.hot-update.json
-|   |   |       |   6f5cb6c6dd2ec3a8.webpack.hot-update.json
-|   |   |       |   7150d770fd728010.webpack.hot-update.json
-|   |   |       |   71c1f3fbc44961af.webpack.hot-update.json
-|   |   |       |   73b6b7bceef4d70a.webpack.hot-update.json
-|   |   |       |   759b04b89c4e6f99.webpack.hot-update.json
-|   |   |       |   75ea9deaffee9dd6.webpack.hot-update.json
-|   |   |       |   7a3d449b9c30b310.webpack.hot-update.json
-|   |   |       |   7b10c64125ab5d2a.webpack.hot-update.json
-|   |   |       |   7cd471723aed16a8.webpack.hot-update.json
-|   |   |       |   7e65df969a77cc87.webpack.hot-update.json
-|   |   |       |   812d31c044916ae0.webpack.hot-update.json
-|   |   |       |   81d6594eb4e3d644.webpack.hot-update.json
-|   |   |       |   81f9b46a991ebe36.webpack.hot-update.json
-|   |   |       |   86022683f2a1926f.webpack.hot-update.json
-|   |   |       |   87f6ed4378487355.webpack.hot-update.json
-|   |   |       |   8815d6824200f519.webpack.hot-update.json
-|   |   |       |   895e3b3c4c9501d5.webpack.hot-update.json
-|   |   |       |   89f4bc094c2935ed.webpack.hot-update.json
-|   |   |       |   8caec1740fe71007.webpack.hot-update.json
-|   |   |       |   8d127d78a645e857.webpack.hot-update.json
-|   |   |       |   8e6261f626d0d058.webpack.hot-update.json
-|   |   |       |   921d31fe0c9ea388.webpack.hot-update.json
-|   |   |       |   989505823f998aee.webpack.hot-update.json
-|   |   |       |   9bbd46ae742aea94.webpack.hot-update.json
-|   |   |       |   9c984ef7759e26ec.webpack.hot-update.json
-|   |   |       |   9cb5dec73666bff9.webpack.hot-update.json
-|   |   |       |   9d354411d7554e34.webpack.hot-update.json
-|   |   |       |   9d4c2ede55e1ca45.webpack.hot-update.json
-|   |   |       |   9e9e9972226cb844.webpack.hot-update.json
-|   |   |       |   9fa640a8d965d581.webpack.hot-update.json
-|   |   |       |   9ffcb19712d33416.webpack.hot-update.json
-|   |   |       |   a0bc693c03826ee3.webpack.hot-update.json
-|   |   |       |   a190ecc6f70d9db0.webpack.hot-update.json
-|   |   |       |   a499e59d3ad0abe3.webpack.hot-update.json
-|   |   |       |   a5b8db3efc7e9453.webpack.hot-update.json
-|   |   |       |   a7f0ec96b1ce0226.webpack.hot-update.json
-|   |   |       |   a9fe668d9dfe0f43.webpack.hot-update.json
-|   |   |       |   aa3c4c1ac2b215f2.webpack.hot-update.json
-|   |   |       |   ac720cd128f85e6a.webpack.hot-update.json
-|   |   |       |   aca2ccc13f252d91.webpack.hot-update.json
-|   |   |       |   acacbc5ed42d9022.webpack.hot-update.json
-|   |   |       |   acf98b172c9aeb51.webpack.hot-update.json
-|   |   |       |   af0b68c3be8fa9d4.webpack.hot-update.json
-|   |   |       |   afb9af4896da1d34.webpack.hot-update.json
-|   |   |       |   b0818820c4f3b1db.webpack.hot-update.json
-|   |   |       |   b685ef9e0abdc29c.webpack.hot-update.json
-|   |   |       |   b6b8d9383e51cf3b.webpack.hot-update.json
-|   |   |       |   bab38cfea1860958.webpack.hot-update.json
-|   |   |       |   bb406953fe16a3f5.webpack.hot-update.json
-|   |   |       |   bb4d5b7a9c355d26.webpack.hot-update.json
-|   |   |       |   bc4443a08a5f89d1.webpack.hot-update.json
-|   |   |       |   c1130ee5cbf440cd.webpack.hot-update.json
-|   |   |       |   c15223a9d7a6b0f0.webpack.hot-update.json
-|   |   |       |   c374c48713535222.webpack.hot-update.json
-|   |   |       |   cdd22dc0989dcd30.webpack.hot-update.json
-|   |   |       |   d0d2a57f1909a4b9.webpack.hot-update.json
-|   |   |       |   d12e3a8953023fdd.webpack.hot-update.json
-|   |   |       |   d3379819e629e0b2.webpack.hot-update.json
-|   |   |       |   d4cf3c9db8481f09.webpack.hot-update.json
-|   |   |       |   d57c7e6197f4d712.webpack.hot-update.json
-|   |   |       |   d6ed39abea43d38d.webpack.hot-update.json
-|   |   |       |   d7f93010cd1a262f.webpack.hot-update.json
-|   |   |       |   d88c2b215fe39285.webpack.hot-update.json
-|   |   |       |   e05bc6c414e757c2.webpack.hot-update.json
-|   |   |       |   e149441176acfde4.webpack.hot-update.json
-|   |   |       |   e1e0faefe438865e.webpack.hot-update.json
-|   |   |       |   e2f83c390dbc6f6f.webpack.hot-update.json
-|   |   |       |   e33f8bbd7a66f888.webpack.hot-update.json
-|   |   |       |   e5f24f2868d1a698.webpack.hot-update.json
-|   |   |       |   e68000e4d605da5c.webpack.hot-update.json
-|   |   |       |   ecbcd2c48e5c1c2d.webpack.hot-update.json
-|   |   |       |   ed6ac9be3c0b84ab.webpack.hot-update.json
-|   |   |       |   ef6782602ea1b9c3.webpack.hot-update.json
-|   |   |       |   f078c3965be8bf13.webpack.hot-update.json
-|   |   |       |   f1da2a5d160f5bdf.webpack.hot-update.json
-|   |   |       |   f20f284b0cf4d8ea.webpack.hot-update.json
-|   |   |       |   f3bf0930b10ac2ca.webpack.hot-update.json
-|   |   |       |   f433a7e79a324071.webpack.hot-update.json
-|   |   |       |   f85310462f237d1d.webpack.hot-update.json
-|   |   |       |   fa01d415e318110b.webpack.hot-update.json
-|   |   |       |   fb5f4ea7082cd9ea.webpack.hot-update.json
-|   |   |       |   fd1e49acb93e844e.webpack.hot-update.json
-|   |   |       |   fe9e7bbdd481942b.webpack.hot-update.json
-|   |   |       |   fffe0d5345335f7f.webpack.hot-update.json
-|   |   |       |   webpack.01ceb97957d56225.hot-update.js
-|   |   |       |   webpack.07e3487108e85c8d.hot-update.js
-|   |   |       |   webpack.090373a645c2cabd.hot-update.js
-|   |   |       |   webpack.0a0d987c77b332ef.hot-update.js
-|   |   |       |   webpack.0a49955412308d13.hot-update.js
-|   |   |       |   webpack.0a71fa0e6e15d97a.hot-update.js
-|   |   |       |   webpack.0b58a69e254b9354.hot-update.js
-|   |   |       |   webpack.11662b10a22e9e09.hot-update.js
-|   |   |       |   webpack.11f720877a659c31.hot-update.js
-|   |   |       |   webpack.16e868cc694313f0.hot-update.js
-|   |   |       |   webpack.19cd4244c7a99be9.hot-update.js
-|   |   |       |   webpack.1c528d7a1826c3d2.hot-update.js
-|   |   |       |   webpack.1cc9fc02a25880fb.hot-update.js
-|   |   |       |   webpack.1cfd7a869a9671c8.hot-update.js
-|   |   |       |   webpack.1d35205a1f73adc7.hot-update.js
-|   |   |       |   webpack.21c03a6b0ce6a375.hot-update.js
-|   |   |       |   webpack.21eda9b0bac2eac3.hot-update.js
-|   |   |       |   webpack.22d52619a5b8a022.hot-update.js
-|   |   |       |   webpack.23b7138d52493b81.hot-update.js
-|   |   |       |   webpack.25337b7280c1776e.hot-update.js
-|   |   |       |   webpack.26593d3825d5a28e.hot-update.js
-|   |   |       |   webpack.283591966b5a4bf6.hot-update.js
-|   |   |       |   webpack.2ac3b7bd2bbbdd30.hot-update.js
-|   |   |       |   webpack.2b9d26ee5172d708.hot-update.js
-|   |   |       |   webpack.2e3acd45964668e0.hot-update.js
-|   |   |       |   webpack.2e4522a661a4cd76.hot-update.js
-|   |   |       |   webpack.31309e9c59efe61d.hot-update.js
-|   |   |       |   webpack.316451918c6f1c14.hot-update.js
-|   |   |       |   webpack.31abaa8337180a0b.hot-update.js
-|   |   |       |   webpack.33f8161eaf92e2a9.hot-update.js
-|   |   |       |   webpack.3734933f359f8bb3.hot-update.js
-|   |   |       |   webpack.3ccef16589a49b50.hot-update.js
-|   |   |       |   webpack.3d495dcb189dddbb.hot-update.js
-|   |   |       |   webpack.3fb1f8c39b150679.hot-update.js
-|   |   |       |   webpack.44c41feebeeafdda.hot-update.js
-|   |   |       |   webpack.47942bd10e1cc058.hot-update.js
-|   |   |       |   webpack.47d0d03a7cfbedd7.hot-update.js
-|   |   |       |   webpack.48449d45d3132a3b.hot-update.js
-|   |   |       |   webpack.48d3a437da2b615b.hot-update.js
-|   |   |       |   webpack.49289d4fa48e1630.hot-update.js
-|   |   |       |   webpack.4d623ae112c45666.hot-update.js
-|   |   |       |   webpack.4f1070699cd7cc22.hot-update.js
-|   |   |       |   webpack.50cb64c664959d2a.hot-update.js
-|   |   |       |   webpack.51174b355ef349c5.hot-update.js
-|   |   |       |   webpack.515cf5abe40ee29f.hot-update.js
-|   |   |       |   webpack.51e56241027c7f90.hot-update.js
-|   |   |       |   webpack.589b65c8e838c5f6.hot-update.js
-|   |   |       |   webpack.5ce35f6fe31fe7d2.hot-update.js
-|   |   |       |   webpack.5e745e638f2146a0.hot-update.js
-|   |   |       |   webpack.60700774e4032920.hot-update.js
-|   |   |       |   webpack.6280c9a5a1f7f18e.hot-update.js
-|   |   |       |   webpack.654a2d91cdd16299.hot-update.js
-|   |   |       |   webpack.65dd87ddc4d254fc.hot-update.js
-|   |   |       |   webpack.66234de0882f2b73.hot-update.js
-|   |   |       |   webpack.66638daaab9f8c32.hot-update.js
-|   |   |       |   webpack.6779e1c77c3a7636.hot-update.js
-|   |   |       |   webpack.6d47c31168a90939.hot-update.js
-|   |   |       |   webpack.6f5cb6c6dd2ec3a8.hot-update.js
-|   |   |       |   webpack.7150d770fd728010.hot-update.js
-|   |   |       |   webpack.71c1f3fbc44961af.hot-update.js
-|   |   |       |   webpack.73b6b7bceef4d70a.hot-update.js
-|   |   |       |   webpack.759b04b89c4e6f99.hot-update.js
-|   |   |       |   webpack.75ea9deaffee9dd6.hot-update.js
-|   |   |       |   webpack.7a3d449b9c30b310.hot-update.js
-|   |   |       |   webpack.7b10c64125ab5d2a.hot-update.js
-|   |   |       |   webpack.7cd471723aed16a8.hot-update.js
-|   |   |       |   webpack.7e65df969a77cc87.hot-update.js
-|   |   |       |   webpack.812d31c044916ae0.hot-update.js
-|   |   |       |   webpack.81d6594eb4e3d644.hot-update.js
-|   |   |       |   webpack.81f9b46a991ebe36.hot-update.js
-|   |   |       |   webpack.86022683f2a1926f.hot-update.js
-|   |   |       |   webpack.87f6ed4378487355.hot-update.js
-|   |   |       |   webpack.8815d6824200f519.hot-update.js
-|   |   |       |   webpack.895e3b3c4c9501d5.hot-update.js
-|   |   |       |   webpack.89f4bc094c2935ed.hot-update.js
-|   |   |       |   webpack.8caec1740fe71007.hot-update.js
-|   |   |       |   webpack.8d127d78a645e857.hot-update.js
-|   |   |       |   webpack.8e6261f626d0d058.hot-update.js
-|   |   |       |   webpack.921d31fe0c9ea388.hot-update.js
-|   |   |       |   webpack.989505823f998aee.hot-update.js
-|   |   |       |   webpack.9bbd46ae742aea94.hot-update.js
-|   |   |       |   webpack.9c984ef7759e26ec.hot-update.js
-|   |   |       |   webpack.9cb5dec73666bff9.hot-update.js
-|   |   |       |   webpack.9d354411d7554e34.hot-update.js
-|   |   |       |   webpack.9d4c2ede55e1ca45.hot-update.js
-|   |   |       |   webpack.9e9e9972226cb844.hot-update.js
-|   |   |       |   webpack.9fa640a8d965d581.hot-update.js
-|   |   |       |   webpack.9ffcb19712d33416.hot-update.js
-|   |   |       |   webpack.a0bc693c03826ee3.hot-update.js
-|   |   |       |   webpack.a190ecc6f70d9db0.hot-update.js
-|   |   |       |   webpack.a499e59d3ad0abe3.hot-update.js
-|   |   |       |   webpack.a5b8db3efc7e9453.hot-update.js
-|   |   |       |   webpack.a7f0ec96b1ce0226.hot-update.js
-|   |   |       |   webpack.a9fe668d9dfe0f43.hot-update.js
-|   |   |       |   webpack.aa3c4c1ac2b215f2.hot-update.js
-|   |   |       |   webpack.ac720cd128f85e6a.hot-update.js
-|   |   |       |   webpack.aca2ccc13f252d91.hot-update.js
-|   |   |       |   webpack.acacbc5ed42d9022.hot-update.js
-|   |   |       |   webpack.acf98b172c9aeb51.hot-update.js
-|   |   |       |   webpack.af0b68c3be8fa9d4.hot-update.js
-|   |   |       |   webpack.afb9af4896da1d34.hot-update.js
-|   |   |       |   webpack.b0818820c4f3b1db.hot-update.js
-|   |   |       |   webpack.b685ef9e0abdc29c.hot-update.js
-|   |   |       |   webpack.b6b8d9383e51cf3b.hot-update.js
-|   |   |       |   webpack.bab38cfea1860958.hot-update.js
-|   |   |       |   webpack.bb406953fe16a3f5.hot-update.js
-|   |   |       |   webpack.bb4d5b7a9c355d26.hot-update.js
-|   |   |       |   webpack.bc4443a08a5f89d1.hot-update.js
-|   |   |       |   webpack.c1130ee5cbf440cd.hot-update.js
-|   |   |       |   webpack.c15223a9d7a6b0f0.hot-update.js
-|   |   |       |   webpack.c374c48713535222.hot-update.js
-|   |   |       |   webpack.cdd22dc0989dcd30.hot-update.js
-|   |   |       |   webpack.d0d2a57f1909a4b9.hot-update.js
-|   |   |       |   webpack.d12e3a8953023fdd.hot-update.js
-|   |   |       |   webpack.d3379819e629e0b2.hot-update.js
-|   |   |       |   webpack.d4cf3c9db8481f09.hot-update.js
-|   |   |       |   webpack.d57c7e6197f4d712.hot-update.js
-|   |   |       |   webpack.d6ed39abea43d38d.hot-update.js
-|   |   |       |   webpack.d7f93010cd1a262f.hot-update.js
-|   |   |       |   webpack.d88c2b215fe39285.hot-update.js
-|   |   |       |   webpack.e05bc6c414e757c2.hot-update.js
-|   |   |       |   webpack.e149441176acfde4.hot-update.js
-|   |   |       |   webpack.e1e0faefe438865e.hot-update.js
-|   |   |       |   webpack.e2f83c390dbc6f6f.hot-update.js
-|   |   |       |   webpack.e33f8bbd7a66f888.hot-update.js
-|   |   |       |   webpack.e5f24f2868d1a698.hot-update.js
-|   |   |       |   webpack.e68000e4d605da5c.hot-update.js
-|   |   |       |   webpack.ecbcd2c48e5c1c2d.hot-update.js
-|   |   |       |   webpack.ed6ac9be3c0b84ab.hot-update.js
-|   |   |       |   webpack.ef6782602ea1b9c3.hot-update.js
-|   |   |       |   webpack.f078c3965be8bf13.hot-update.js
-|   |   |       |   webpack.f1da2a5d160f5bdf.hot-update.js
-|   |   |       |   webpack.f20f284b0cf4d8ea.hot-update.js
-|   |   |       |   webpack.f3bf0930b10ac2ca.hot-update.js
-|   |   |       |   webpack.f433a7e79a324071.hot-update.js
-|   |   |       |   webpack.f85310462f237d1d.hot-update.js
-|   |   |       |   webpack.fa01d415e318110b.hot-update.js
-|   |   |       |   webpack.fb5f4ea7082cd9ea.hot-update.js
-|   |   |       |   webpack.fd1e49acb93e844e.hot-update.js
-|   |   |       |   webpack.fe9e7bbdd481942b.hot-update.js
-|   |   |       |   webpack.fffe0d5345335f7f.hot-update.js
+|   |   |       |   63397dfa50208ca8.webpack.hot-update.json
+|   |   |       |   76231fc872cee2ed.webpack.hot-update.json
+|   |   |       |   78b9684808c13177.webpack.hot-update.json
+|   |   |       |   84ecd3833712da9c.webpack.hot-update.json
+|   |   |       |   8f80540554c15407.webpack.hot-update.json
+|   |   |       |   94cb4ef9c1bbe222.webpack.hot-update.json
+|   |   |       |   be8d7ebba4686c27.webpack.hot-update.json
+|   |   |       |   dad9cbf31aaaf996.webpack.hot-update.json
+|   |   |       |   ef0c74af1a8c28ae.webpack.hot-update.json
+|   |   |       |   f5a45f3224783eb0.webpack.hot-update.json
+|   |   |       |   webpack.2da12341026593b7.hot-update.js
+|   |   |       |   webpack.38b87dbf23a45da3.hot-update.js
+|   |   |       |   webpack.3dc177bb3cb764f7.hot-update.js
+|   |   |       |   webpack.404ebb5174e861a1.hot-update.js
+|   |   |       |   webpack.479200a20ec2ef1f.hot-update.js
+|   |   |       |   webpack.63397dfa50208ca8.hot-update.js
+|   |   |       |   webpack.76231fc872cee2ed.hot-update.js
+|   |   |       |   webpack.78b9684808c13177.hot-update.js
+|   |   |       |   webpack.84ecd3833712da9c.hot-update.js
+|   |   |       |   webpack.8f80540554c15407.hot-update.js
+|   |   |       |   webpack.94cb4ef9c1bbe222.hot-update.js
+|   |   |       |   webpack.be8d7ebba4686c27.hot-update.js
+|   |   |       |   webpack.dad9cbf31aaaf996.hot-update.js
+|   |   |       |   webpack.ef0c74af1a8c28ae.hot-update.js
+|   |   |       |   webpack.f5a45f3224783eb0.hot-update.js
 |   |   |       |   
 |   |   |       \---app
-|   |   |           |   layout.01ceb97957d56225.hot-update.js
-|   |   |           |   layout.07e3487108e85c8d.hot-update.js
-|   |   |           |   layout.090373a645c2cabd.hot-update.js
-|   |   |           |   layout.0a49955412308d13.hot-update.js
-|   |   |           |   layout.0a71fa0e6e15d97a.hot-update.js
-|   |   |           |   layout.0b58a69e254b9354.hot-update.js
-|   |   |           |   layout.11662b10a22e9e09.hot-update.js
-|   |   |           |   layout.11f720877a659c31.hot-update.js
-|   |   |           |   layout.16e868cc694313f0.hot-update.js
-|   |   |           |   layout.19cd4244c7a99be9.hot-update.js
-|   |   |           |   layout.1c528d7a1826c3d2.hot-update.js
-|   |   |           |   layout.1cc9fc02a25880fb.hot-update.js
-|   |   |           |   layout.1cfd7a869a9671c8.hot-update.js
-|   |   |           |   layout.1d35205a1f73adc7.hot-update.js
-|   |   |           |   layout.21c03a6b0ce6a375.hot-update.js
-|   |   |           |   layout.21eda9b0bac2eac3.hot-update.js
-|   |   |           |   layout.22d52619a5b8a022.hot-update.js
-|   |   |           |   layout.23b7138d52493b81.hot-update.js
-|   |   |           |   layout.25337b7280c1776e.hot-update.js
-|   |   |           |   layout.283591966b5a4bf6.hot-update.js
-|   |   |           |   layout.2e3acd45964668e0.hot-update.js
-|   |   |           |   layout.2e4522a661a4cd76.hot-update.js
-|   |   |           |   layout.31309e9c59efe61d.hot-update.js
-|   |   |           |   layout.316451918c6f1c14.hot-update.js
-|   |   |           |   layout.33f8161eaf92e2a9.hot-update.js
-|   |   |           |   layout.3734933f359f8bb3.hot-update.js
-|   |   |           |   layout.3ccef16589a49b50.hot-update.js
-|   |   |           |   layout.3d495dcb189dddbb.hot-update.js
-|   |   |           |   layout.44c41feebeeafdda.hot-update.js
-|   |   |           |   layout.47942bd10e1cc058.hot-update.js
-|   |   |           |   layout.48449d45d3132a3b.hot-update.js
-|   |   |           |   layout.48d3a437da2b615b.hot-update.js
-|   |   |           |   layout.4d623ae112c45666.hot-update.js
-|   |   |           |   layout.4f1070699cd7cc22.hot-update.js
-|   |   |           |   layout.50cb64c664959d2a.hot-update.js
-|   |   |           |   layout.515cf5abe40ee29f.hot-update.js
-|   |   |           |   layout.51e56241027c7f90.hot-update.js
-|   |   |           |   layout.589b65c8e838c5f6.hot-update.js
-|   |   |           |   layout.5ce35f6fe31fe7d2.hot-update.js
-|   |   |           |   layout.5e745e638f2146a0.hot-update.js
-|   |   |           |   layout.6280c9a5a1f7f18e.hot-update.js
-|   |   |           |   layout.654a2d91cdd16299.hot-update.js
-|   |   |           |   layout.65dd87ddc4d254fc.hot-update.js
-|   |   |           |   layout.66638daaab9f8c32.hot-update.js
-|   |   |           |   layout.6779e1c77c3a7636.hot-update.js
-|   |   |           |   layout.6d47c31168a90939.hot-update.js
-|   |   |           |   layout.6f5cb6c6dd2ec3a8.hot-update.js
-|   |   |           |   layout.7150d770fd728010.hot-update.js
-|   |   |           |   layout.71c1f3fbc44961af.hot-update.js
-|   |   |           |   layout.73b6b7bceef4d70a.hot-update.js
-|   |   |           |   layout.759b04b89c4e6f99.hot-update.js
-|   |   |           |   layout.75ea9deaffee9dd6.hot-update.js
-|   |   |           |   layout.7a3d449b9c30b310.hot-update.js
-|   |   |           |   layout.7cd471723aed16a8.hot-update.js
-|   |   |           |   layout.7e65df969a77cc87.hot-update.js
-|   |   |           |   layout.812d31c044916ae0.hot-update.js
-|   |   |           |   layout.81d6594eb4e3d644.hot-update.js
-|   |   |           |   layout.81f9b46a991ebe36.hot-update.js
-|   |   |           |   layout.86022683f2a1926f.hot-update.js
-|   |   |           |   layout.87f6ed4378487355.hot-update.js
-|   |   |           |   layout.8815d6824200f519.hot-update.js
-|   |   |           |   layout.895e3b3c4c9501d5.hot-update.js
-|   |   |           |   layout.8caec1740fe71007.hot-update.js
-|   |   |           |   layout.8d127d78a645e857.hot-update.js
-|   |   |           |   layout.8e6261f626d0d058.hot-update.js
-|   |   |           |   layout.921d31fe0c9ea388.hot-update.js
-|   |   |           |   layout.989505823f998aee.hot-update.js
-|   |   |           |   layout.9bbd46ae742aea94.hot-update.js
-|   |   |           |   layout.9c984ef7759e26ec.hot-update.js
-|   |   |           |   layout.9cb5dec73666bff9.hot-update.js
-|   |   |           |   layout.9d354411d7554e34.hot-update.js
-|   |   |           |   layout.9d4c2ede55e1ca45.hot-update.js
-|   |   |           |   layout.9e9e9972226cb844.hot-update.js
-|   |   |           |   layout.9fa640a8d965d581.hot-update.js
-|   |   |           |   layout.9ffcb19712d33416.hot-update.js
-|   |   |           |   layout.a0bc693c03826ee3.hot-update.js
-|   |   |           |   layout.a190ecc6f70d9db0.hot-update.js
-|   |   |           |   layout.a499e59d3ad0abe3.hot-update.js
-|   |   |           |   layout.a5b8db3efc7e9453.hot-update.js
-|   |   |           |   layout.a9fe668d9dfe0f43.hot-update.js
-|   |   |           |   layout.aa3c4c1ac2b215f2.hot-update.js
-|   |   |           |   layout.aca2ccc13f252d91.hot-update.js
-|   |   |           |   layout.acf98b172c9aeb51.hot-update.js
-|   |   |           |   layout.af0b68c3be8fa9d4.hot-update.js
-|   |   |           |   layout.afb9af4896da1d34.hot-update.js
-|   |   |           |   layout.b0818820c4f3b1db.hot-update.js
-|   |   |           |   layout.b685ef9e0abdc29c.hot-update.js
-|   |   |           |   layout.b6b8d9383e51cf3b.hot-update.js
-|   |   |           |   layout.bab38cfea1860958.hot-update.js
-|   |   |           |   layout.bb406953fe16a3f5.hot-update.js
-|   |   |           |   layout.bb4d5b7a9c355d26.hot-update.js
-|   |   |           |   layout.c1130ee5cbf440cd.hot-update.js
-|   |   |           |   layout.c15223a9d7a6b0f0.hot-update.js
-|   |   |           |   layout.c374c48713535222.hot-update.js
-|   |   |           |   layout.cdd22dc0989dcd30.hot-update.js
-|   |   |           |   layout.d0d2a57f1909a4b9.hot-update.js
-|   |   |           |   layout.d12e3a8953023fdd.hot-update.js
-|   |   |           |   layout.d3379819e629e0b2.hot-update.js
-|   |   |           |   layout.d4cf3c9db8481f09.hot-update.js
-|   |   |           |   layout.d57c7e6197f4d712.hot-update.js
-|   |   |           |   layout.d6ed39abea43d38d.hot-update.js
-|   |   |           |   layout.d7f93010cd1a262f.hot-update.js
-|   |   |           |   layout.d88c2b215fe39285.hot-update.js
-|   |   |           |   layout.e149441176acfde4.hot-update.js
-|   |   |           |   layout.e1e0faefe438865e.hot-update.js
-|   |   |           |   layout.e2f83c390dbc6f6f.hot-update.js
-|   |   |           |   layout.e33f8bbd7a66f888.hot-update.js
-|   |   |           |   layout.e5f24f2868d1a698.hot-update.js
-|   |   |           |   layout.ecbcd2c48e5c1c2d.hot-update.js
-|   |   |           |   layout.ed6ac9be3c0b84ab.hot-update.js
-|   |   |           |   layout.ef6782602ea1b9c3.hot-update.js
-|   |   |           |   layout.f078c3965be8bf13.hot-update.js
-|   |   |           |   layout.f1da2a5d160f5bdf.hot-update.js
-|   |   |           |   layout.f20f284b0cf4d8ea.hot-update.js
-|   |   |           |   layout.f3bf0930b10ac2ca.hot-update.js
-|   |   |           |   layout.f433a7e79a324071.hot-update.js
-|   |   |           |   layout.f85310462f237d1d.hot-update.js
-|   |   |           |   layout.fb5f4ea7082cd9ea.hot-update.js
-|   |   |           |   layout.fd1e49acb93e844e.hot-update.js
-|   |   |           |   layout.fe9e7bbdd481942b.hot-update.js
-|   |   |           |   layout.fffe0d5345335f7f.hot-update.js
-|   |   |           |   
-|   |   |           +---articles
-|   |   |           |   |   page.07e3487108e85c8d.hot-update.js
-|   |   |           |   |   page.0a71fa0e6e15d97a.hot-update.js
-|   |   |           |   |   page.11662b10a22e9e09.hot-update.js
-|   |   |           |   |   page.11f720877a659c31.hot-update.js
-|   |   |           |   |   page.1cc9fc02a25880fb.hot-update.js
-|   |   |           |   |   page.21eda9b0bac2eac3.hot-update.js
-|   |   |           |   |   page.2e4522a661a4cd76.hot-update.js
-|   |   |           |   |   page.3ccef16589a49b50.hot-update.js
-|   |   |           |   |   page.48449d45d3132a3b.hot-update.js
-|   |   |           |   |   page.48d3a437da2b615b.hot-update.js
-|   |   |           |   |   page.6280c9a5a1f7f18e.hot-update.js
-|   |   |           |   |   page.654a2d91cdd16299.hot-update.js
-|   |   |           |   |   page.6f5cb6c6dd2ec3a8.hot-update.js
-|   |   |           |   |   page.7a3d449b9c30b310.hot-update.js
-|   |   |           |   |   page.86022683f2a1926f.hot-update.js
-|   |   |           |   |   page.87f6ed4378487355.hot-update.js
-|   |   |           |   |   page.989505823f998aee.hot-update.js
-|   |   |           |   |   page.a0bc693c03826ee3.hot-update.js
-|   |   |           |   |   page.acf98b172c9aeb51.hot-update.js
-|   |   |           |   |   page.af0b68c3be8fa9d4.hot-update.js
-|   |   |           |   |   page.b0818820c4f3b1db.hot-update.js
-|   |   |           |   |   page.d6ed39abea43d38d.hot-update.js
-|   |   |           |   |   page.d7f93010cd1a262f.hot-update.js
-|   |   |           |   |   page.e1e0faefe438865e.hot-update.js
-|   |   |           |   |   page.e2f83c390dbc6f6f.hot-update.js
-|   |   |           |   |   page.f3bf0930b10ac2ca.hot-update.js
-|   |   |           |   |   page.f433a7e79a324071.hot-update.js
-|   |   |           |   |   page.fe9e7bbdd481942b.hot-update.js
-|   |   |           |   |   
-|   |   |           |   \---editor
-|   |   |           |           page.8e6261f626d0d058.hot-update.js
-|   |   |           |           page.b685ef9e0abdc29c.hot-update.js
-|   |   |           |           page.bb4d5b7a9c355d26.hot-update.js
-|   |   |           |           
-|   |   |           +---categories
-|   |   |           |       page.3734933f359f8bb3.hot-update.js
-|   |   |           |       page.4d623ae112c45666.hot-update.js
-|   |   |           |       page.5e745e638f2146a0.hot-update.js
-|   |   |           |       page.9ffcb19712d33416.hot-update.js
-|   |   |           |       page.c1130ee5cbf440cd.hot-update.js
-|   |   |           |       page.c15223a9d7a6b0f0.hot-update.js
-|   |   |           |       page.d4cf3c9db8481f09.hot-update.js
-|   |   |           |       page.f20f284b0cf4d8ea.hot-update.js
-|   |   |           |       page.f85310462f237d1d.hot-update.js
-|   |   |           |       page.fffe0d5345335f7f.hot-update.js
-|   |   |           |       
-|   |   |           \---users
-|   |   |                   page.16e868cc694313f0.hot-update.js
-|   |   |                   page.1cfd7a869a9671c8.hot-update.js
-|   |   |                   page.22d52619a5b8a022.hot-update.js
-|   |   |                   page.44c41feebeeafdda.hot-update.js
-|   |   |                   page.5ce35f6fe31fe7d2.hot-update.js
-|   |   |                   page.66638daaab9f8c32.hot-update.js
-|   |   |                   page.6779e1c77c3a7636.hot-update.js
-|   |   |                   page.812d31c044916ae0.hot-update.js
-|   |   |                   page.81f9b46a991ebe36.hot-update.js
-|   |   |                   page.d88c2b215fe39285.hot-update.js
-|   |   |                   page.fb5f4ea7082cd9ea.hot-update.js
-|   |   |                   
+|   |   |               layout.38b87dbf23a45da3.hot-update.js
+|   |   |               layout.63397dfa50208ca8.hot-update.js
+|   |   |               
 |   |   \---types
 |   |       |   cache-life.d.ts
 |   |       |   package.json
@@ -964,16 +449,7 @@ C:.
 |   |       \---app
 |   |           |   layout.ts
 |   |           |   
-|   |           +---analytics
-|   |           |       page.ts
-|   |           |       
 |   |           +---api
-|   |           |   +---activity-logs
-|   |           |   |       route.ts
-|   |           |   |       
-|   |           |   +---analytics
-|   |           |   |       route.ts
-|   |           |   |       
 |   |           |   +---articles
 |   |           |   |   |   route.ts
 |   |           |   |   |   
@@ -981,57 +457,38 @@ C:.
 |   |           |   |   |       route.ts
 |   |           |   |   |       
 |   |           |   |   \---[id]
-|   |           |   |           route.ts
-|   |           |   |           
-|   |           |   +---auth
-|   |           |   |   +---google
-|   |           |   |   |       route.ts
-|   |           |   |   |       
-|   |           |   |   \---login
-|   |           |   |           route.ts
-|   |           |   |           
+|   |           |   |       |   route.ts
+|   |           |   |       |   
+|   |           |   |       \---publish
+|   |           |   |               route.ts
+|   |           |   |               
 |   |           |   +---categories
-|   |           |   |   |   route.ts
-|   |           |   |   |   
-|   |           |   |   \---[id]
-|   |           |   |           route.ts
-|   |           |   |           
+|   |           |   |       route.ts
+|   |           |   |       
 |   |           |   +---dashboard
 |   |           |   |       route.ts
 |   |           |   |       
-|   |           |   +---profile
-|   |           |   |       route.ts
-|   |           |   |       
-|   |           |   \---users
-|   |           |       |   route.ts
-|   |           |       |   
-|   |           |       \---[id]
-|   |           |               route.ts
-|   |           |               
+|   |           |   \---profile
+|   |           |           route.ts
+|   |           |           
 |   |           +---articles
 |   |           |   |   page.ts
 |   |           |   |   
 |   |           |   \---editor
 |   |           |           page.ts
 |   |           |           
-|   |           +---categories
-|   |           |       page.ts
-|   |           |       
 |   |           +---dashboard
 |   |           |       page.ts
 |   |           |       
-|   |           +---login
-|   |           |       page.ts
-|   |           |       
-|   |           +---news
-|   |           |   |   page.ts
-|   |           |   |   
-|   |           |   \---[slug]
-|   |           |           page.ts
-|   |           |           
-|   |           \---users
-|   |                   page.ts
-|   |                   
+|   |           \---wiki
+|   |               |   page.ts
+|   |               |   
+|   |               +---recent
+|   |               |       page.ts
+|   |               |       
+|   |               \---[slug]
+|   |                       page.ts
+|   |                       
 |   +---diagnostics
 |   |       build-diagnostics.json
 |   |       framework.json
@@ -2174,14 +1631,30 @@ C:.
 |   |   +---profile
 |   |   |       route.ts
 |   |   |       
+|   |   +---revisions
+|   |   |   |   route.ts
+|   |   |   |   
+|   |   |   \---[id]
+|   |   |       |   route.ts
+|   |   |       |   
+|   |   |       +---approve
+|   |   |       |       route.ts
+|   |   |       |       
+|   |   |       \---reject
+|   |   |               route.ts
+|   |   |               
 |   |   +---tags
 |   |   +---upload-avatar
 |   |   |       route.ts
 |   |   |       
-|   |   \---users
-|   |       |   route.ts
-|   |       |   
-|   |       \---[id]
+|   |   +---users
+|   |   |   |   route.ts
+|   |   |   |   
+|   |   |   \---[id]
+|   |   |           route.ts
+|   |   |           
+|   |   \---wiki
+|   |       \---blocks
 |   |               route.ts
 |   |               
 |   +---articles
@@ -2219,9 +1692,31 @@ C:.
 |   +---test
 |   |       page.tsx
 |   |       
-|   \---users
-|           page.tsx
-|           
+|   +---users
+|   |       page.tsx
+|   |       
+|   \---wiki
+|       |   page.tsx
+|       |   
+|       +---categories
+|       |       page.tsx
+|       |       
+|       +---history
+|       |   \---[slug]
+|       |           page.tsx
+|       |           
+|       +---random
+|       |       page.tsx
+|       |       
+|       +---recent
+|       |       page.tsx
+|       |       
+|       +---search
+|       |       page.tsx
+|       |       
+|       \---[slug]
+|               page.tsx
+|               
 +---components
 |   +---article
 |   +---dashboard
@@ -2241,7 +1736,19 @@ C:.
 |   +---providers
 |   |       ThemeProvider.tsx
 |   |       
-|   \---ui
+|   +---ui
+|   \---wiki
+|           CategoriesContent.tsx
+|           RecentChangesContent.tsx
+|           SearchContent.tsx
+|           WikiArticlePage.tsx
+|           WikiHeader.tsx
+|           WikiHistoryPage.tsx
+|           WikiInfoBox.tsx
+|           WikiLayout.tsx
+|           WikiNavLink.tsx
+|           WikiSidebar.tsx
+|           
 +---lib
 |       auth.ts
 |       cloudinary.ts
@@ -2252,6 +1759,8 @@ C:.
 |       prisma.ts
 |       rbac.ts
 |       utils.ts
+|       wiki-search.ts
+|       wiki.ts
 |       
 +---node_modules
 |   |   .package-lock.json
@@ -2362,6 +1871,9 @@ C:.
 |   |           index.js
 |   |           package.json
 |   |           query_engine-windows.dll.node
+|   |           query_engine-windows.dll.node.tmp19996
+|   |           query_engine-windows.dll.node.tmp2012
+|   |           query_engine-windows.dll.node.tmp20736
 |   |           schema.prisma
 |   |           wasm.d.ts
 |   |           wasm.js
@@ -36402,6 +35914,7 @@ C:.
 |               
 +---prisma
 |   |   schema.prisma
+|   |   seed.ts
 |   |   
 |   \---migrations
 |       |   migration_lock.toml
@@ -36430,7 +35943,22 @@ C:.
 |       +---20260521223540_add_article_views
 |       |       migration.sql
 |       |       
-|       \---20260529234349_add_google_auth
+|       +---20260529234349_add_google_auth
+|       |       migration.sql
+|       |       
+|       +---20260604062437_article_revision_system
+|       |       migration.sql
+|       |       
+|       +---20260604093802_remove_review_status
+|       |       migration.sql
+|       |       
+|       +---20260608095158_add_wiki_blocks
+|       |       migration.sql
+|       |       
+|       +---20260609070947_add_last_content_update
+|       |       migration.sql
+|       |       
+|       \---20260609072111_add_last_content_update_article
 |               migration.sql
 |               
 +---public

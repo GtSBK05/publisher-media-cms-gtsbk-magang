@@ -24,6 +24,9 @@ export async function GET() {
         data: {
           status: "PUBLISHED",
           publishedAt: now,
+
+          lastContentUpdate:
+            new Date(),           
         },
       });
     }

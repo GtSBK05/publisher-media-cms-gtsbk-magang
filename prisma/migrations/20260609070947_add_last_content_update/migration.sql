@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "WikiBlock" ADD COLUMN     "lastContentUpdate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

@@ -178,6 +178,9 @@ export async function PATCH(
             null,
 
           healthScore,
+          
+          lastContentUpdate:
+            new Date(),          
         },
       });
 

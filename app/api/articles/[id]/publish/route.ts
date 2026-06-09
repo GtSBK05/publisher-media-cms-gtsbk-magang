@@ -35,6 +35,9 @@ export async function PATCH(
         data: {
           status: "PUBLISHED",
           publishedAt: new Date(),
+          
+          lastContentUpdate:
+            new Date(),           
         },
       });
 
