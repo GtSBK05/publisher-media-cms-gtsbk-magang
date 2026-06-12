@@ -99,9 +99,9 @@ export default function BackgroundEditor({
           alt="Background Preview"
           className="
             w-full
-            max-w-[900px]
+            max-w-[640px]
 
-            h-[220px]
+            h-[360px]
 
             object-cover
 

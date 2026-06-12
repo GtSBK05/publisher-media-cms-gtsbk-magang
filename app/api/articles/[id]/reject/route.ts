@@ -32,7 +32,6 @@ export async function PATCH(
         },
 
         data: {
-          status: "REJECTED",
         },
       });
 

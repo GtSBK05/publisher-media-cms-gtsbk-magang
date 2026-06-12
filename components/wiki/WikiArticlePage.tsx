@@ -139,7 +139,8 @@ export default function WikiArticlePage({
 
             [&_img]:rounded-2xl
             [&_img]:my-8
-            [&_img]:w-full
+            [&_img]:h-auto
+            [&_img]:max-w-full
 
             [&_table]:w-full
             [&_table]:border-collapse

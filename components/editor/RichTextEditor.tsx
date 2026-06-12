@@ -6,6 +6,10 @@ import {
 } from "@tiptap/react";
 
 import {
+  Extension,
+} from "@tiptap/core";
+
+import {
   useState,
 } from "react";
 
@@ -57,9 +61,163 @@ export default function RichTextEditor({
   const [linkUrl, setLinkUrl] =
     useState("");  
 
+  const IndentExtension =
+    Extension.create({
+      name: "indent",
+
+      addGlobalAttributes() {
+        return [
+          {
+            types: [
+              "paragraph",
+              "heading",
+            ],
+
+            attributes: {
+              indent: {
+                default: 0,
+
+                renderHTML:
+                  (
+                    attributes
+                  ) => {
+                    if (
+                      !attributes.indent
+                    ) {
+                      return {};
+                    }
+
+                    return {
+                      style: `margin-left:${
+                        attributes.indent *
+                        40
+                      }px`,
+                    };
+                  },
+              },
+            },
+          },
+        ];
+      },
+
+      addKeyboardShortcuts() {
+        return {
+
+          "Mod-b": () => {
+            this.editor
+              .chain()
+              .focus()
+              .toggleBold()
+              .run();
+
+            return true;
+          },
+
+          "Mod-i": () => {
+            this.editor
+              .chain()
+              .focus()
+              .toggleItalic()
+              .run();
+
+            return true;
+          },
+
+          "Mod-u": () => {
+            this.editor
+              .chain()
+              .focus()
+              .toggleUnderline()
+              .run();
+
+            return true;
+          },
+
+          "Mod-Alt-1": () => {
+            this.editor
+              .chain()
+              .focus()
+              .toggleHeading({
+                level: 1,
+              })
+              .run();
+
+            return true;
+          },
+
+          "Mod-Shift-8": () => {
+            this.editor
+              .chain()
+              .focus()
+              .toggleBulletList()
+              .run();
+
+            return true;
+          },
+
+          "Mod-Shift-7": () => {
+            this.editor
+              .chain()
+              .focus()
+              .toggleOrderedList()
+              .run();
+
+            return true;
+          },
+
+          Tab: () => {
+            const current =
+              this.editor.getAttributes(
+                "paragraph"
+              ).indent || 0;
+
+            this.editor
+              .chain()
+              .focus()
+              .updateAttributes(
+                "paragraph",
+                {
+                  indent:
+                    current + 1,
+                }
+              )
+              .run();
+
+            return true;
+          },
+
+          "Shift-Tab": () => {
+            const current =
+              this.editor.getAttributes(
+                "paragraph"
+              ).indent || 0;
+
+            this.editor
+              .chain()
+              .focus()
+              .updateAttributes(
+                "paragraph",
+                {
+                  indent:
+                    Math.max(
+                      0,
+                      current - 1
+                    ),
+                }
+              )
+              .run();
+
+            return true;
+          },
+        };
+      },
+    });    
+
   const editor = useEditor({
     extensions: [
       StarterKit,
+
+      IndentExtension,
 
       Underline,
 
@@ -97,8 +255,30 @@ export default function RichTextEditor({
 
     editorProps: {
       attributes: {
-        class: 
+        class:
           "min-h-[400px] outline-none text-white/90 leading-8",
+      },
+
+      handleKeyDown: (
+        view,
+        event
+      ) => {
+
+        if (
+          event.ctrlKey &&
+          event.key.toLowerCase() ===
+          "k"
+        ) {
+          event.preventDefault();
+
+          setShowLinkInput(
+            true
+          );
+
+          return true;
+        }
+
+        return false;
       },
     },
 

@@ -91,8 +91,11 @@ body {
 
 .ProseMirror img {
   border-radius: 1rem;
-  max-width: 100%;
   height: auto;
+}
+
+.ProseMirror img[width] {
+  max-width: none;
 }
 
 .prose h1 {
@@ -165,8 +168,11 @@ body {
 
 .prose img {
   border-radius: 1rem;
-  max-width: 100%;
   height: auto;
+}
+
+.prose img[width] {
+  max-width: none;
 }
 
 .prose a,
