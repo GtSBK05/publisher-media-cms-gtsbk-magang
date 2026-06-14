@@ -95,7 +95,7 @@ body {
 }
 
 .ProseMirror img[width] {
-  max-width: none;
+  max-width: 100%;
 }
 
 .prose h1 {
@@ -172,7 +172,7 @@ body {
 }
 
 .prose img[width] {
-  max-width: none;
+  max-width: 100%;
 }
 
 .prose a,
@@ -185,4 +185,30 @@ body {
 .ProseMirror a:hover {
   text-decoration: underline;
   color: #1d4ed8;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.table-responsive table {
+  border-collapse: collapse;
+}
+
+.wiki-image-wrapper {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .wiki-image-wrapper {
+    max-width: 100%;
+  }
+
+  .table-responsive {
+    -webkit-overflow-scrolling: touch;
+  }
+
 }

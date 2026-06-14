@@ -5,12 +5,21 @@ import Link from "next/link";
 import { useTheme }
 from "@/components/providers/ThemeProvider";
 
+import {
+  transformImageHtml,
+} from "@/lib/transformImageHTML";
+
 export default function WikiArticlePage({
   article,
 }: any) {
   const {
     lightMode,
   } = useTheme();
+
+  const parsedContent =
+    transformImageHtml(
+      article.content
+    );  
 
   return (
     <div
@@ -168,7 +177,7 @@ export default function WikiArticlePage({
           `}
           dangerouslySetInnerHTML={{
             __html:
-              article.content,
+              parsedContent,
           }}
         />
       </div>

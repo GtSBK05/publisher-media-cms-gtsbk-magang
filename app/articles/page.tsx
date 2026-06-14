@@ -14,6 +14,10 @@ import {
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import {
+  transformImageHtml,
+} from "@/lib/transformImageHTML";
+
 export default function ArticlesPage() {
   const router =
     useRouter();
@@ -1557,7 +1561,9 @@ export default function ArticlesPage() {
               "
               dangerouslySetInnerHTML={{
                 __html:
-                  selectedArticle.content,
+                  transformImageHtml(
+                    selectedArticle.content
+                  ),
               }}
             />
 
@@ -2221,9 +2227,11 @@ export default function ArticlesPage() {
                   "
                   dangerouslySetInnerHTML={{
                     __html:
+                    transformImageHtml(
                       selectedRevision
                         .article
-                        ?.content || "",
+                        ?.content || ""
+                    ),
                   }}
                 />
               </div>
@@ -2289,8 +2297,10 @@ export default function ArticlesPage() {
                   "
                   dangerouslySetInnerHTML={{
                     __html:
+                    transformImageHtml(
                       selectedRevision
-                        .content,
+                        .content
+                    ),
                   }}
                 />
               </div>
