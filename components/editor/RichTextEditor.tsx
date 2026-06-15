@@ -31,11 +31,14 @@ interface Props {
   onChange: (
     value: string
   ) => void;
+
+  lightMode?: boolean;
 }
 
 export default function RichTextEditor({
   content,
   onChange,
+  lightMode = false,
 }: Props) {
   const [showLinkInput, setShowLinkInput] =
     useState(false);
@@ -256,7 +259,11 @@ export default function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          "min-h-[400px] outline-none text-white/90 leading-8",
+          `min-h-[400px] outline-none leading-8 ${
+            lightMode
+              ? "text-black"
+              : "text-white/90"
+          }`,
       },
 
       handleKeyDown: (
@@ -363,34 +370,55 @@ export default function RichTextEditor({
     `
       border-violet-500
       bg-violet-500/10
-      text-violet-300
+      text-violet-500
     `;
 
   const normalClass =
-    `
-      border-white/10
-      text-white/60
-      hover:bg-white/5
-    `;  
+    lightMode
+      ? `
+          border-black/10
+          text-black/70
+          hover:bg-black/5
+        `
+      : `
+          border-white/10
+          text-white/60
+          hover:bg-white/5
+        `; 
 
   return (
     <div
-      className="
+      className={`
         border
-        border-white/10
-        bg-black/20
-      "
+
+        ${
+          lightMode
+            ? `
+                border-black/10
+                bg-white
+              `
+            : `
+                border-white/10
+                bg-black/20
+              `
+        }
+      `}
     >
       <div
-        className="
+        className={`
           flex
           items-center
           gap-2
-          border-b
-          border-white/10
           p-3
           flex-wrap
-        "
+          border-b
+
+          ${
+            lightMode
+              ? "border-black/10"
+              : "border-white/10"
+          }
+        `}
       >
         <button
           type="button"
@@ -401,8 +429,8 @@ export default function RichTextEditor({
             px-3 h-9 border text-sm transition
             ${
               editor.isActive("bold")
-                ? "border-violet-500 bg-violet-500/10 text-violet-300"
-                : "border-white/10 text-white/60 hover:bg-white/5"
+                ? activeClass
+                : normalClass
             }
           `}
         >
@@ -417,9 +445,9 @@ export default function RichTextEditor({
           className={`
             px-3 h-9 border text-sm transition
             ${
-              editor.isActive("italic")
-                ? "border-violet-500 bg-violet-500/10 text-violet-300"
-                : "border-white/10 text-white/60 hover:bg-white/5"
+              editor.isActive("bold")
+                ? activeClass
+                : normalClass
             }
           `}
         >
@@ -434,9 +462,9 @@ export default function RichTextEditor({
           className={`
             px-3 h-9 border text-sm transition
             ${
-              editor.isActive("underline")
-                ? "border-violet-500 bg-violet-500/10 text-violet-300"
-                : "border-white/10 text-white/60 hover:bg-white/5"
+              editor.isActive("bold")
+                ? activeClass
+                : normalClass
             }
           `}
         >
@@ -444,16 +472,27 @@ export default function RichTextEditor({
         </button>
 
         <select
-          className="
+          className={`
             h-9
             px-3
             rounded-xl
-            bg-[#1b1e24]
             border
-            border-white/10
             text-sm
-            text-white
-          "
+
+            ${
+              lightMode
+                ? `
+                    bg-white
+                    border-black/10
+                    text-black
+                  `
+                : `
+                    bg-[#1b1e24]
+                    border-white/10
+                    text-white
+                  `
+            }
+          `}
           value={
             editor.isActive("heading")
               ? "heading"
@@ -501,11 +540,9 @@ export default function RichTextEditor({
           className={`
             px-3 h-9 border text-sm transition
             ${
-              editor.isActive(
-                "blockquote"
-              )
-                ? "border-violet-500 bg-violet-500/10 text-violet-300"
-                : "border-white/10 text-white/60 hover:bg-white/5"
+              editor.isActive("bold")
+                ? activeClass
+                : normalClass
             }
           `}
         >
@@ -513,16 +550,27 @@ export default function RichTextEditor({
         </button>
 
         <select
-          className="
+          className={`
             h-9
             px-3
             rounded-xl
-            bg-[#1b1e24]
             border
-            border-white/10
             text-sm
-            text-white
-          "
+
+            ${
+              lightMode
+                ? `
+                    bg-white
+                    border-black/10
+                    text-black
+                  `
+                : `
+                    bg-[#1b1e24]
+                    border-white/10
+                    text-white
+                  `
+            }
+          `}
           defaultValue="left"
           onChange={(e) =>
             editor
@@ -552,16 +600,27 @@ export default function RichTextEditor({
         </select>
 
         <select
-          className="
+          className={`
             h-9
             px-3
             rounded-xl
-            bg-[#1b1e24]
             border
-            border-white/10
             text-sm
-            text-white
-          "
+
+            ${
+              lightMode
+                ? `
+                    bg-white
+                    border-black/10
+                    text-black
+                  `
+                : `
+                    bg-[#1b1e24]
+                    border-white/10
+                    text-white
+                  `
+            }
+          `}
           defaultValue=""
           onChange={(e) => {
             if (
@@ -750,19 +809,30 @@ export default function RichTextEditor({
         </div>
 
         <label
-          className="
+          className={`
             px-3
             h-9
             border
-            border-white/10
-            text-white/60
-            hover:bg-white/5
             transition
             flex
             items-center
             cursor-pointer
             text-sm
-          "
+
+            ${
+              lightMode
+                ? `
+                  border-black/10
+                  text-black/70
+                  hover:bg-black/5
+                `
+                : `
+                  border-white/10
+                  text-white/60
+                  hover:bg-white/5
+                `
+            }
+          `}
         >
           +Image
 
@@ -926,16 +996,30 @@ export default function RichTextEditor({
           onClick={() =>
             editor.chain().focus().undo().run()
           }
-          className="
+          className={`
             px-3
             h-9
             border
-            border-white/10
-            text-white/60
-            hover:bg-white/5
             transition
+            flex
+            items-center
+            cursor-pointer
             text-sm
-          "
+
+            ${
+              lightMode
+                ? `
+                  border-black/10
+                  text-black/70
+                  hover:bg-black/5
+                `
+                : `
+                  border-white/10
+                  text-white/60
+                  hover:bg-white/5
+                `
+            }
+          `}
         >
           Undo
         </button>
@@ -945,16 +1029,30 @@ export default function RichTextEditor({
           onClick={() =>
             editor.chain().focus().redo().run()
           }
-          className="
+          className={`
             px-3
             h-9
             border
-            border-white/10
-            text-white/60
-            hover:bg-white/5
             transition
+            flex
+            items-center
+            cursor-pointer
             text-sm
-          "
+
+            ${
+              lightMode
+                ? `
+                  border-black/10
+                  text-black/70
+                  hover:bg-black/5
+                `
+                : `
+                  border-white/10
+                  text-white/60
+                  hover:bg-white/5
+                `
+            }
+          `}
         >
           Redo
         </button>
@@ -1104,16 +1202,42 @@ export default function RichTextEditor({
     )}
 
       <div
-        className="
+        className={`
           p-6
+
+          ${
+            lightMode
+              ? `
+                text-black
+
+                [&_th]:border-black/20
+                [&_td]:border-black/20
+
+                [&_tr:hover]:bg-black/[0.02]
+
+                [&_a]:text-sky-600
+                [&_a:hover]:text-sky-700
+              `
+              : `
+                text-white
+
+                [&_th]:border-white/20
+                [&_td]:border-white/20
+
+                [&_tr:hover]:bg-white/[0.02]
+
+                [&_a]:text-sky-400
+                [&_a:hover]:text-sky-300
+              `
+          }
 
           [&_.selectedCell]:bg-emerald-500/30
           [&_.selectedCell]:outline
           [&_.selectedCell]:outline-2
           [&_.selectedCell]:outline-emerald-400
           [&_.selectedCell]:shadow-lg
-          [&_.selectedCell]:shadow-emerald-500/30          
-          
+          [&_.selectedCell]:shadow-emerald-500/30
+
           [&_table]:w-auto
           [&_table]:table-fixed
           [&_table]:border-collapse
@@ -1122,25 +1246,19 @@ export default function RichTextEditor({
           [&_table]:max-w-full
 
           [&_th]:border
-          [&_th]:border-white/20
           [&_th]:p-3
           [&_th]:align-top
           [&_th]:font-normal
           [&_th]:break-words
+          [&_th]:overflow-hidden
+          [&_th]:max-w-[300px]
 
           [&_td]:border
-          [&_td]:border-white/20
           [&_td]:p-3
           [&_td]:align-top
           [&_td]:break-words
-
           [&_td]:overflow-hidden
           [&_td]:max-w-[300px]
-
-          [&_th]:overflow-hidden
-          [&_th]:max-w-[300px]          
-          
-          [&_tr:hover]:bg-white/[0.02]          
 
           [&_ul]:list-disc
           [&_ul]:pl-6
@@ -1150,15 +1268,13 @@ export default function RichTextEditor({
 
           [&_li]:my-1
 
-          [&_a]:text-sky-400
           [&_a]:underline
           [&_a]:underline-offset-4
           [&_a]:cursor-pointer
-          [&_a]:hover:text-sky-300          
-          
+
           [&_img]:max-w-full
           [&_img]:h-auto
-        "
+        `}
       >
       <div
         className="

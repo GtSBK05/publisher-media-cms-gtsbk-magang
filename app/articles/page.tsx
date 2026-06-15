@@ -18,6 +18,10 @@ import {
   transformImageHtml,
 } from "@/lib/transformImageHTML";
 
+import {
+  paginate,
+} from "@/lib/pagination";
+
 export default function ArticlesPage() {
   const router =
     useRouter();
@@ -31,6 +35,14 @@ export default function ArticlesPage() {
     loading,
     setLoading,
   ] = useState(true);
+
+  const [
+    currentPage,
+    setCurrentPage,
+  ] = useState(1);
+
+  const articlesPerPage =
+    10;
 
   const [role, setRole] =
     useState("");
@@ -138,6 +150,15 @@ export default function ArticlesPage() {
 
     fetchArticles();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    search,
+    searchType,
+    statusFilter,
+    categoryFilter,
+  ]);  
 
   async function handleDelete(
     id: string
@@ -472,7 +493,7 @@ export default function ArticlesPage() {
     return `${days}d ago`;
   }  
 
-  const filteredArticles =
+  const processedArticles =
     articles
       .filter((article) => {
         const keyword =
@@ -604,6 +625,16 @@ export default function ArticlesPage() {
           ? result
           : -result;
       }); 
+
+  const {
+    data: filteredArticles,
+    totalPages:
+      articleTotalPages,
+  } = paginate(
+    processedArticles,
+    currentPage,
+    articlesPerPage
+  );      
 
   const paginatedRevisions =
     revisions.slice(
@@ -1098,7 +1129,7 @@ export default function ArticlesPage() {
                                   text-orange-300
                                 `
                                 : article.status ===
-                                  "REVIEW"
+                                  "Revisions"
                                 ? `
                                   bg-violet-500/10
                                   border-violet-500/20
@@ -1226,6 +1257,57 @@ export default function ArticlesPage() {
               </tbody>
             </table>
           </div>
+
+          <div
+            className="
+              flex
+              justify-center
+              gap-2
+              mt-6
+            "
+          >
+            {Array.from(
+              {
+                length:
+                  articleTotalPages,
+              },
+              (_, i) => (
+                <button
+                  key={i}
+                  onClick={() =>
+                    setCurrentPage(
+                      i + 1
+                    )
+                  }
+                  className={`
+                    w-10
+                    h-10
+                    rounded-xl
+                    transition
+
+                    ${
+                      currentPage ===
+                      i + 1
+                        ? `
+                          bg-violet-500/20
+                          border
+                          border-violet-500/30
+                          text-violet-300
+                        `
+                        : `
+                          bg-white/[0.03]
+                          border
+                          border-white/10
+                          text-white/50
+                        `
+                    }
+                  `}
+                >
+                  {i + 1}
+                </button>
+              )
+            )}
+          </div>          
         </div>
 
         <div className="col-span-3 space-y-6">
@@ -1301,18 +1383,23 @@ export default function ArticlesPage() {
                 "
               >
                 <span className="text-violet-300">
-                  Review
+                  Revisions
                 </span>
 
                 <span className="text-violet-300">
                   {
-                    articles.filter(
+                    articles.reduce(
                       (
+                        total,
                         article
                       ) =>
-                        article.status ===
-                        "REVIEW"
-                    ).length
+                        total +
+                        (
+                          article.pendingCount ||
+                          0
+                        ),
+                      0
+                    )
                   }
                 </span>
               </div>

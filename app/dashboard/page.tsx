@@ -73,7 +73,7 @@ export default function DashboardPage() {
         stats?.totalArticles || 0,
 
       change:
-        "+12.5%",
+        "",
     },
 
     {
@@ -84,7 +84,7 @@ export default function DashboardPage() {
         stats?.publishedArticles || 0,
 
       change:
-        "+7",
+        "",
     },
 
     {
@@ -95,7 +95,7 @@ export default function DashboardPage() {
         stats?.draftArticles || 0,
 
       change:
-        "+3",
+        "",
     },
 
     {
@@ -106,7 +106,7 @@ export default function DashboardPage() {
         stats?.totalUsers || 0,
 
       change:
-        "+1",
+        "",
     },
   ];
 
@@ -211,7 +211,7 @@ export default function DashboardPage() {
                       rounded-2xl
                       bg-violet-500/10
                       border
-                      border-violet-500/20
+                      border-orange-500/20
                       flex
                       items-center
                       justify-center
@@ -398,11 +398,35 @@ export default function DashboardPage() {
                 "
               >
                 <span>
-                  Views
+                  Total Views
                 </span>
 
+                <span
+                  className="
+                    text-orange-300
+                  "
+                >
+                  {stats?.totalViews || 0}
+                </span>
+              </div>
+
+              <div
+                className="
+                  flex
+                  justify-between
+                  text-white/60
+                "
+              >
                 <span>
-                  145.2k
+                  Avg / Article
+                </span>
+
+                <span
+                  className="
+                    text-violet-300
+                  "
+                >
+                  {stats?.averageViews || 0}
                 </span>
               </div>
             </div>
@@ -410,40 +434,87 @@ export default function DashboardPage() {
             <div
               className="
                 mt-8
-                h-40
-                rounded-3xl
-                bg-gradient-to-br
-                from-violet-500/20
-                to-orange-400/20
-                border
+                pt-6
+                border-t
                 border-white/10
-                flex
-                flex-col
-                items-center
-                justify-center
-                shadow-lg
-                shadow-violet-500/10
               "
             >
-              <h2
-                className="
-                  text-5xl
-                  font-light
-                  text-white
-                "
-              >
-                +32%
-              </h2>
-
-              <p
+              <h3
                 className="
                   text-sm
                   text-white/40
-                  mt-2
+                  mb-5
                 "
               >
-                vs last month
-              </p>
+                Top 5 Articles
+              </h3>
+
+              <div className="space-y-4">
+                {stats?.topArticles?.map(
+                  (
+                    article: any,
+                    index: number
+                  ) => (
+                    <div
+                      key={article.id}
+                      className="
+                        flex
+                        items-center
+                        justify-between
+                        gap-3
+                      "
+                    >
+                      <div
+                        className="
+                          flex
+                          items-center
+                          gap-3
+                          min-w-0
+                        "
+                      >
+                        <div
+                          className="
+                            w-7
+                            h-7
+                            rounded-full
+                            bg-violet-500/10
+                            border
+                            border-violet-500/20
+                            flex
+                            items-center
+                            justify-center
+                            text-xs
+                            text-violet-300
+                            shrink-0
+                          "
+                        >
+                          {index + 1}
+                        </div>
+
+                        <span
+                          className="
+                            text-sm
+                            text-white/70
+                            truncate
+                          "
+                        >
+                          {article.title}
+                        </span>
+                      </div>
+
+                      <span
+                        className="
+                          text-sm
+                          text-orange-300
+                          shrink-0
+                        "
+                      >
+                        {article.views}
+                      </span>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
         </div>

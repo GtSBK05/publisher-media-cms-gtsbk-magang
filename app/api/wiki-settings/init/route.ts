@@ -1,18 +1,58 @@
-import { prisma } from "@/lib/prisma";
+import { prisma }
+from "@/lib/prisma";
 
-import { NextResponse } from "next/server";
+import {
+  verifyToken,
+  requireRole,
+} from "@/lib/auth";
 
-export async function GET() {
-  const existing =
-    await prisma.wikiSettings.findFirst();
+import {
+  NextResponse,
+} from "next/server";
 
-  if (!existing) {
-    await prisma.wikiSettings.create({
-      data: {},
+export async function GET(
+  request: Request
+) {
+  try {
+    const authHeader =
+      request.headers.get(
+        "authorization"
+      );
+
+    const user =
+      verifyToken(
+        authHeader
+      );
+
+    requireRole(
+      user.role,
+      [
+        "ADMIN",
+      ]
+    );
+
+    const existing =
+      await prisma.wikiSettings.findFirst();
+
+    if (!existing) {
+      await prisma.wikiSettings.create({
+        data: {},
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
     });
-  }
 
-  return NextResponse.json({
-    success: true,
-  });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          "Forbidden",
+      },
+      {
+        status: 403,
+      }
+    );
+  }
 }

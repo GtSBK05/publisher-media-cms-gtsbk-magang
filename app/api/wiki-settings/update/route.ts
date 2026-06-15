@@ -2,33 +2,69 @@ import { prisma }
 from "@/lib/prisma";
 
 import {
+  verifyToken,
+  requireRole,
+} from "@/lib/auth";
+
+import {
   NextResponse,
 } from "next/server";
 
 export async function POST(
   request: Request
 ) {
-  const body =
-    await request.json();
+  try {
+    const authHeader =
+      request.headers.get(
+        "authorization"
+      );
 
-  const {
-    id,
-    title,
-    content,
-  } = body;
+    const user =
+      verifyToken(
+        authHeader
+      );
 
-  await prisma.wikiBlock.update({
-    where: {
+    requireRole(
+      user.role,
+      [
+        "ADMIN",
+        "EDITOR",
+      ]
+    );
+
+    const body =
+      await request.json();
+
+    const {
       id,
-    },
-
-    data: {
       title,
       content,
-    },
-  });
+    } = body;
 
-  return NextResponse.json({
-    success: true,
-  });
+    await prisma.wikiBlock.update({
+      where: {
+        id,
+      },
+
+      data: {
+        title,
+        content,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+    });
+
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          "Forbidden",
+      },
+      {
+        status: 403,
+      }
+    );
+  }
 }

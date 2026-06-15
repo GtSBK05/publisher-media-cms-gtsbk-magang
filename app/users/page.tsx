@@ -10,6 +10,10 @@ import {
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import {
+  paginate,
+} from "@/lib/pagination";
+
 export default function UsersPage() {
   const [users, setUsers] =
     useState<any[]>([]);
@@ -19,6 +23,14 @@ export default function UsersPage() {
 
   const [loading, setLoading] =
     useState(true);
+
+  const [
+    currentPage,
+    setCurrentPage,
+  ] = useState(1);
+
+  const usersPerPage =
+    10;    
 
   const [role, setRole] =
     useState("");
@@ -68,6 +80,13 @@ export default function UsersPage() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    search,
+    roleFilter,
+  ]);  
 
   async function fetchData() {
     try {
@@ -383,7 +402,7 @@ export default function UsersPage() {
     } ago`;
   }
 
-  const filteredUsers =
+  const processedUsers =
     users
       .filter((user) => {
         const keyword =
@@ -453,6 +472,16 @@ export default function UsersPage() {
           ? result
           : -result;
       });  
+
+  const {
+    data: filteredUsers,
+    totalPages:
+      userTotalPages,
+  } = paginate(
+    processedUsers,
+    currentPage,
+    usersPerPage
+  );      
 
   if (loading) {
     return null;
@@ -694,27 +723,6 @@ export default function UsersPage() {
                             gap-3
                           "
                         >
-                          <div
-                            className="
-                              w-9
-                              h-9
-                              rounded-full
-                              bg-gradient-to-br
-                              from-violet-500
-                              to-orange-400
-                              flex
-                              items-center
-                              justify-center
-                              text-xs
-                              shadow-lg
-                              shadow-violet-500/20
-                            "
-                          >
-                            {user.name?.charAt(
-                              0
-                            )}
-                          </div>
-
                           <div>
                             <p className="text-sm text-white">
                               {
@@ -865,8 +873,59 @@ export default function UsersPage() {
                   )
                 )}
               </tbody>
-            </table>
+            </table>           
           </div>
+
+          <div
+            className="
+              flex
+              justify-center
+              gap-2
+              mt-6
+            "
+          >
+            {Array.from(
+              {
+                length:
+                  userTotalPages,
+              },
+              (_, i) => (
+                <button
+                  key={i}
+                  onClick={() =>
+                    setCurrentPage(
+                      i + 1
+                    )
+                  }
+                  className={`
+                    w-10
+                    h-10
+                    rounded-xl
+                    transition
+
+                    ${
+                      currentPage ===
+                      i + 1
+                        ? `
+                          bg-violet-500/20
+                          border
+                          border-violet-500/30
+                          text-violet-300
+                        `
+                        : `
+                          bg-white/[0.03]
+                          border
+                          border-white/10
+                          text-white/50
+                        `
+                    }
+                  `}
+                >
+                  {i + 1}
+                </button>
+              )
+            )}
+          </div>          
         </div>
 
         <div className="col-span-3 space-y-6">

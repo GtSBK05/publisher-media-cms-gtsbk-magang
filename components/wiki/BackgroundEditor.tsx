@@ -147,19 +147,19 @@ export default function BackgroundEditor({
           }
           onClick={save}
           className="
-            px-5
-            h-11
+            px-3
+            h-7
 
             rounded-xl
 
-            bg-violet-500
+            bg-[#fafaf9]
 
             disabled:opacity-50
           "
         >
           {uploading
             ? "Uploading..."
-            : "Save Background"}
+            : "🎞️"}
         </button>
       </div>
     </div>

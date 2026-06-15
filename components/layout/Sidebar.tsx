@@ -249,23 +249,37 @@ export default function Sidebar() {
           bg-black/10
         "
       >
-        <button
-          className="
+        <Link
+          href="/dashboard/wiki-settings"
+          className={`
             w-full
             rounded-2xl
             border
-            border-white/10
-            bg-white/[0.03]
             px-4
             py-4
             flex
             items-center
             justify-between
-            text-white/50
-            hover:border-orange-400/20
-            hover:text-orange-300
             transition
-          "
+            ${
+              pathname ===
+              "/dashboard/wiki-settings"
+                ? `
+                  border-violet-500/20
+                  bg-gradient-to-r
+                  from-violet-500/15
+                  to-orange-400/10
+                  text-white
+                `
+                : `
+                  border-white/10
+                  bg-white/[0.03]
+                  text-white/50
+                  hover:border-orange-400/20
+                  hover:text-orange-300
+                `
+            }
+          `}
         >
           <div
             className="
@@ -283,18 +297,21 @@ export default function Sidebar() {
                 text-sm
               "
             >
-              System Settings
+              Wiki Settings
             </span>
           </div>
 
           <span
-            className="
-              text-white/20
-            "
+            className={
+              pathname ===
+              "/dashboard/wiki-settings"
+                ? "text-violet-300"
+                : "text-white/20"
+            }
           >
             →
           </span>
-        </button>
+        </Link>
       </div>
     </aside>
   );

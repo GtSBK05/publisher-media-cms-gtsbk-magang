@@ -2,15 +2,18 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const articles =
-      await prisma.article.findMany({
+    const [
+      articles,
+      users,
+      categories,
+    ] = await Promise.all([
+      prisma.article.findMany({
         include: {
           category: true,
         },
-      });
+      }),
 
-    const users =
-      await prisma.user.findMany({
+      prisma.user.findMany({
         include: {
           _count: {
             select: {
@@ -18,70 +21,65 @@ export async function GET() {
             },
           },
         },
+      }),
 
-        orderBy: {
-          articles: {
-            _count: "desc",
-          },
-        },
+      prisma.category.findMany(),
+    ]);
 
-        take: 5,
-      });
+    const totalArticles =
+      articles.length;
 
-    const averageHealth =
-      articles.length > 0
-        ? Math.round(
-            articles.reduce(
-              (acc, article) =>
-                acc +
-                article.healthScore,
-              0
-            ) / articles.length
-          )
-        : 0;
+    const totalViews =
+      articles.reduce(
+        (acc, article) =>
+          acc + article.views,
+        0
+      );
 
-    const published =
-      articles.filter(
-        (article) =>
-          article.status ===
-          "PUBLISHED"
+    const totalCategories =
+      categories.length;
+
+    const activeContributors =
+      users.filter(
+        (user) =>
+          user.isActive
       ).length;
 
-    const publishRatio =
-      articles.length > 0
-        ? Math.round(
-            (
-              published /
-              articles.length
-            ) * 100
-          )
-        : 0;
+    const categoryCountMap:
+      Record<string, number> = {};
 
-    const categoryMap:
-      Record<
-        string,
-        number
-      > = {};
+    const categoryViewsMap:
+      Record<string, number> = {};
 
     articles.forEach(
       (article) => {
         const category =
-          article.category
-            ?.name ||
+          article.category?.name ||
           "Uncategorized";
 
-        categoryMap[
+        categoryCountMap[
           category
         ] =
-          (categoryMap[
-            category
-          ] || 0) + 1;
+          (
+            categoryCountMap[
+              category
+            ] || 0
+          ) + 1;
+
+        categoryViewsMap[
+          category
+        ] =
+          (
+            categoryViewsMap[
+              category
+            ] || 0
+          ) + article.views;
       }
     );
 
-    const categoryData =
+    const categoryDistribution =
       Object.entries(
-        categoryMap
+        categoryCountMap
       ).map(
         ([name, count]) => ({
           name,
@@ -89,58 +87,167 @@ export async function GET() {
         })
       );
 
-    const topCategory =
-      categoryData.sort(
-        (a, b) =>
-          b.count - a.count
-      )[0]?.name ||
-      "None";
-
-    const trendMap:
-      Record<
-        string,
-        number
-      > = {};
-
-    articles.forEach(
-      (article) => {
-        const date =
-          new Date(
-            article.createdAt
-          ).toLocaleDateString();
-
-        trendMap[date] =
-          (trendMap[date] ||
-            0) + 1;
-      }
-    );
-
-    const trendData =
+    const viewsByCategory =
       Object.entries(
-        trendMap
+        categoryViewsMap
       ).map(
-        ([date, articles]) => ({
-          date,
-          articles,
+        ([name, views]) => ({
+          name,
+          views,
         })
       );
 
-    const activeWriters =
-      await prisma.user.count({
-        where: {
-          role: "WRITER",
-          isActive: true,
-        },
-      });
+    const statusDistribution = [
+      {
+        name: "Published",
+        value:
+          articles.filter(
+            (article) =>
+              article.status ===
+              "PUBLISHED"
+          ).length,
+      },
+
+      {
+        name: "Draft",
+        value:
+          articles.filter(
+            (article) =>
+              article.status ===
+              "DRAFT"
+          ).length,
+      },
+    ];
+
+    const roleDistribution = [
+      {
+        name: "Admin",
+        value:
+          users.filter(
+            (user) =>
+              user.role ===
+              "ADMIN"
+          ).length,
+      },
+
+      {
+        name: "Editor",
+        value:
+          users.filter(
+            (user) =>
+              user.role ===
+              "EDITOR"
+          ).length,
+      },
+
+      {
+        name: "Writer",
+        value:
+          users.filter(
+            (user) =>
+              user.role ===
+              "WRITER"
+          ).length,
+      },
+    ];
+
+    const topContributors =
+      users
+        .sort(
+          (a, b) =>
+            b._count.articles -
+            a._count.articles
+        )
+        .slice(0, 5)
+        .map((user) => ({
+          id: user.id,
+          name: user.name,
+          role: user.role,
+          articles:
+            user._count.articles,
+        }));
+
+    const mostViewedArticles =
+      [...articles]
+        .sort(
+          (a, b) =>
+            b.views -
+            a.views
+        )
+        .slice(0, 5)
+        .map((article) => ({
+          id: article.id,
+          title:
+            article.title,
+          views:
+            article.views,
+        }));
+
+    const viewDistribution = [
+      {
+        range: "0-100",
+        count:
+          articles.filter(
+            (article) =>
+              article.views <=
+              100
+          ).length,
+      },
+
+      {
+        range: "101-500",
+        count:
+          articles.filter(
+            (article) =>
+              article.views >
+                100 &&
+              article.views <=
+                500
+          ).length,
+      },
+
+      {
+        range: "501-1000",
+        count:
+          articles.filter(
+            (article) =>
+              article.views >
+                500 &&
+              article.views <=
+                1000
+          ).length,
+      },
+
+      {
+        range: "1000+",
+        count:
+          articles.filter(
+            (article) =>
+              article.views >
+              1000
+          ).length,
+      },
+    ];
 
     return Response.json({
-      averageHealth,
-      publishRatio,
-      topCategory,
-      activeWriters,
-      trendData,
-      categoryData,
-      topWriters: users,
+      totalArticles,
+      totalViews,
+      totalCategories,
+      activeContributors,
+
+      categoryDistribution,
+      viewsByCategory,
+
+      statusDistribution,
+      roleDistribution,
+
+      topContributors,
+      mostViewedArticles,
+
+      knowledgeCoverage:
+        categoryDistribution,
+
+      viewDistribution,
     });
 
   } catch (error) {

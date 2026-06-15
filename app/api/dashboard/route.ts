@@ -22,6 +22,13 @@ export async function GET() {
     const totalUsers =
       await prisma.user.count();
 
+    const totalViews =
+      await prisma.article.aggregate({
+        _sum: {
+          views: true,
+        },
+      });
+
     const articles =
       await prisma.article.findMany();
 
@@ -29,13 +36,44 @@ export async function GET() {
       articles.length > 0
         ? Math.round(
             articles.reduce(
-              (acc, article) =>
+              (
+                acc,
+                article
+              ) =>
                 acc +
                 article.healthScore,
               0
-            ) / articles.length
+            ) /
+              articles.length
           )
-        : 0;      
+        : 0;
+
+    const averageViews =
+      totalArticles > 0
+        ? Math.round(
+            (
+              totalViews._sum
+                .views || 0
+            ) / totalArticles
+          )
+        : 0;
+
+    const topArticles =
+      await prisma.article.findMany({
+        orderBy: {
+          views: "desc",
+        },
+
+        take: 5,
+
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          views: true,
+          status: true,
+        },
+      });
 
     const recentArticles =
       await prisma.article.findMany({
@@ -53,10 +91,23 @@ export async function GET() {
 
     return Response.json({
       totalArticles,
+
       publishedArticles,
+
       draftArticles,
+
       totalUsers,
+
       averageHealth,
+
+      totalViews:
+        totalViews._sum
+          .views || 0,
+
+      averageViews,
+
+      topArticles,
+
       recentArticles,
     });
 
@@ -64,8 +115,13 @@ export async function GET() {
     console.error(error);
 
     return Response.json(
-      { error: "Dashboard failed" },
-      { status: 500 }
+      {
+        error:
+          "Dashboard failed",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }

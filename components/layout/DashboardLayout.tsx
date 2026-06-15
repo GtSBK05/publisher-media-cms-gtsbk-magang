@@ -1,12 +1,18 @@
+import DesktopOnlyGuard from "@/components/auth/DesktopOnlyGuard";
 import Sidebar from "./Sidebar";
 import UserDropdown from "./UserDropdown";
 
 export default function DashboardLayout({
   children,
+  title = "Editorial Workspace",
+  subtitle = "Community Archive",
 }: {
   children: React.ReactNode;
+  title?: string;
+  subtitle?: string;
 }) {
   return (
+  <DesktopOnlyGuard>
     <main
       className="
         min-h-screen
@@ -112,7 +118,7 @@ export default function DashboardLayout({
                     mb-1
                   "
                 >
-                  Community Archive
+                  {subtitle}
                 </p>
 
                 <h1
@@ -121,7 +127,7 @@ export default function DashboardLayout({
                     text-white/90
                   "
                 >
-                  Editorial Workspace
+                  {title}
                 </h1>
               </div>
 
@@ -149,5 +155,6 @@ export default function DashboardLayout({
         </div>
       </section>
     </main>
+  </DesktopOnlyGuard>
   );
 }

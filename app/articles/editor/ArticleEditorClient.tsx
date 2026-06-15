@@ -76,6 +76,11 @@ export default function ArticleEditorPage() {
     setCategoryId,
   ] = useState("");
 
+  const [
+    editorLightMode,
+    setEditorLightMode,
+  ] = useState(false);  
+
   useEffect(() => {
     const token =
       localStorage.getItem(
@@ -105,6 +110,17 @@ export default function ArticleEditorPage() {
     setUserRole(
       payload.role
     );    
+
+    const savedTheme =
+      localStorage.getItem(
+        "editor-theme"
+      );
+
+    if (savedTheme === "light") {
+      setEditorLightMode(
+        true
+      );
+    }    
 
     fetchCategories();
 
@@ -261,6 +277,22 @@ export default function ArticleEditorPage() {
     }
   }
 
+      function toggleEditorTheme() {
+        const nextValue =
+          !editorLightMode;
+
+        setEditorLightMode(
+          nextValue
+        );
+
+        localStorage.setItem(
+          "editor-theme",
+          nextValue
+            ? "light"
+            : "dark"
+        );
+      }  
+
       const canEditDirectly =
         articleAuthorId ===
           userId ||
@@ -400,29 +432,57 @@ export default function ArticleEditorPage() {
           </h1>
         </div>
 
-        <button
-          onClick={() =>
-            router.push(
-              "/articles"
-            )
-          }
-          className="
-            border
-            border-white/10
-            bg-white/[0.03]
-            backdrop-blur-xl
-            rounded-2xl
-            px-5
-            h-11
-            text-sm
-            text-white/70
-            hover:border-white/20
-            hover:bg-white/[0.05]
-            transition
-          "
-        >
-          Back
-        </button>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={
+              toggleEditorTheme
+            }
+            className="
+              border
+              border-white/10
+              bg-white/[0.03]
+              backdrop-blur-xl
+              rounded-2xl
+              px-5
+              h-11
+              text-sm
+              text-white/70
+              hover:border-white/20
+              hover:bg-white/[0.05]
+              transition
+            "
+          >
+            {editorLightMode
+              ? "🌙"
+              : "☀"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              router.push(
+                "/articles"
+              )
+            }
+            className="
+              border
+              border-white/10
+              bg-white/[0.03]
+              backdrop-blur-xl
+              rounded-2xl
+              px-5
+              h-11
+              text-sm
+              text-white/70
+              hover:border-white/20
+              hover:bg-white/[0.05]
+              transition
+            "
+          >
+            Back
+          </button>
+        </div>
       </div>
 
       <form
@@ -435,26 +495,43 @@ export default function ArticleEditorPage() {
       >
         <div className="col-span-8 space-y-6">
           <div
-            className="
-              bg-white/[0.04]
-              backdrop-blur-2xl
-              border
-              border-white/10
+            className={`
               rounded-[32px]
               p-8
               shadow-xl
-              shadow-black/20
-            "
+
+              ${
+                editorLightMode
+                  ? `
+                    bg-[#fafaf9]
+                    border
+                    border-black/10
+                    text-black
+                  `
+                  : `
+                    bg-white/[0.04]
+                    backdrop-blur-2xl
+                    border
+                    border-white/10
+                    shadow-black/20
+                    text-white
+                  `
+              }
+            `}
           >
             <div className="space-y-6">
               <div>
                 <label
-                  className="
+                  className={`
                     text-sm
-                    text-white/50
                     block
                     mb-3
-                  "
+                    ${
+                      editorLightMode
+                        ? "text-black/60"
+                        : "text-white/50"
+                    }
+                  `}
                 >
                   Article Title
                 </label>
@@ -469,48 +546,76 @@ export default function ArticleEditorPage() {
                     )
                   }
                   placeholder="Enter article title..."
-                  className="
+                  className={`
                     w-full
                     h-14
-                    bg-white/[0.03]
-                    backdrop-blur-xl
-                    border
-                    border-white/10
                     rounded-2xl
                     px-4
-                    text-white
                     outline-none
                     focus:border-violet-500/40
-                  "
+
+                    ${
+                      editorLightMode
+                        ? `
+                          bg-black/[0.03]
+                          text-black
+                          border
+                          border-black/10
+                        `
+                        : `
+                          bg-white/[0.03]
+                          text-white
+                          border
+                          border-white/10
+                        `
+                    }
+                  `}
                 />
               </div>
 
               <div>
                 <label
-                  className="
+                  className={`
                     text-sm
-                    text-white/50
                     block
                     mb-3
-                  "
+                    ${
+                      editorLightMode
+                        ? "text-black/60"
+                        : "text-white/50"
+                    }
+                  `}
                 >
                   Content
                 </label>
 
                 <div
-                  className="
+                  className={`
                     rounded-[28px]
                     overflow-hidden
                     border
-                    border-white/10
-                    bg-white/[0.03]
-                    backdrop-blur-2xl
-                  "
+
+                    ${
+                      editorLightMode
+                        ? `
+                          border-black/10
+                          bg-black/[0.02]
+                        `
+                        : `
+                          border-white/10
+                          bg-white/[0.03]
+                          backdrop-blur-2xl
+                        `
+                    }
+                  `}
                 >
                   <RichTextEditor
                     content={content}
                     onChange={
                       setContent
+                    }
+                    lightMode={
+                      editorLightMode
                     }
                   />
                 </div>
@@ -521,36 +626,58 @@ export default function ArticleEditorPage() {
 
         <div className="col-span-4 space-y-6">
           <div
-            className="
-              bg-white/[0.04]
-              backdrop-blur-2xl
-              border
-              border-white/10
+            className={`
               rounded-[32px]
               p-6
               space-y-5
               shadow-xl
-              shadow-black/20
-            "
+
+              ${
+                editorLightMode
+                  ? `
+                    bg-[#fafaf9]
+                    border
+                    border-black/10
+                    text-black
+                  `
+                  : `
+                    bg-white/[0.04]
+                    backdrop-blur-2xl
+                    border
+                    border-white/10
+                    shadow-black/20
+                    text-white
+                  `
+              }
+            `}
           >
             <h2
-              className="
-                text-lg
-                font-light
-                text-white
-              "
+              className={`
+                text-sm
+                block
+                mb-3
+                ${
+                  editorLightMode
+                    ? "text-black/60"
+                    : "text-white/50"
+                }
+              `}
             >
               Article Metadata
             </h2>
 
             <div>
               <label
-                className="
+                className={`
                   text-xs
-                  text-white/50
                   block
                   mb-2
-                "
+                  ${
+                    editorLightMode
+                      ? "text-black/60"
+                      : "text-white/50"
+                  }
+                `}
               >
                 Category
               </label>
@@ -563,26 +690,47 @@ export default function ArticleEditorPage() {
                       e.target.value
                     )
                   }
-                  className="
+                  className={`
                     w-full
                     h-12
                     appearance-none
-                    bg-white/[0.03]
-                    backdrop-blur-xl
-                    border
-                    border-white/10
                     rounded-2xl
                     px-4
                     pr-12
                     text-sm
-                    text-white
                     outline-none
                     transition
-                    focus:border-violet-500/40
-                    hover:border-white/20
-                  "
+
+                    ${
+                      editorLightMode
+                        ? `
+                          bg-[#f3f4f6]
+                          text-black
+                          border
+                          border-black/10
+                        `
+                        : `
+                          bg-[#1b1e24]
+                          text-white
+                          border
+                          border-white/10
+                        `
+                    }
+                  `}
                 >
-                  <option value="">
+                  <option
+                    value=""
+                    style={{
+                      backgroundColor:
+                        editorLightMode
+                          ? "#f3f4f6"
+                          : "#1b1e24",
+                      color:
+                        editorLightMode
+                          ? "#000"
+                          : "#fff",
+                    }}
+                  >
                     Uncategorized
                   </option>
 
@@ -591,10 +739,16 @@ export default function ArticleEditorPage() {
                       <option
                         key={category.id}
                         value={category.id}
-                        className="
-                          bg-[#1b1e24]
-                          text-white
-                        "
+                        style={{
+                          backgroundColor:
+                            editorLightMode
+                              ? "#f3f4f6"
+                              : "#1b1e24",
+                          color:
+                            editorLightMode
+                              ? "#000"
+                              : "#fff",
+                        }}
                       >
                         {category.name}
                       </option>
@@ -603,15 +757,20 @@ export default function ArticleEditorPage() {
                 </select>
 
                 <div
-                  className="
+                  className={`
                     absolute
                     right-4
                     top-1/2
                     -translate-y-1/2
                     pointer-events-none
-                    text-white/40
                     text-xs
-                  "
+
+                    ${
+                      editorLightMode
+                        ? "text-black/40"
+                        : "text-white/40"
+                    }
+                  `}
                 >
                   ▼
                 </div>
@@ -620,14 +779,18 @@ export default function ArticleEditorPage() {
 
             <div>
               <label
-                className="
+                className={`
                   text-xs
-                  text-white/50
                   block
                   mb-2
-                "
+                  ${
+                    editorLightMode
+                      ? "text-black/60"
+                      : "text-white/50"
+                  }
+                `}
               >
-                Aliases
+                Alternative
               </label>
 
               <input
@@ -639,58 +802,80 @@ export default function ArticleEditorPage() {
                   )
                 }
                 placeholder="Alternative names separated by comma"
-                className="
+                className={`
                   w-full
                   h-11
-                  bg-white/[0.03]
-                  backdrop-blur-xl
-                  border
-                  border-white/10
                   rounded-2xl
                   px-4
-                  text-white
                   outline-none
-                  focus:border-violet-500/40
-                "
+
+                  ${
+                    editorLightMode
+                      ? `
+                        bg-black/[0.03]
+                        text-black
+                        border
+                        border-black/10
+                      `
+                      : `
+                        bg-white/[0.03]
+                        text-white
+                        border
+                        border-white/10
+                      `
+                  }
+                `}
               />
             </div>
 
             <div>
               <label
-                className="
+                className={`
                   text-xs
-                  text-white/50
                   block
                   mb-2
-                "
+                  ${
+                    editorLightMode
+                      ? "text-black/60"
+                      : "text-white/50"
+                  }
+                `}
               >
                 Summary
               </label>
 
               <textarea
                 rows={5}
-                value={
-                  seoDescription
-                }
+                value={seoDescription}
                 onChange={(e) =>
                   setSeoDescription(
                     e.target.value
                   )
                 }
-                placeholder="Short summary shown in search results and previews"
-                className="
+                placeholder="Short summary"
+                className={`
                   w-full
-                  bg-white/[0.03]
-                  backdrop-blur-xl
-                  border
-                  border-white/10
                   rounded-2xl
                   p-4
-                  text-white
                   outline-none
-                  focus:border-violet-500/40
                   resize-none
-                "
+
+                  ${
+                    editorLightMode
+                      ? `
+                        bg-black/[0.03]
+                        text-black
+                        border
+                        border-black/10
+                      `
+                      : `
+                        bg-white/[0.03]
+                        text-white
+                        border
+                        border-white/10
+                      `
+                  }
+                `}
               />
             </div>
           </div>

@@ -6,9 +6,9 @@ import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 
-import {
-  GoogleLogin,
-} from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+
+import DesktopOnlyGuard from "@/components/auth/DesktopOnlyGuard";
 
 export default function LoginPage() {
   const router =
@@ -130,6 +130,7 @@ export default function LoginPage() {
   }
 
   return (
+  <DesktopOnlyGuard>
     <main
       className="
         min-h-screen
@@ -636,5 +637,6 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  </DesktopOnlyGuard>
   );
 }

@@ -8,16 +8,20 @@ import {
   useState,
 } from "react";
 
-import DashboardLayout from "@/components/layout/DashboardLayout";
+import DashboardLayout
+from "@/components/layout/DashboardLayout";
 
 import {
   ResponsiveContainer,
-  AreaChart,
-  Area,
-  XAxis,
-  Tooltip,
   BarChart,
   Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from "recharts";
 
 export default function AnalyticsPage() {
@@ -100,21 +104,55 @@ export default function AnalyticsPage() {
     return null;
   }
 
-  return (
-    <DashboardLayout>
-      <div className="mb-10">
-        <h1
-          className="
-            text-4xl
-            font-light
-            text-white
-          "
-        >
-          Analytics
-        </h1>
-      </div>
+  const cards = [
+    {
+      title:
+        "Total Articles",
 
+      value:
+        data.totalArticles,
+    },
+
+    {
+      title:
+        "Total Views",
+
+      value:
+        data.totalViews,
+    },
+
+    {
+      title:
+        "Total Categories",
+
+      value:
+        data.totalCategories,
+    },
+
+    {
+      title:
+        "Active Contributors",
+
+      value:
+        data.activeContributors,
+    },
+  ];
+
+  const chartColors = [
+    "#8b5cf6",
+    "#f97316",
+    "#14b8a6",
+    "#ec4899",
+    "#facc15",
+  ];
+
+  return (
+        <DashboardLayout
+      title="Wiki Analytics"
+      subtitle="Community Archive"
+    >
       <div className="space-y-6">
+
         <div
           className="
             grid
@@ -122,144 +160,445 @@ export default function AnalyticsPage() {
             gap-6
           "
         >
-          <div
-            className="
-              bg-white/[0.04]
-              backdrop-blur-2xl
-              border
-              border-white/10
-              rounded-3xl
-              p-6
-              shadow-xl
-              shadow-black/20
-            "
-          >
-            <p
+          {cards.map((card) => (
+            <div
+              key={card.title}
               className="
-                text-sm
-                text-white/40
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-3xl
+                p-6
+                shadow-xl
+                shadow-black/20
               "
             >
-              Average Health
-            </p>
+              <p
+                className="
+                  text-sm
+                  text-white/40
+                "
+              >
+                {card.title}
+              </p>
 
-            <h2
+              <h2
+                className="
+                  text-5xl
+                  font-light
+                  mt-5
+                  text-white
+                "
+              >
+                {card.value}
+              </h2>
+            </div>
+          ))}
+        </div>
+
+        <div
+          className="
+            grid
+            grid-cols-12
+            gap-6
+          "
+        >
+          <div className="col-span-6">
+            <div
               className="
-                text-5xl
-                font-light
-                mt-5
-                text-white
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-[32px]
+                p-6
+                shadow-xl
+                shadow-black/20
               "
             >
-              {
-                data.averageHealth
-              }
-            </h2>
+              <h2
+                className="
+                  text-xl
+                  font-light
+                  text-white
+                  mb-8
+                "
+              >
+                Category Distribution
+              </h2>
+
+              <div className="h-[320px]">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <BarChart
+                    data={
+                      data.categoryDistribution
+                    }
+                  >
+                    <XAxis
+                      dataKey="name"
+                      stroke="#777"
+                    />
+
+                    <YAxis
+                      stroke="#777"
+                    />
+
+                    <Tooltip />
+
+                    <Bar
+                      dataKey="count"
+                      fill="#8b5cf6"
+                      radius={[
+                        8,
+                        8,
+                        0,
+                        0,
+                      ]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           </div>
 
-          <div
-            className="
-              bg-white/[0.04]
-              backdrop-blur-2xl
-              border
-              border-white/10
-              rounded-3xl
-              p-6
-              shadow-xl
-              shadow-black/20
-            "
-          >
-            <p
+          <div className="col-span-6">
+            <div
               className="
-                text-sm
-                text-white/40
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-[32px]
+                p-6
+                shadow-xl
+                shadow-black/20
               "
             >
-              Published Ratio
-            </p>
+              <h2
+                className="
+                  text-xl
+                  font-light
+                  text-white
+                  mb-8
+                "
+              >
+                Views by Category
+              </h2>
 
-            <h2
+              <div className="h-[320px]">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <BarChart
+                    data={
+                      data.viewsByCategory
+                    }
+                  >
+                    <XAxis
+                      dataKey="name"
+                      stroke="#777"
+                    />
+
+                    <YAxis
+                      stroke="#777"
+                    />
+
+                    <Tooltip />
+
+                    <Bar
+                      dataKey="views"
+                      fill="#f97316"
+                      radius={[
+                        8,
+                        8,
+                        0,
+                        0,
+                      ]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="
+            grid
+            grid-cols-12
+            gap-6
+          "
+        >
+          <div className="col-span-6">
+            <div
               className="
-                text-5xl
-                font-light
-                mt-5
-                text-orange-300
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-[32px]
+                p-6
+                shadow-xl
+                shadow-black/20
               "
             >
-              {
-                data.publishRatio
-              }%
-            </h2>
+              <h2
+                className="
+                  text-xl
+                  font-light
+                  text-white
+                  mb-8
+                "
+              >
+                Content Status
+              </h2>
+
+              <div className="h-[320px]">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <PieChart>
+                    <Pie
+                      data={
+                        data.statusDistribution
+                      }
+                      dataKey="value"
+                      nameKey="name"
+                      outerRadius={110}
+                    >
+                      {data.statusDistribution.map(
+                        (
+                          _: any,
+                          index: number
+                        ) => (
+                          <Cell
+                            key={index}
+                            fill={
+                              chartColors[
+                                index %
+                                  chartColors.length
+                              ]
+                            }
+                          />
+                        )
+                      )}
+                    </Pie>
+
+                    <Tooltip />
+
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           </div>
 
-          <div
-            className="
-              bg-white/[0.04]
-              backdrop-blur-2xl
-              border
-              border-white/10
-              rounded-3xl
-              p-6
-              shadow-xl
-              shadow-black/20
-            "
-          >
-            <p
+          <div className="col-span-6">
+            <div
               className="
-                text-sm
-                text-white/40
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-[32px]
+                p-6
+                shadow-xl
+                shadow-black/20
               "
             >
-              Top Category
-            </p>
+              <h2
+                className="
+                  text-xl
+                  font-light
+                  text-white
+                  mb-8
+                "
+              >
+                Contributor Roles
+              </h2>
 
-            <h2
+              <div className="h-[320px]">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <PieChart>
+                    <Pie
+                      data={
+                        data.roleDistribution
+                      }
+                      dataKey="value"
+                      nameKey="name"
+                      outerRadius={110}
+                    >
+                      {data.roleDistribution.map(
+                        (
+                          _: any,
+                          index: number
+                        ) => (
+                          <Cell
+                            key={index}
+                            fill={
+                              chartColors[
+                                index %
+                                  chartColors.length
+                              ]
+                            }
+                          />
+                        )
+                      )}
+                    </Pie>
+
+                    <Tooltip />
+
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+                <div
+          className="
+            grid
+            grid-cols-12
+            gap-6
+          "
+        >
+          <div className="col-span-6">
+            <div
               className="
-                text-3xl
-                font-light
-                mt-6
-                text-violet-300
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-[32px]
+                p-6
+                shadow-xl
+                shadow-black/20
               "
             >
-              {
-                data.topCategory
-              }
-            </h2>
+              <h2
+                className="
+                  text-xl
+                  font-light
+                  text-white
+                  mb-8
+                "
+              >
+                Top Contributors
+              </h2>
+
+              <div className="h-[320px]">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <BarChart
+                    layout="vertical"
+                    data={
+                      data.topContributors
+                    }
+                  >
+                    <XAxis
+                      type="number"
+                      stroke="#777"
+                    />
+
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      stroke="#777"
+                      width={100}
+                    />
+
+                    <Tooltip />
+
+                    <Bar
+                      dataKey="articles"
+                      fill="#8b5cf6"
+                      radius={[
+                        0,
+                        8,
+                        8,
+                        0,
+                      ]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           </div>
 
-          <div
-            className="
-              bg-white/[0.04]
-              backdrop-blur-2xl
-              border
-              border-white/10
-              rounded-3xl
-              p-6
-              shadow-xl
-              shadow-black/20
-            "
-          >
-            <p
+          <div className="col-span-6">
+            <div
               className="
-                text-sm
-                text-white/40
+                bg-white/[0.04]
+                backdrop-blur-2xl
+                border
+                border-white/10
+                rounded-[32px]
+                p-6
+                shadow-xl
+                shadow-black/20
               "
             >
-              Active Writers
-            </p>
+              <h2
+                className="
+                  text-xl
+                  font-light
+                  text-white
+                  mb-8
+                "
+              >
+                Most Viewed Articles
+              </h2>
 
-            <h2
-              className="
-                text-5xl
-                font-light
-                mt-5
-                text-white
-              "
-            >
-              {
-                data.activeWriters
-              }
-            </h2>
+              <div className="h-[320px]">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <BarChart
+                    layout="vertical"
+                    data={
+                      data.mostViewedArticles
+                    }
+                  >
+                    <XAxis
+                      type="number"
+                      stroke="#777"
+                    />
+
+                    <YAxis
+                      type="category"
+                      dataKey="title"
+                      stroke="#777"
+                      width={140}
+                    />
+
+                    <Tooltip />
+
+                    <Bar
+                      dataKey="views"
+                      fill="#f97316"
+                      radius={[
+                        0,
+                        8,
+                        8,
+                        0,
+                      ]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -275,288 +614,65 @@ export default function AnalyticsPage() {
             shadow-black/20
           "
         >
-          <div
-            className="
-              flex
-              items-center
-              justify-between
-              mb-8
-            "
-          >
-            <div>
-              <h2
-                className="
-                  text-xl
-                  font-light
-                  text-white
-                "
-              >
-                Publishing Trend
-              </h2>
+          <div className="mb-8">
+            <h2
+              className="
+                text-xl
+                font-light
+                text-white
+              "
+            >
+              View Distribution
+            </h2>
 
-              <p
-                className="
-                  text-sm
-                  text-white/40
-                  mt-1
-                "
-              >
-                Articles created
-                over time
-              </p>
-            </div>
+            <p
+              className="
+                text-sm
+                text-white/40
+                mt-1
+              "
+            >
+              Distribution of
+              article views
+            </p>
           </div>
 
-          <div className="h-[320px]">
+          <div className="h-[350px]">
             <ResponsiveContainer
               width="100%"
               height="100%"
             >
-              <AreaChart
+              <BarChart
                 data={
-                  data.trendData
+                  data.viewDistribution
                 }
               >
                 <XAxis
-                  dataKey="date"
+                  dataKey="range"
                   stroke="#777"
                 />
 
-                <Tooltip
-                  contentStyle={{
-                    background:
-                      "rgba(20,20,28,0.95)",
-                    border:
-                      "1px solid rgba(255,255,255,0.1)",
-                    borderRadius:
-                      "18px",
-                    backdropFilter:
-                      "blur(20px)",
-                    color:
-                      "#fff",
-                  }}
+                <YAxis
+                  stroke="#777"
                 />
 
-                <Area
-                  type="monotone"
-                  dataKey="articles"
-                  stroke="#8b5cf6"
-                  fill="#8b5cf6"
-                  fillOpacity={0.15}
+                <Tooltip />
+
+                <Bar
+                  dataKey="count"
+                  fill="#14b8a6"
+                  radius={[
+                    8,
+                    8,
+                    0,
+                    0,
+                  ]}
                 />
-              </AreaChart>
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div
-          className="
-            grid
-            grid-cols-12
-            gap-6
-          "
-        >
-          <div className="col-span-7">
-            <div
-              className="
-                bg-white/[0.04]
-                backdrop-blur-2xl
-                border
-                border-white/10
-                rounded-[32px]
-                p-6
-                shadow-xl
-                shadow-black/20
-              "
-            >
-              <div
-                className="
-                  flex
-                  items-center
-                  justify-between
-                  mb-8
-                "
-              >
-                <div>
-                  <h2
-                    className="
-                      text-xl
-                      font-light
-                      text-white
-                    "
-                  >
-                    Category
-                    Distribution
-                  </h2>
-
-                  <p
-                    className="
-                      text-sm
-                      text-white/40
-                      mt-1
-                    "
-                  >
-                    Most used content
-                    categories
-                  </p>
-                </div>
-              </div>
-
-              <div className="h-[300px]">
-                <ResponsiveContainer
-                  width="100%"
-                  height="100%"
-                >
-                  <BarChart
-                    data={
-                      data.categoryData
-                    }
-                  >
-                    <XAxis
-                      dataKey="name"
-                      stroke="#777"
-                    />
-
-                    <Tooltip
-                      contentStyle={{
-                        background:
-                          "rgba(20,20,28,0.95)",
-                        border:
-                          "1px solid rgba(255,255,255,0.1)",
-                        borderRadius:
-                          "18px",
-                        backdropFilter:
-                          "blur(20px)",
-                        color:
-                          "#fff",
-                      }}
-                    />
-
-                    <Bar
-                      dataKey="count"
-                      fill="#f97316"
-                      radius={[
-                        10,
-                        10,
-                        0,
-                        0,
-                      ]}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-span-5">
-            <div
-              className="
-                bg-white/[0.04]
-                backdrop-blur-2xl
-                border
-                border-white/10
-                rounded-[32px]
-                p-6
-                h-full
-                shadow-xl
-                shadow-black/20
-              "
-            >
-              <h2
-                className="
-                  text-xl
-                  font-light
-                  mb-8
-                  text-white
-                "
-              >
-                Top Writers
-              </h2>
-
-              <div className="space-y-6">
-                {data.topWriters.map(
-                  (
-                    writer: any
-                  ) => (
-                    <div
-                      key={
-                        writer.id
-                      }
-                      className="
-                        flex
-                        items-center
-                        justify-between
-                      "
-                    >
-                      <div
-                        className="
-                          flex
-                          items-center
-                          gap-3
-                        "
-                      >
-                        <div
-                          className="
-                            w-10
-                            h-10
-                            rounded-full
-                            bg-gradient-to-br
-                            from-violet-500
-                            to-orange-400
-                            flex
-                            items-center
-                            justify-center
-                            text-xs
-                            shadow-lg
-                            shadow-violet-500/20
-                          "
-                        >
-                          {writer.name?.charAt(
-                            0
-                          )}
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-white">
-                            {
-                              writer.name
-                            }
-                          </p>
-
-                          <p
-                            className="
-                              text-xs
-                              text-white/40
-                              mt-1
-                            "
-                          >
-                            {
-                              writer.role
-                            }
-                          </p>
-                        </div>
-                      </div>
-
-                      <span
-                        className="
-                          text-sm
-                          text-white/60
-                        "
-                      >
-                        {
-                          writer
-                            ._count
-                            .articles
-                        }{" "}
-                        articles
-                      </span>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </DashboardLayout>
   );

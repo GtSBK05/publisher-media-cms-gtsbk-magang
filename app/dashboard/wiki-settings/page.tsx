@@ -1,12 +1,6 @@
 import { prisma }
 from "@/lib/prisma";
 
-import Sidebar
-from "@/components/layout/Sidebar";
-
-import UserDropdown
-from "@/components/layout/UserDropdown";
-
 import WikiHomepageEditor 
 from "@/components/wiki/WikiHomepageEditor";
 
@@ -60,105 +54,44 @@ export default async function WikiSettingsPage() {
     );
 
   return (
-    <main
-      className="
-        min-h-screen
-        bg-[#111318]
-        text-white
-        flex
-      "
-    >
-      <Sidebar />
-
-      <section
+    <>
+      <div
         className="
-          flex-1
-          overflow-y-auto
+          mb-8
+          flex
+          flex-col
+          gap-4
         "
       >
-        <div
+        <button
           className="
-            border-b
-            border-white/10
+            px-5
+            h-11
 
-            px-8
-            py-5
+            w-fit
 
-            flex
-            items-center
-            justify-between
+            rounded-xl
+
+            bg-violet-500
           "
         >
-          <div>
-            <p
-              className="
-                text-xs
-                uppercase
-                tracking-[0.35em]
-                text-violet-300
-              "
-            >
-              Wiki Settings
-            </p>
+          Save Changes
+        </button>
 
-            <h1
-              className="
-                text-xl
-              "
-            >
-              Homepage Editor
-            </h1>
-          </div>
+        <BackgroundEditor
+          currentBackground={
+            settings?.backgroundUrl
+          }
+        />
+      </div>
 
-          <UserDropdown />
-        </div>
-
-        <div
-          className="
-            p-8
-          "
-        >
-          <div
-            className="
-              mb-8
-
-              flex
-              flex-col
-
-              gap-4
-            "
-          >
-            <button
-              className="
-                px-5
-                h-11
-
-                w-fit
-
-                rounded-xl
-
-                bg-violet-500
-              "
-            >
-              Save Changes
-            </button>
-
-            <BackgroundEditor
-              currentBackground={
-                settings?.backgroundUrl
-              }
-            />
-          </div>
-
-          <WikiHomepageEditor
-            hero={hero}
-            featured={featured}
-            card1={card1}
-            card2={card2}
-            card3={card3}
-          />
-        </div>
-      </section>
-    </main>
+      <WikiHomepageEditor
+        hero={hero}
+        featured={featured}
+        card1={card1}
+        card2={card2}
+        card3={card3}
+      />
+    </>
   );
 }

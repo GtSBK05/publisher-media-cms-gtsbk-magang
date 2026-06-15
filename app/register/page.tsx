@@ -6,6 +6,8 @@ import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 
+import DesktopOnlyGuard from "@/components/auth/DesktopOnlyGuard";
+
 export default function RegisterPage() {
   const router =
     useRouter();
@@ -99,6 +101,7 @@ export default function RegisterPage() {
   }
 
   return (
+  <DesktopOnlyGuard>
     <main
       className="
         min-h-screen
@@ -614,5 +617,6 @@ export default function RegisterPage() {
         </div>
       </div>
     </main>
+  </DesktopOnlyGuard>
   );
 }
