@@ -9,7 +9,7 @@ export async function getWikiSettings() {
       await prisma.wikiSettings.create({
         data: {
           heroTitle:
-            "Welcome To Community Archive",
+            "Welcome To Content Archive Publisher",
 
           heroSubtitle:
             "Customize this section from CMS.",

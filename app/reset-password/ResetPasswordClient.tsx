@@ -190,7 +190,7 @@ export default function ResetPasswordClient() {
           "
         >
           Create a new password
-          for your Community
+          for your Content
           Archive account.
         </p>
 

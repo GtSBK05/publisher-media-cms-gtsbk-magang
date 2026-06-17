@@ -101,7 +101,7 @@ export default function Sidebar() {
               shadow-violet-500/20
             "
           >
-            P
+            ♢
           </div>
 
           <div>
@@ -114,7 +114,7 @@ export default function Sidebar() {
                 mb-1
               "
             >
-              Community
+              Content
             </p>
 
             <h1

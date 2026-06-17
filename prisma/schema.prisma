@@ -172,6 +172,10 @@ model WikiSettings {
   linksTitle   String? @db.Text
   linksContent String? @db.Text
 
+  featuredArticle1Id String?
+  featuredArticle2Id String?
+  featuredArticle3Id String?
+
   backgroundUrl String?
 
   createdAt DateTime @default(now())

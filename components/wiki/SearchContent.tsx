@@ -47,7 +47,7 @@ export default function SearchContent({
             mb-3
           "
         >
-          Community Archive
+          Content Archive Publisher
         </p>
 
         <h1

@@ -4,6 +4,8 @@ import {
   useState,
 } from "react";
 
+import SimpleRTE from "../editor/SimpleRTE";
+
 interface Props {
   block: any;
 
@@ -43,25 +45,61 @@ export default function WikiBlockInlineEditor({
     block.key;
 
   async function save() {
-    await fetch(
-      "/api/wiki-settings/update",
-      {
-        method: "POST",
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
+        );
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+      const res =
+        await fetch(
+          "/api/wiki-settings/update",
+          {
+            method: "POST",
 
-        body: JSON.stringify({
-          id: block.id,
-          title,
-          content,
-        }),
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              Authorization:
+                `Bearer ${token}`,
+            },
+
+            body: JSON.stringify({
+              id: block.id,
+              title,
+              content,
+            }),
+          }
+        );
+
+      const data =
+        await res.json();
+
+      if (!res.ok) {
+        alert(
+          data.error ||
+          "Failed to save"
+        );
+
+        return;
       }
-    );
 
-    location.reload();
+      alert(
+        "Changes saved"
+      );
+
+      setEditingKey(
+        null
+      );
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Failed to save"
+      );
+    }
   }
 
   return (
@@ -120,7 +158,7 @@ export default function WikiBlockInlineEditor({
                   mb-4
                 "
               >
-                Community Archive
+                Content Archive Publisher
               </p>
 
               <h1
@@ -135,7 +173,7 @@ export default function WikiBlockInlineEditor({
           ) : (
             <h3
               className="
-                text-orange-400
+                text-white
                 mb-3
               "
             >
@@ -144,9 +182,23 @@ export default function WikiBlockInlineEditor({
           )}
 
           <div
+            className="
+              [&_img]:block
+              [&_img]:mx-auto
+
+              [&_img]:max-w-full
+              [&_img]:max-h-[300px]
+
+              md:[&_img]:max-w-[300px]
+
+              [&_img]:w-auto
+              [&_img]:h-auto
+
+              [&_a]:text-sky-400
+              [&_a]:underline
+            "
             dangerouslySetInnerHTML={{
-              __html:
-                content,
+              __html: content,
             }}
           />
         </>
@@ -179,29 +231,9 @@ export default function WikiBlockInlineEditor({
             "
           />
 
-          <textarea
-            value={content}
-            onChange={(
-              e
-            ) =>
-              setContent(
-                e.target
-                  .value
-              )
-            }
-            rows={10}
-            className="
-              w-full
-
-              rounded-xl
-
-              bg-black/20
-
-              border
-              border-white/10
-
-              p-4
-            "
+          <SimpleRTE
+            content={content}
+            onChange={setContent}
           />
 
           <div

@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import WikiBlockEditor from "./WikiBlockEditor";
 
+import PinnedArticles from "./PinnedArticles";
+
 interface Props {
   hero: any;
   featured: any;
@@ -11,6 +13,8 @@ interface Props {
 
   latestArticles?: any[];
 
+  featuredArticles?: any[];
+  
   editMode?: boolean;
 }
 
@@ -21,6 +25,7 @@ export default function WikiHomepage({
   card2,
   card3,
   latestArticles = [],
+  featuredArticles = [],
   editMode = false,
 }: Props) {
   return (
@@ -82,7 +87,7 @@ export default function WikiHomepage({
               mb-4
             "
           >
-            Community Archive
+            Content Archive Publisher
           </p>
 
           <h1
@@ -104,7 +109,20 @@ export default function WikiHomepage({
           <div
             className="
               leading-8
-              opacity-80
+
+              [&_img]:block
+              [&_img]:mx-auto
+
+              [&_img]:max-w-full
+              md:[&_img]:max-w-[300px]
+
+              [&_img]:max-h-[300px]
+
+              [&_img]:w-auto
+              [&_img]:h-auto
+
+              [&_a]:text-sky-400
+              [&_a]:underline
             "
             dangerouslySetInnerHTML={{
               __html:
@@ -165,9 +183,22 @@ export default function WikiHomepage({
 
                 <div
                   className="
+                    leading-8
                     text-sm
-                    leading-7
-                    opacity-80
+
+                    [&_img]:block
+                    [&_img]:mx-auto
+
+                    [&_img]:max-w-full
+                    md:[&_img]:max-w-[300px]
+
+                    [&_img]:max-h-[300px]
+
+                    [&_img]:w-auto
+                    [&_img]:h-auto
+
+                    [&_a]:text-sky-400
+                    [&_a]:underline
                   "
                   dangerouslySetInnerHTML={{
                     __html:
@@ -224,13 +255,34 @@ export default function WikiHomepage({
         <div
           className="
             leading-8
-            opacity-80
+
+            [&_img]:block
+            [&_img]:mx-auto
+
+            [&_img]:max-w-full
+            md:[&_img]:max-w-[300px]
+
+            [&_img]:max-h-[300px]
+
+            [&_img]:w-auto
+            [&_img]:h-auto
+
+            [&_a]:text-sky-400
+            [&_a]:underline
           "
           dangerouslySetInnerHTML={{
             __html:
               featured?.content || "",
           }}
         />
+        
+        {!editMode && (
+          <PinnedArticles
+            articles={
+              featuredArticles
+            }
+          />
+        )}        
       </section>
 
       {!editMode && (

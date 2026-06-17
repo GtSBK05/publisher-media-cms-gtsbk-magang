@@ -149,7 +149,7 @@ export default function AnalyticsPage() {
   return (
         <DashboardLayout
       title="Wiki Analytics"
-      subtitle="Community Archive"
+      subtitle="Content Archive Publisher"
     >
       <div className="space-y-6">
 

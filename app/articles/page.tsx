@@ -678,8 +678,10 @@ export default function ArticlesPage() {
         </div>
 
         <div className="flex gap-3">
-          {role ===
-            "ADMIN" && (
+          {(
+            role === "ADMIN" ||
+            role === "EDITOR"
+          ) && (
             <button
               onClick={() =>
                 router.push(

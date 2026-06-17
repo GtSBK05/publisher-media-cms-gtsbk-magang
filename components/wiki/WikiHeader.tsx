@@ -141,7 +141,7 @@ export default function WikiHeader() {
               font-semibold
             "
           >
-            W
+            ♢
           </div>
 
           <div className="hidden sm:block">
@@ -159,7 +159,7 @@ export default function WikiHeader() {
                 }
               `}
             >
-              Community Archive
+              Content Archive
             </p>
 
             <h1

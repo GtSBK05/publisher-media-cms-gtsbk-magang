@@ -1,11 +1,14 @@
 import { prisma }
 from "@/lib/prisma";
 
-import WikiHomepageEditor 
+import WikiHomepageEditor
 from "@/components/wiki/WikiHomepageEditor";
 
-import BackgroundEditor 
+import BackgroundEditor
 from "@/components/wiki/BackgroundEditor";
+
+import FeaturedArticlesManager
+from "@/components/wiki/FeaturedArticlesManager";
 
 export default async function WikiSettingsPage() {
   const settings =
@@ -57,32 +60,45 @@ export default async function WikiSettingsPage() {
     <>
       <div
         className="
-          mb-8
+          mb-10
           flex
           flex-col
-          gap-4
+          gap-6
         "
       >
         <button
           className="
             px-5
             h-11
-
             w-fit
-
             rounded-xl
-
             bg-violet-500
+            text-white
           "
         >
           Save Changes
         </button>
 
-        <BackgroundEditor
-          currentBackground={
-            settings?.backgroundUrl
-          }
-        />
+        <div
+          className="
+            w-full
+            flex
+            justify-center
+          "
+        >
+          <div
+            className="
+              w-full
+              max-w-3xl
+            "
+          >
+            <BackgroundEditor
+              currentBackground={
+                settings?.backgroundUrl
+              }
+            />
+          </div>
+        </div>
       </div>
 
       <WikiHomepageEditor
@@ -91,6 +107,18 @@ export default async function WikiSettingsPage() {
         card1={card1}
         card2={card2}
         card3={card3}
+      />
+
+      <FeaturedArticlesManager
+        article1Id={
+          settings?.featuredArticle1Id
+        }
+        article2Id={
+          settings?.featuredArticle2Id
+        }
+        article3Id={
+          settings?.featuredArticle3Id
+        }
       />
     </>
   );

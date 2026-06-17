@@ -34,7 +34,6 @@ export default function WikiHomepageEditor({
 
   return (
     <div className="space-y-10">
-      {/* HERO */}
 
       <section
         className="

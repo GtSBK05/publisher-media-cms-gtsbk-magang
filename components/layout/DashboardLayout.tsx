@@ -5,7 +5,7 @@ import UserDropdown from "./UserDropdown";
 export default function DashboardLayout({
   children,
   title = "Editorial Workspace",
-  subtitle = "Community Archive",
+  subtitle = "Content Archive Publisher",
 }: {
   children: React.ReactNode;
   title?: string;

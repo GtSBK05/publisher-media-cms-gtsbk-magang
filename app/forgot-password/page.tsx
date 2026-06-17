@@ -179,7 +179,7 @@ export default function ForgotPasswordPage() {
                       text-white/30
                     "
                   >
-                    Community
+                    Content
                   </p>
 
                   <h1

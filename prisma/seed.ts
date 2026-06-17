@@ -9,7 +9,7 @@ async function main() {
     {
       key: "MAIN_HERO",
       title:
-        "Welcome To Community Archive",
+        "Welcome To Content Archive Publisher",
 
       content:
         "Customize this section from CMS.",

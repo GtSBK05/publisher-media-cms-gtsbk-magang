@@ -222,7 +222,7 @@ export default function RegisterPage() {
                       text-white/30
                     "
                   >
-                    Community
+                    Content
                   </p>
 
                   <h1
@@ -387,7 +387,7 @@ export default function RegisterPage() {
                 text-white
               "
             >
-              Join Community
+              Join Content
               Archive
             </h2>
 

@@ -13,7 +13,7 @@ export default function WikiSettingsLayout({
     <WikiSettingsGuard>
       <DashboardLayout
         title="Wiki Settings"
-        subtitle="Community Archive"
+        subtitle="Content Archive Publisher"
       >
         {children}
       </DashboardLayout>

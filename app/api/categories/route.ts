@@ -89,7 +89,9 @@ export async function POST(
 
     if (
       decoded.role !==
-      "ADMIN"
+      "ADMIN" &&
+      decoded.role !==
+      "EDITOR"
     ) {
       return Response.json(
         {

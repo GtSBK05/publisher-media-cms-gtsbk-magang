@@ -46,7 +46,7 @@ export default function WikiLayout({
         ${
           lightMode
             ? `
-              bg-[#f5f6f8]
+              bg-[#EEECE7]
               text-black
             `
             : `
@@ -86,7 +86,7 @@ export default function WikiLayout({
             lightMode
               ? `
                 from-orange-100/35
-                via-white/55
+                via-[#EEECE7]/55
                 to-violet-100/30
               `
               : `
@@ -187,7 +187,7 @@ export default function WikiLayout({
               ${
                 lightMode
                   ? `
-                    bg-white
+                    bg-[#EEECE7]
                     text-black
 
                     border-r
@@ -322,7 +322,7 @@ export default function WikiLayout({
                 ${
                   lightMode
                     ? `
-                      bg-white
+                      bg-white/[0.04]
 
                       border-black/10
 

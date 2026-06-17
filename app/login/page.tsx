@@ -251,7 +251,7 @@ export default function LoginPage() {
                       text-white/30
                     "
                   >
-                    Community
+                    Content
                   </p>
 
                   <h1
@@ -422,7 +422,7 @@ export default function LoginPage() {
                 text-white
               "
             >
-              Access Community
+              Access Content
               Archive
             </h2>
 

@@ -13,7 +13,7 @@ import {
 import WikiInfoBox
 from "@/components/wiki/WikiInfoBox";
 
-import WikiHomepage 
+import WikiHomepage
 from "@/components/wiki/WikiHomepage";
 
 interface Props {
@@ -76,8 +76,8 @@ export default async function WikiPage({
       orderBy: {
         position: "asc",
       },
-    }), 
-    
+    }),
+
     prisma.wikiSettings.findFirst(),
   ]);
 
@@ -114,7 +114,41 @@ export default async function WikiPage({
       (block) =>
         block.key ===
         "SIDEBAR_CARD_3"
-    );  
+    );
+
+  const pinnedIds = [
+    settings?.featuredArticle1Id,
+    settings?.featuredArticle2Id,
+    settings?.featuredArticle3Id,
+  ].filter(Boolean) as string[];
+
+  const featuredArticles =
+    pinnedIds.length > 0
+      ? await prisma.article.findMany({
+          where: {
+            id: {
+              in: pinnedIds,
+            },
+
+            status:
+              "PUBLISHED",
+          },
+
+          include: {
+            category: true,
+          },
+        })
+      : [];
+
+  const orderedFeaturedArticles =
+    pinnedIds
+      .map((id) =>
+        featuredArticles.find(
+          (article) =>
+            article.id === id
+        )
+      )
+      .filter(Boolean);
 
   const article =
     await prisma.article.findFirst({
@@ -133,7 +167,7 @@ export default async function WikiPage({
 
   if (!article) {
     notFound();
-  }    
+  }
 
   return (
     <WikiLayout
@@ -141,14 +175,15 @@ export default async function WikiPage({
         settings?.backgroundUrl
       }
       sidebar={
-        <WikiSidebar 
-        categories={categories}/>
+        <WikiSidebar
+          categories={categories}
+        />
       }
       rightPanel={
         <WikiInfoBox
           article={article}
         />
-      }      
+      }
     >
       <WikiHomepage
         hero={hero}
@@ -156,7 +191,12 @@ export default async function WikiPage({
         card1={card1}
         card2={card2}
         card3={card3}
-        latestArticles={latestArticles}
+        latestArticles={
+          latestArticles
+        }
+        featuredArticles={
+          orderedFeaturedArticles
+        }
       />
     </WikiLayout>
   );

@@ -28,6 +28,7 @@ export async function GET(
       user.role,
       [
         "ADMIN",
+        "EDITOR",
       ]
     );
 

@@ -39,29 +39,6 @@ export default function WikiSidebar({
   return (
     <div className="h-full flex flex-col">
       <div className="mb-10">
-        <div
-          className="
-            w-14
-            h-14
-
-            rounded-2xl
-
-            bg-gradient-to-br
-            from-violet-500
-            to-orange-400
-
-            flex
-            items-center
-            justify-center
-
-            text-white
-            text-xl
-
-            mb-4
-          "
-        >
-          W
-        </div>
 
         <p
           className={`
@@ -77,7 +54,7 @@ export default function WikiSidebar({
             }
           `}
         >
-          Community Archive
+          Content Archive
         </p>
 
         <h1
@@ -376,11 +353,10 @@ export default function WikiSidebar({
             }
           `}
         >
-          About
         </p>
 
         <Link
-          href="/wiki/about"
+          href="/wiki/"
           className={`
             flex
             items-center
@@ -427,7 +403,6 @@ export default function WikiSidebar({
             }
           `}
         >
-          About Community Archive
         </Link>
       </div>
     </div>

@@ -60,7 +60,9 @@ export async function DELETE(
 
     if (
       decoded.role !==
-      "ADMIN"
+      "ADMIN" &&
+      decoded.role !==
+      "EDITOR"
     ) {
       return Response.json(
         {
