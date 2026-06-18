@@ -8,178 +8,126 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-
-  name  String
-  email String @unique
-
-  password String?
-
-  googleId String? @unique
-  avatar   String?
-
-  role Role @default(WRITER)
-
-  isActive Boolean @default(true)
-
-  articles Article[]
-
+  id                String               @id @default(uuid())
+  name              String
+  email             String               @unique
+  password          String?
+  role              Role                 @default(WRITER)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  isActive          Boolean              @default(true)
+  avatar            String?
+  googleId          String?              @unique
+  activityLogs      ActivityLog[]
+  articles          Article[]
+  approvedRevisions ArticleRevision[]    @relation("RevisionApprover")
   revisions         ArticleRevision[]
-  approvedRevisions ArticleRevision[] @relation("RevisionApprover")
-
-  activityLogs ActivityLog[]
-
-  resetTokens PasswordResetToken[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  resetTokens       PasswordResetToken[]
 }
 
 model Article {
-  id String @id @default(uuid())
-
-  title   String
-  content String
-
-  seoTitle       String?
-  seoDescription String?
-  seoKeywords    String?
-
-  views       Int @default(0)
-  healthScore Int @default(0)
-
-  version Int @default(1)
-
-  slug   String @unique
-  status Status @default(DRAFT)
-
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id])
-
-  categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id])
-
-  revisions ArticleRevision[]
-
-  scheduledAt DateTime?
-  publishedAt DateTime?
-
-  logs ActivityLog[]
-  lastContentUpdate DateTime @default(now())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String            @id @default(uuid())
+  title             String
+  content           String
+  slug              String            @unique
+  status            Status            @default(DRAFT)
+  authorId          String
+  scheduledAt       DateTime?
+  publishedAt       DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  categoryId        String?
+  seoDescription    String?
+  seoKeywords       String?
+  seoTitle          String?
+  healthScore       Int               @default(0)
+  views             Int               @default(0)
+  version           Int               @default(1)
+  lastContentUpdate DateTime          @default(now())
+  logs              ActivityLog[]
+  author            User              @relation(fields: [authorId], references: [id])
+  category          Category?         @relation(fields: [categoryId], references: [id])
+  revisions         ArticleRevision[]
 }
 
 model ArticleRevision {
-  id String @id @default(uuid())
-
-  articleId String
-  article   Article @relation(fields: [articleId], references: [id])
-
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id])
-
-  title   String
-  content String
-
-  categoryId String?
-
-  summary String?
-
-  baseVersion Int
-
-  status RevisionStatus @default(PENDING)
-
+  id           String         @id @default(uuid())
+  articleId    String
+  authorId     String
+  title        String
+  content      String
+  categoryId   String?
+  summary      String?
+  baseVersion  Int
+  status       RevisionStatus @default(PENDING)
   approvedById String?
-
-  approvedBy User? @relation(name: "RevisionApprover", fields: [approvedById], references: [id])
-
-  approvedAt DateTime?
-
-  createdAt DateTime @default(now())
+  approvedAt   DateTime?
+  createdAt    DateTime       @default(now())
+  approvedBy   User?          @relation("RevisionApprover", fields: [approvedById], references: [id])
+  article      Article        @relation(fields: [articleId], references: [id])
+  author       User           @relation(fields: [authorId], references: [id])
 }
 
 model Category {
-  id String @id @default(uuid())
-
-  name String
-
+  id       String    @id @default(uuid())
+  name     String
   articles Article[]
 }
 
 model Tag {
-  id String @id @default(uuid())
-
+  id   String @id @default(uuid())
   name String
 }
 
 model ActivityLog {
-  id String @id @default(uuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  createdAt DateTime @default(now())
   articleId String?
   article   Article? @relation(fields: [articleId], references: [id])
-
-  action String
-
-  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model PasswordResetToken {
-  id String @id @default(uuid())
-
-  token String @unique
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
   expiresAt DateTime
-
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model WikiBlock {
-  id          String   @id @default(uuid())
-  key         String   @unique
-  title       String
-  content     String   @db.Text
-  imageUrl    String?
-  position    Int
-  isVisible   Boolean  @default(true)
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(uuid())
+  key       String   @unique
+  title     String
+  content   String
+  imageUrl  String?
+  position  Int
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model WikiSettings {
-  id String @id @default(uuid())
-
-  heroTitle       String? @db.Text
-  heroSubtitle    String? @db.Text
-
-  featuredTitle   String? @db.Text
-  featuredContent String? @db.Text
-
-  announcementTitle   String? @db.Text
-  announcementContent String? @db.Text
-
-  communityTitle   String? @db.Text
-  communityContent String? @db.Text
-
-  linksTitle   String? @db.Text
-  linksContent String? @db.Text
-
-  featuredArticle1Id String?
-  featuredArticle2Id String?
-  featuredArticle3Id String?
-
-  backgroundUrl String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  heroTitle           String?
+  heroSubtitle        String?
+  featuredTitle       String?
+  featuredContent     String?
+  announcementTitle   String?
+  announcementContent String?
+  communityTitle      String?
+  communityContent    String?
+  linksTitle          String?
+  linksContent        String?
+  backgroundUrl       String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  featuredArticle1Id  String?
+  featuredArticle2Id  String?
+  featuredArticle3Id  String?
 }
 
 enum Role {
