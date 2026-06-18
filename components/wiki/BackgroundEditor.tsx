@@ -65,24 +65,58 @@ export default function BackgroundEditor({
     if (!preview)
       return;
 
-    await fetch(
-      "/api/wiki-settings/background",
-      {
-        method: "POST",
+    try {
+      const token =
+        localStorage.getItem(
+          "token"
+        );
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+      const response =
+        await fetch(
+          "/api/wiki-settings/background",
+          {
+            method: "POST",
 
-        body: JSON.stringify({
-          backgroundUrl:
-            preview,
-        }),
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              Authorization:
+                `Bearer ${token}`,
+            },
+
+            body: JSON.stringify({
+              backgroundUrl:
+                preview,
+            }),
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+        alert(
+          data.error ||
+          "Failed to save background"
+        );
+
+        return;
       }
-    );
 
-    location.reload();
+      alert(
+        "Background updated"
+      );
+
+      location.reload();
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Failed to save background"
+      );
+    }
   }
 
   return (
