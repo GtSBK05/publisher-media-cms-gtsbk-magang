@@ -1,7 +1,8 @@
-export default function Home() {
-  return (
-    <div className="bg-blue-500 text-white p-10">
-      Tailwind Active
-    </div>
-  );
+import { redirect }
+from "next/navigation";
+
+export default function Page() {
+  redirect("/wiki");
+
+  return null;
 }

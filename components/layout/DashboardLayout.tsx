@@ -101,9 +101,11 @@ export default function DashboardLayout({
                 border-white/10
                 px-8
                 py-5
-                flex
+
+                grid
+                grid-cols-3
                 items-center
-                justify-between
+
                 backdrop-blur-xl
                 bg-black/10
               "
@@ -134,8 +136,43 @@ export default function DashboardLayout({
               <div
                 className="
                   flex
-                  items-center
-                  gap-3
+                  justify-center
+                "
+              >
+                <a
+                  href="/wiki"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    px-5
+                    h-11
+
+                    flex
+                    items-center
+
+                    rounded-xl
+
+                    border
+                    border-violet-500/30
+
+                    bg-violet-500/10
+
+                    text-violet-300
+
+                    hover:bg-violet-500/20
+                    hover:border-violet-500/50
+
+                    transition
+                  "
+                >
+                  Wiki
+                </a>
+              </div>
+
+              <div
+                className="
+                  flex
+                  justify-end
                 "
               >
                 <UserDropdown />
