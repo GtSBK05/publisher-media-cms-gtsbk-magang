@@ -27,6 +27,8 @@ interface Props {
 export default async function WikiPage({
   params,
 }: Props) {
+console.log("=== WIKI PAGE RENDER ===");
+console.log(new Date().toISOString());
   const {
     slug,
   } = await params;
@@ -82,7 +84,12 @@ export default async function WikiPage({
 
     prisma.wikiSettings.findFirst(),
   ]);
-
+  console.log(
+    blocks.map((b) => ({
+      key: b.key,
+      title: b.title,
+    }))
+  );
   const hero =
     blocks.find(
       (block) =>
